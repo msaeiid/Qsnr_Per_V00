@@ -6,78 +6,84 @@
     {% block content %}
         <form method="post">
             {% csrf_token %}
-            <div class="question">
-                <table>
-                    <thead>
-                    <tr>
-                        <th>{{ Answersheet_frm.number.label }}</th>
-                        <th>
-                            {{ Interviewer_frm.code.label }}
-                        </th>
-                        <th>
-                            {{ Responser_frm.firstname.label }}
-                        </th>
-                        <th>
-                            {{ Responser_frm.mobile.label }}
-                        </th>
-                        <th>
-                            {{ Answersheet_frm.day.label }}
-                        </th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td>
-                            {{ Answersheet_frm.number }}
-                        </td>
-                        <td>
-                            {{ Interviewer_frm.code }}
-                        </td>
-                        <td>
-                            {{ Responser_frm.firstname }}
-                        </td>
-                        <td>
-                            {{ Responser_frm.mobile }}
-                        </td>
-                        <td>
-                            <div class="col-auto">
-                                <div class="input-group">
-                                    {{ Answersheet_frm.day }}
-                                    <div class="input-group-text">1400-06</div>
+                <div class="question">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>{{ Answersheet_frm.number.label }}</th>
+                            <th>
+                                {{ Interviewer_frm.code.label }}
+                            </th>
+                            <th>
+                                {{ Responser_frm.firstname.label }}
+                            </th>
+                            <th>
+                                {{ Responser_frm.mobile.label }}
+                            </th>
+                            <th>
+                                {{ Answersheet_frm.day.label }}
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>
+                                {{ Answersheet_frm.number }}
+                            </td>
+                            <td>
+                                {{ Interviewer_frm.code }}
+                            </td>
+                            <td>
+                                {{ Responser_frm.firstname }}
+                            </td>
+                            <td>
+                                {{ Responser_frm.mobile }}
+                            </td>
+                            <td>
+                                <div class="col-auto">
+                                    <div class="input-group">
+                                        {{ Answersheet_frm.day }}
+                                        <div class="input-group-text">1400-06</div>
+                                    </div>
                                 </div>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            {{ Responser_frm.address.label }}
-                        </th>
-                        <td colspan="4">
-                            <div class="form-group">
-                                {{ Responser_frm.address }}
-                            </div>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="question">
-                {{ S1_frm }}
-            </div>
-            <div class="question">
-                {{ S2_frm }}
-            </div>
-            <div class="question">
-                {{ S3_frm }}
-            </div>
-            <div class="question">
-                {{ S4a_frm }}
-            </div>
-            <div class="question">
-                {{ S4b_frm }}
-            </div>
-            <div class="question number_of_child hide">
-                {{ S5_frm }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                {{ Responser_frm.address.label }}
+                            </th>
+                            <td colspan="4">
+                                <div class="form-group">
+                                    {{ Responser_frm.address }}
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            <div class="row">
+                <div class="col-6">
+                    <div class="question">
+                        {{ S1_frm }}
+                    </div>
+                    <div class="question">
+                        {{ S2_frm }}
+                    </div>
+                    <div class="question">
+                        {{ S3_frm }}
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="question">
+                        {{ S4a_frm }}
+                    </div>
+                    <div class="question">
+                        {{ S4b_frm }}
+                    </div>
+                    <div class="question number_of_child hide">
+                        {{ S5_frm }}
+                    </div>
+                </div>
             </div>
             <div class="row">
                 <button type="submit" class="btn btn-lg btn-success">مرحله بعد</button>
