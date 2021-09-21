@@ -38,7 +38,8 @@
         .hide {
             display: none;
         }
-        button{
+
+        button {
             margin: 30px;
         }
     </style>
@@ -54,15 +55,15 @@
     </button>
 </nav>
 <div class="row">
-    <div class="col-3">
-        {% block side %}
-            <div class="side">
-
-            </div>
+    <div class="col-lg-8 col-md-10 col-sm-12">
+        {% block content %}
         {% endblock %}
     </div>
-    <div class="col-9">
-        {% block content %}
+    <div class="col-lg-2 col-md-2 col-sm-12">
+        {% block side %}
+            <div class="#side">
+
+            </div>
         {% endblock %}
     </div>
 </div>
