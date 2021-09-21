@@ -1,45 +1,59 @@
 {% extends 'Agah/base.html' %}
+{% block  extra_header %}
+    <style>
+        input {
+            text-align: center;
+        }
+    </style>
+
+{% endblock %}
 {% block title %}
     فرزندان
 {% endblock %}
 {% block content %}
-    <div class="table-responsive col-11 question">
-        <table class="table table-hover">
-            <thead>
-            <tr>
-                <th>
-                    فرزند شماره
-                </th>
-                <th>
-                    جنسیت
-                </th>
-                <th>
-                    سال تولد
-                </th>
-                <th>
-                    میزان پول توجیبی هفتگی(تومان)
-                </th>
-                <th>
-                    بیشترین زمان در هفته
-                </th>
-                <th>
-                    تعداد تغذیه
-                </th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for row in forms %}
+    <form method="post">
+    {% csrf_token %}
+        <div class="table-responsive col-11 question">
+            <table class="table table-hover">
+                <thead>
                 <tr>
-                    {% for column in row %}
-                        <td>
-                            {{ column }}
-                        </td>
-                    {% endfor %}
+                    <th>
+                        فرزند شماره
+                    </th>
+                    <th>
+                        جنسیت
+                    </th>
+                    <th>
+                        سال تولد
+                    </th>
+                    <th>
+                        میزان پول توجیبی هفتگی(تومان)
+                    </th>
+                    <th>
+                        بیشترین زمان در هفته
+                    </th>
+                    <th>
+                        تعداد تغذیه
+                    </th>
                 </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-    </div>
+                </thead>
+                <tbody>
+                {% for row in forms %}
+                    <tr>
+                        {% for column in row %}
+                            <td>
+                                {{ column }}
+                            </td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="row">
+            <button type="submit" class="btn btn-lg btn-success">مرحله بعد</button>
+        </div>
+    </form>
 {% endblock %}
 {% block js %}
     <script type="application/javascript">

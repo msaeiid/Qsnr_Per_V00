@@ -76,10 +76,10 @@
             <div class="question">
                 {{ S4b_frm }}
             </div>
-            <div class="question number_of_child">
+            <div class="question number_of_child hide">
                 {{ S5_frm }}
             </div>
-            <div class="row" style="align-items: center">
+            <div class="row">
                 <button type="submit" class="btn btn-lg btn-success">مرحله بعد</button>
             </div>
         </form>
@@ -100,10 +100,10 @@
             var the_input = $('.number_of_child input')
             if (parseInt($('#id_S4b').val()) === 1 && parseInt($('#id_S4a').val()) == 1) {
                 the_div.removeClass('hide')
-                the_input.prop('disabled', false);
+                the_input.prop('disabled', false).prop('required', true);
             } else {
                 the_div.addClass('hide');
-                the_input.prop('disabled', true);
+                the_input.prop('disabled', true).prop('required', false);
             }
         };
     </script>

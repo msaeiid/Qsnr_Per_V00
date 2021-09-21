@@ -156,6 +156,7 @@ def save_single_answer(question_code, user_answer, answersheet):
             answer.save()
 
 
+@csrf_protect
 def Children(request):
     # GET
     if request.method == 'GET':
@@ -177,6 +178,7 @@ def Children(request):
         return render(request, 'Agah/Childern.html', context)
     # POST
     else:
+        print('')
         pass
 
 # Create your views here.
