@@ -59,39 +59,20 @@
 {% endblock %}
 {% block js %}
     <script type="application/javascript">
-        $(window).ready(function () {
-            initiate()
+        $('.birthday').change(function () {
+            birthday_change_event(this)
         });
 
-        function initiate() {
-            let inputs = $('input[type=number]')
-            var count = inputs.length
-            var state = 0
-            for (var i = 0; i < count; i++) {
-                if (state == i) {
-                    state += 3
-                    $($('input[type=number]')[i]).change(function () {
-                        var year = moment().locale('fa').format('YYYY')
-                        var age = year - (parseInt($(this).val()) + 1300)
-                        if (age < 3 || age > 12) {
-                            make_them_disable(true)
-                        } else {
-                            make_them_disable(false)
-                        }
-                    });
-                }
+        function birthday_change_event(user_input) {
+            var user_input_value = parseInt($(user_input).val()) + 1300
+            var year = moment().locale('fa').format('YYYY')
+            var age = year - user_input_value
+            var html_class=$(user_input).attr('class')[0]
+            if (age >= 3 && age <= 12) {
+                $('.'+html_class+'.option').prop('disabled',false)
             }
-        }
-
-        function make_them_disable(status) {
-            let inputs = $('input[type=number]')
-            var count = inputs.length
-            var state = 0
-            for (var i = 0; i < count; i++) {
-                if (i % 3 != 0) {
-                    console.log(status)
-                    $($('input[type=number]')[i]).prop('disabled', status)
-                }
+            else {
+                $('.'+html_class+'.option').prop('disabled',true)
             }
         }
     </script>

@@ -117,7 +117,10 @@ def Personal(request):
             if int(request.POST.get('S4b')) == 1 and int(request.POST.get('S4a')) == 1:
                 request.session['children'] = int(request.POST.get('S5'))
             else:
-                del request.session['children']
+                try:
+                    del request.session['children']
+                except:
+                    pass
             return redirect(reverse('children'))
         else:
             context = {'Interviewer_frm': Interviewer_frm, 'Answersheet_frm': Answersheet_frm,
@@ -185,7 +188,7 @@ def Children(request):
     if request.method == 'GET':
         number_of_children = request.session.get('children', False)
         if not number_of_children:
-            raise ValueError('فیلد تعداد فرزندان تکمیل نشده است')
+            return redirect(reverse('question'))
         questions = Question.objects.filter(code__startswith='s')
         S6 = questions.get(code='S6')
         S7 = questions.get(code='S7')
@@ -231,7 +234,7 @@ def Children(request):
         return redirect(reverse('question'))
 
 
-def Question_view(requestu):
+def Question_view(request):
     print('')
     pass
 

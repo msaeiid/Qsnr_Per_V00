@@ -19,33 +19,7 @@ class Question_from(forms.Form):
     def __init__(self, *args, **kwargs):
         super(Question_from, self).__init__()
         question = kwargs.get('instance')
-        # Int
-        if question.type == 'IntegerField':
-            self.fields[question.code] = forms.IntegerField(required=question.is_required,
-                                                            min_value=question.min_input_value,
-                                                            label=f'{question.code} {question.title}',
-                                                            max_value=question.max_input_value)
-        # Text
-        if question.type == 'CharField':
-            self.fields[question.code] = forms.CharField(required=question.is_required,
-                                                         max_length=question.max_input_value,
-                                                         label=f'{question.code} {question.title}')
-        # Drop down
-        if question.type == 'ChoiceField':
-            self.fields[question.code] = forms.ChoiceField(required=question.is_required,
-                                                           choices=choice_maker(question),
-                                                           label=f'{question.code} {question.title}')
-        # Radio button
-        if question.type == 'RadioSelect':
-            self.fields[question.code] = forms.ChoiceField(required=question.is_required,
-                                                           choices=choice_maker(question),
-                                                           label=f'{question.code} {question.title}',
-                                                           widget=forms.RadioSelect)
-        # Check box
-        if question.type == 'MultipleChoiceField':
-            self.fields[question.code] = forms.ChoiceField(required=question.is_required,
-                                                           choices=choice_maker(question),
-                                                           label=question.title, widget=forms.CheckboxSelectMultiple)
+        self.fields[question.code] = option_maker(question, question.code)
 
 
 class Responser_form(ModelForm):
@@ -90,17 +64,17 @@ class Children_form(forms.Form):
         S9 = kwargs.get('instance').get('S9')
         S10 = kwargs.get('instance').get('S10')
         self.fields[f'{row}'] = forms.CharField(widget=forms.TextInput(attrs={'disabled': True, 'value': f'{row}'}))
-        self.fields[f'S6_{row}'] = option_maker(S6, 'S6')
-        self.fields[f'S7_{row}'] = option_maker(S7, 'S7 birthday')
-        self.fields[f'S8_{row}'] = option_maker(S8, 'S8 option')
-        self.fields[f'S9_{row}'] = option_maker(S9, 'S9 option')
-        self.fields[f'S10_{row}'] = option_maker(S10, 'S10 option')
+        self.fields[f'S6_{row}'] = option_maker(S6, f'{row}')
+        self.fields[f'S7_{row}'] = option_maker(S7, f'{row} birthday')
+        self.fields[f'S8_{row}'] = option_maker(S8, f'{row} option')
+        self.fields[f'S9_{row}'] = option_maker(S9, f'{row} option')
+        self.fields[f'S10_{row}'] = option_maker(S10, f'{row} option')
 
 
 def option_maker(question, class_html):
     # Int
     if question.type == 'IntegerField':
-        return forms.CharField(widget=forms.TextInput(
+        return forms.CharField(label=f'{question.code} {question.title}', widget=forms.TextInput(
             attrs={'type': 'number', 'required': question.is_required, 'min': question.min_input_value,
                    'max': question.max_input_value, 'class': class_html}))
     # Text
