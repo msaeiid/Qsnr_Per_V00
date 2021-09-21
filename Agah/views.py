@@ -39,6 +39,8 @@ def Personal(request):
         if Interviewer_frm.is_valid() and Answersheet_frm.is_valid() and Responser_frm.is_valid():
             S1 = int(request.POST.get('S1', None))
             S2 = int(request.POST.get('S2', None))
+            S4 = int(request.POST.get('S4', None))
+            S5 = int(request.POST.get('S5', None))
             if S1 in [1, 2, 3] or S2 == 0:
                 if answersheet:
                     answersheet.delete()
