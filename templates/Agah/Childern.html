@@ -1,5 +1,7 @@
 {% extends 'Agah/base.html' %}
 {% block  extra_header %}
+    <script src="https://unpkg.com/jalali-moment/dist/jalali-moment.browser.js"></script>
+
     <style>
         input {
             text-align: center;
@@ -12,7 +14,7 @@
 {% endblock %}
 {% block content %}
     <form method="post">
-    {% csrf_token %}
+        {% csrf_token %}
         <div class="table-responsive col-11 question">
             <table class="table table-hover">
                 <thead>
@@ -57,5 +59,40 @@
 {% endblock %}
 {% block js %}
     <script type="application/javascript">
+        $(window).ready(function () {
+            initiate()
+        });
+
+        function initiate() {
+            let inputs = $('input[type=number]')
+            var count = inputs.length
+            var state = 0
+            for (var i = 0; i < count; i++) {
+                if (state == i) {
+                    state += 3
+                    $($('input[type=number]')[i]).change(function () {
+                        var year = moment().locale('fa').format('YYYY')
+                        var age = year - (parseInt($(this).val()) + 1300)
+                        if (age < 3 || age > 12) {
+                            make_them_disable(true)
+                        } else {
+                            make_them_disable(false)
+                        }
+                    });
+                }
+            }
+        }
+
+        function make_them_disable(status) {
+            let inputs = $('input[type=number]')
+            var count = inputs.length
+            var state = 0
+            for (var i = 0; i < count; i++) {
+                if (i % 3 != 0) {
+                    console.log(status)
+                    $($('input[type=number]')[i]).prop('disabled', status)
+                }
+            }
+        }
     </script>
 {% endblock %}
