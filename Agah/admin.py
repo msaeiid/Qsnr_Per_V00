@@ -1,8 +1,7 @@
 from django.contrib import admin
 from django.db.models import Q
 
-from Agah.models import Responder, Interviewer, Question, Survey, AnswerSheet, Option, Answer, \
-    Child, Limit, BrandCategory, Brand
+from Agah.models import Responder, Interviewer, Question, Survey, AnswerSheet, Option, Answer, BrandCategory, Brand
 
 admin.site.site_header = 'نظرسنجی'
 admin.site.site_title = 'نظرسنجی'
@@ -11,7 +10,7 @@ admin.site.index_title = ''
 
 class AnswerSheetCustom(admin.ModelAdmin):
     list_display = (
-        'interviewer', 'responser', 'survey','number', 'date', 'total_point',
+        'interviewer', 'responser', 'survey', 'number', 'date', 'total_point',
         'social_class',)
 
 
@@ -56,14 +55,6 @@ class AnswerCustom(admin.ModelAdmin):
             return queryset, False
 
 
-class ChildCustom(admin.ModelAdmin):
-    list_display = ('responder', 'gender', 'birthday_year',)
-
-
-class LimitCustom(admin.ModelAdmin):
-    list_display = ('marital_status', 'age', 'maximum', 'capacity',)
-
-
 class BrandCategoryCustom(admin.ModelAdmin):
     list_display = ('title',)
 
@@ -79,8 +70,6 @@ admin.site.register(Question, QuestionCustom)
 admin.site.register(AnswerSheet, AnswerSheetCustom)
 admin.site.register(Option, OptionCustom)
 admin.site.register(Answer, AnswerCustom)
-admin.site.register(Child, ChildCustom)
-admin.site.register(Limit, LimitCustom)
 admin.site.register(BrandCategory, BrandCategoryCustom)
 admin.site.register(Brand, BrandCustom)
 

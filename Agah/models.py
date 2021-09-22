@@ -44,23 +44,23 @@ class Responder(models.Model):
         return f'{self.firstname}'
 
 
-class Child(models.Model):
-    class Meta:
-        verbose_name = 'فرزند'
-        verbose_name_plural = 'فرزند'
-        ordering = ['pk']
-
-    responder = models.ForeignKey(to=Responder, on_delete=models.CASCADE, verbose_name='پاسخگو',
-                                  related_name='children')
-    gender = models.ForeignKey(verbose_name='جنسیت', blank=False, null=False, editable=True, to='Option',
-                               on_delete=models.PROTECT)
-    birthday_year = models.IntegerField(verbose_name='سال تولد', blank=False, null=False, editable=True, validators=[
-        RegexValidator(regex='^1[0-9]{3}$', message='لطفا سال تولد را صحیح و کامل وارد نمایید')])
-    age = models.IntegerField(verbose_name='محسابه سن اتومات', blank=False, null=False, editable=True, )
-
-    def __str__(self):
-        return f' فرزندان ' \
-               f'{self.responder.firstname}'
+# class Child(models.Model):
+#     class Meta:
+#         verbose_name = 'فرزند'
+#         verbose_name_plural = 'فرزند'
+#         ordering = ['pk']
+#
+#     responder = models.ForeignKey(to=Responder, on_delete=models.CASCADE, verbose_name='پاسخگو',
+#                                   related_name='children')
+#     gender = models.ForeignKey(verbose_name='جنسیت', blank=False, null=False, editable=True, to='Option',
+#                                on_delete=models.PROTECT)
+#     birthday_year = models.IntegerField(verbose_name='سال تولد', blank=False, null=False, editable=True, validators=[
+#         RegexValidator(regex='^1[0-9]{3}$', message='لطفا سال تولد را صحیح و کامل وارد نمایید')])
+#     age = models.IntegerField(verbose_name='محسابه سن اتومات', blank=False, null=False, editable=True, )
+#
+#     def __str__(self):
+#         return f' فرزندان ' \
+#                f'{self.responder.firstname}'
 
 
 class Survey(models.Model):
@@ -191,44 +191,44 @@ class Answer(models.Model):
                f' {self.question.title}'
 
 
-class Limit(models.Model):
-    class Meta:
-        verbose_name = 'محدودیت'
-        verbose_name_plural = 'محدودیت'
-        ordering = ['marital_status', 'age']
-
-    marital_status_choices = ((1, 'مجرد'),
-                              (2, 'متاهل'),
-                              (3, 'مطلقه'),
-                              (4, 'بیوه'))
-
-    marital_status = models.IntegerField(verbose_name='وضعیت تاهل', choices=marital_status_choices,
-                                         editable=True, null=False, blank=False)
-    age_choices = ((1, '24-18'),
-                   (2, '29-25'),
-                   (3, '34-30'),
-                   (4, '39-35'),)
-    age = models.IntegerField(verbose_name='بازه سنی', choices=age_choices, editable=True, blank=False, null=False)
-    maximum = models.PositiveSmallIntegerField(verbose_name='تعداد سهمیه', editable=True, blank=False, null=False)
-    capacity = models.PositiveSmallIntegerField(verbose_name='تعداد ثبت نام شده', editable=True, default=0)
-
-    def __str__(self):
-        return f'{self.marital_status}          {self.age}'
-
-    def check_for_capacity(self):
-        if self.maximum > self.capacity:
-            self.capacity += 1
-            self.save()
-            return True
-        else:
-            return False
+# class Limit(models.Model):
+#     class Meta:
+#         verbose_name = 'محدودیت'
+#         verbose_name_plural = 'محدودیت'
+#         ordering = ['marital_status', 'age']
+#
+#     marital_status_choices = ((1, 'مجرد'),
+#                               (2, 'متاهل'),
+#                               (3, 'مطلقه'),
+#                               (4, 'بیوه'))
+#
+#     marital_status = models.IntegerField(verbose_name='وضعیت تاهل', choices=marital_status_choices,
+#                                          editable=True, null=False, blank=False)
+#     age_choices = ((1, '24-18'),
+#                    (2, '29-25'),
+#                    (3, '34-30'),
+#                    (4, '39-35'),)
+#     age = models.IntegerField(verbose_name='بازه سنی', choices=age_choices, editable=True, blank=False, null=False)
+#     maximum = models.PositiveSmallIntegerField(verbose_name='تعداد سهمیه', editable=True, blank=False, null=False)
+#     capacity = models.PositiveSmallIntegerField(verbose_name='تعداد ثبت نام شده', editable=True, default=0)
+#
+#     def __str__(self):
+#         return f'{self.marital_status}          {self.age}'
+#
+#     def check_for_capacity(self):
+#         if self.maximum > self.capacity:
+#             self.capacity += 1
+#             self.save()
+#             return True
+#         else:
+#             return False
 
 
 class BrandCategory(models.Model):
     class Meta:
         verbose_name = 'محصولات-دسته بندی'
         verbose_name_plural = 'محصولات-دسته بندی'
-        ordering = ['pk']
+        ordering = ['title']
 
     title = models.CharField(verbose_name='عنوان دسته بندی', max_length=50, blank=False, null=False)
 
@@ -240,7 +240,7 @@ class Brand(models.Model):
     class Meta:
         verbose_name = 'محصولات'
         verbose_name_plural = 'محصولات'
-        ordering = ['category', 'value']
+        ordering = ['category', 'title']
 
     title = models.CharField(verbose_name='عنوان', max_length=50, blank=False, null=False)
     value = models.PositiveSmallIntegerField(verbose_name='کد')

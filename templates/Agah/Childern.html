@@ -68,8 +68,8 @@
             <h4 style="margin: auto;">پرسشنامه اصلی</h4>
         </div>
         {% for item in q_forms %}
-            <div class="question col-5">
-                {{ item }}
+            <div class="question col-6">
+                {{ item.as_p }}
             </div>
         {% endfor %}
         <div class="row">

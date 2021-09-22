@@ -18,11 +18,8 @@
             integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
             crossorigin="anonymous"></script>
     <style>
-        label{
+        label {
             text-align: right;
-        }
-        input {
-            padding: 2px;
         }
 
         .question, .side {
@@ -32,6 +29,7 @@
             min-height: 150px;
             padding: 10px;
         }
+
         textarea {
             max-height: 40px;
         }
@@ -55,17 +53,19 @@
         <span class="navbar-toggler-icon"></span>
     </button>
 </nav>
-<div class="row">
-    <div class="col-lg-10 col-md-12 col-sm-12">
-        {% block content %}
-        {% endblock %}
-    </div>
-    <div class="col-lg-2 col-md-12 col-sm-12">
-        {% block side %}
-            <div class="#side">
+<div class="container">
+    <div class="row">
+        <div class="col-lg-10 col-md-12 col-sm-12">
+            {% block content %}
+            {% endblock %}
+        </div>
+        <div class="col-lg-2 col-md-12 col-sm-12">
+            {% block side %}
+                <div class="#side">
 
-            </div>
-        {% endblock %}
+                </div>
+            {% endblock %}
+        </div>
     </div>
 </div>
 <script type="application/javascript">
