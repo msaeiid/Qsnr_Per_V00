@@ -67,7 +67,9 @@ class Children_form(forms.Form):
         self.fields[f'S6_{row}'] = option_maker(S6, f'{row}')
         self.fields[f'S7_{row}'] = option_maker(S7, f'{row} birthday')
         self.fields[f'S8_{row}'] = option_maker(S8, f'{row} option')
-        self.fields[f'S9_{row}'] = option_maker(S9, f'{row} option')
+        state = 1
+        self.fields[f'S9_{row}_{state}'] = option_maker(S9, f'{row} option')
+        self.fields[f'S9_{row}_{state + 1}'] = option_maker(S9, f'{row} option')
         self.fields[f'S10_{row}'] = option_maker(S10, f'{row} option')
 
 
