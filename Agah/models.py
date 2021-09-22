@@ -44,25 +44,6 @@ class Responder(models.Model):
         return f'{self.firstname}'
 
 
-# class Child(models.Model):
-#     class Meta:
-#         verbose_name = 'فرزند'
-#         verbose_name_plural = 'فرزند'
-#         ordering = ['pk']
-#
-#     responder = models.ForeignKey(to=Responder, on_delete=models.CASCADE, verbose_name='پاسخگو',
-#                                   related_name='children')
-#     gender = models.ForeignKey(verbose_name='جنسیت', blank=False, null=False, editable=True, to='Option',
-#                                on_delete=models.PROTECT)
-#     birthday_year = models.IntegerField(verbose_name='سال تولد', blank=False, null=False, editable=True, validators=[
-#         RegexValidator(regex='^1[0-9]{3}$', message='لطفا سال تولد را صحیح و کامل وارد نمایید')])
-#     age = models.IntegerField(verbose_name='محسابه سن اتومات', blank=False, null=False, editable=True, )
-#
-#     def __str__(self):
-#         return f' فرزندان ' \
-#                f'{self.responder.firstname}'
-
-
 class Survey(models.Model):
     '''
     پرسشنامه
@@ -116,7 +97,7 @@ class Option(models.Model):
     class Meta:
         verbose_name = 'گزینه'
         verbose_name_plural = 'گزینه'
-        ordering = ['question','pk']
+        ordering = ['question', 'pk']
 
     question = models.ForeignKey(verbose_name='پرسش', to=Question, on_delete=models.CASCADE, related_name='options')
     title = models.TextField(verbose_name='عنوان')
@@ -143,33 +124,33 @@ class AnswerSheet(models.Model):
     survey = models.ForeignKey(verbose_name='پرسشنامه', to='Survey', on_delete=models.PROTECT, blank=False, null=False,
                                editable=True)
     date = models.DateField(verbose_name='تاریخ شمسی', blank=False, null=False, editable=True)
-    number = models.PositiveIntegerField(verbose_name='شماره پرسشنامه',null=False)
+    number = models.PositiveIntegerField(verbose_name='شماره پرسشنامه', null=False)
     total_point = models.PositiveSmallIntegerField(verbose_name='مجموع امتیاز', default=0, blank=False, null=False,
                                                    editable=True)
-    social_class = models.CharField(verbose_name='کلاس اجتماعی', max_length=1, editable=False)
+    social_class = models.CharField(verbose_name='دسته بندی', max_length=1, editable=False)
 
     def __str__(self):
         return f'{self.responser.firstname}'
 
-    def calculate_total_point(self):
-        temp = [p.point for p in self.answers.all()]
-        self.total_point = sum(temp)
-        if self.responser.city.is_important:
-            if 15 <= self.total_point:
-                self.social_class = 'A'
-            elif 8 <= self.total_point <= 14:
-                self.social_class = 'B'
-            else:
-                self.social_class = 'C1'
+    def interviwer_category(self):
+        check = []
+        if self.answers.filter(question__code='S4a').exists():
+            check.append(True)
+            S4 = self.answers.get(question__code='S4a')
         else:
-            if 8 < self.total_point:
-                self.social_class = 'A'
-            elif 5 <= self.total_point <= 8:
-                self.social_class = 'B'
-            else:
-                self.social_class = 'C1'
+            check.append(False)
+        if self.answers.filter(question__code='S5').exists():
+            check.append(True)
+            S5 = self.answers.get(question__code='S5')
+        else:
+            check.append(False)
 
-        self.save()
+        if all(check):
+            result = 'General'
+            if int(S4.answer) == 1 and int(S5.answer) > 0:
+                result = 'POP'
+            self.social_class = result
+            self.save()
 
 
 class Answer(models.Model):
@@ -189,39 +170,6 @@ class Answer(models.Model):
     def __str__(self):
         return f'پاسخ سوال' \
                f' {self.question.title}'
-
-
-# class Limit(models.Model):
-#     class Meta:
-#         verbose_name = 'محدودیت'
-#         verbose_name_plural = 'محدودیت'
-#         ordering = ['marital_status', 'age']
-#
-#     marital_status_choices = ((1, 'مجرد'),
-#                               (2, 'متاهل'),
-#                               (3, 'مطلقه'),
-#                               (4, 'بیوه'))
-#
-#     marital_status = models.IntegerField(verbose_name='وضعیت تاهل', choices=marital_status_choices,
-#                                          editable=True, null=False, blank=False)
-#     age_choices = ((1, '24-18'),
-#                    (2, '29-25'),
-#                    (3, '34-30'),
-#                    (4, '39-35'),)
-#     age = models.IntegerField(verbose_name='بازه سنی', choices=age_choices, editable=True, blank=False, null=False)
-#     maximum = models.PositiveSmallIntegerField(verbose_name='تعداد سهمیه', editable=True, blank=False, null=False)
-#     capacity = models.PositiveSmallIntegerField(verbose_name='تعداد ثبت نام شده', editable=True, default=0)
-#
-#     def __str__(self):
-#         return f'{self.marital_status}          {self.age}'
-#
-#     def check_for_capacity(self):
-#         if self.maximum > self.capacity:
-#             self.capacity += 1
-#             self.save()
-#             return True
-#         else:
-#             return False
 
 
 class BrandCategory(models.Model):

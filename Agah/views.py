@@ -124,6 +124,7 @@ def Personal(request):
                     del request.session['children']
                 except:
                     pass
+            answersheet.interviwer_category()
             return redirect(reverse('children'))
         else:
             context = {'Interviewer_frm': Interviewer_frm, 'Answersheet_frm': Answersheet_frm,
