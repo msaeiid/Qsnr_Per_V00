@@ -1,0 +1,44 @@
+{% extends 'Agah/base.html' %}
+{% block title %}
+    پرسشنامه اصلی
+{% endblock %}
+{% block content %}
+    <div class="row">
+        {% if Rest %}
+            <div class="col-5">
+                <div class="question">
+                    {{ Q4_form }}
+                </div>
+                <div class="question">
+                    {{ Q4a_form }}
+                </div>
+                <div class="question">
+                    {{ Q5_form }}
+                </div>
+                <div class="question">
+                    {{ Q6_form }}
+                </div>
+                <div class="question">
+                    {{ Q7_form }}
+                </div>
+                <div class="question">
+                    {{ Q8_form }}
+                </div>
+                <div class="question">
+                    {{ Q9_form }}
+                </div>
+            </div>
+        {% endif %}
+            <div class="col-5">
+                <div class="question">
+                    {{ M1_form }}
+                </div>
+                <div class="question">
+                    {{ M2_form }}
+                </div>
+                <div class="question">
+                    {{ M3_form }}
+                </div>
+            </div>
+    </div>
+{% endblock %}

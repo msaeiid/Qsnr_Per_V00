@@ -6,7 +6,7 @@
     {% block content %}
         <form method="post">
             {% csrf_token %}
-                <div class="question">
+                <div class="question col-10">
                     <table>
                         <thead>
                         <tr>
@@ -62,7 +62,7 @@
                     </table>
                 </div>
             <div class="row">
-                <div class="col-lg-6 col-md-6 col-sm-6">
+                <div class="col-5">
                     <div class="question">
                         {{ S1_frm }}
                     </div>
@@ -73,7 +73,7 @@
                         {{ S3_frm }}
                     </div>
                 </div>
-                <div class="col-lg-6 col-md-6 col-sm-6 ">
+                <div class="col-5">
                     <div class="question">
                         {{ S4a_frm }}
                     </div>

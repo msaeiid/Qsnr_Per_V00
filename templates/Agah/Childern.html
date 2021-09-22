@@ -6,6 +6,10 @@
         input {
             text-align: center;
         }
+
+        input[type=radio] {
+            margin: 10px;
+        }
     </style>
 
 {% endblock %}
@@ -60,6 +64,14 @@
                 </tbody>
             </table>
         </div>
+        <div class="row" style="margin: 40px">
+            <h4 style="margin: auto;">پرسشنامه اصلی</h4>
+        </div>
+        {% for item in q_forms %}
+            <div class="question col-5">
+                {{ item }}
+            </div>
+        {% endfor %}
         <div class="row">
             <button type="submit" class="btn btn-lg btn-success">مرحله بعد</button>
         </div>
@@ -82,5 +94,8 @@
                 $('.' + html_class + '.option').prop('disabled', true)
             }
         }
+
+        $('input[type=radio]').addClass('form-check-input')
+        $('label').addClass('form-check-label')
     </script>
 {% endblock %}

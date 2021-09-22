@@ -4,7 +4,10 @@ from Agah.models import Responder, Interviewer, AnswerSheet
 
 
 def choice_maker(question):
-    options = [('', '')]
+    if question.type == 'ChoiceField':
+        options = [('', '')]
+    else:
+        options = []
     for item in question.options.all():
         options.append((item.value, item.title))
     if question.has_other_in_options:
@@ -100,4 +103,4 @@ def option_maker(question, class_html):
     if question.type == 'MultipleChoiceField':
         return forms.ChoiceField(required=question.is_required,
                                  choices=choice_maker(question),
-                                 label=question.title, widget=forms.CheckboxSelectMultiple(attrs={'class': class_html}))
+                                 label=f'{question.code} {question.title}', widget=forms.CheckboxSelectMultiple(attrs={'class': class_html}))

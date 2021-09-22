@@ -29,7 +29,10 @@ def Personal(request):
         # answersheet exist
         answersheet_pk = request.session.get('answersheet', False)
         if answersheet_pk:
-            answersheet = AnswerSheet.objects.get(pk=answersheet_pk)
+            try:
+                answersheet = AnswerSheet.objects.get(pk=answersheet_pk)
+            except:
+                answersheet = False
         else:
             answersheet = False
         # generate forms
@@ -184,32 +187,32 @@ def get_age_category(age):
 
 @csrf_protect
 def Children(request):
+    question_S6 = Question.objects.get(code='S6')
+    question_S7 = Question.objects.get(code='S7')
+    question_S8 = Question.objects.get(code='S8')
+    question_S9 = Question.objects.get(code='S9')
+    question_S10 = Question.objects.get(code='S10')
     # GET
     if request.method == 'GET':
         number_of_children = request.session.get('children', False)
         if not number_of_children:
-            return redirect(reverse('question'))
+            return redirect(reverse('main'))
         questions = Question.objects.filter(code__startswith='s')
-        S6 = questions.get(code='S6')
-        S7 = questions.get(code='S7')
-        S8 = questions.get(code='S8')
-        S9 = questions.get(code='S9')
-        S10 = questions.get(code='S10')
         forms = []
         for i in range(1, number_of_children + 1):
-            ins = {'S6': S6, 'S7': S7, 'S8': S8, 'S9': S9, 'S10': S10, 'row': i}
+            ins = {'S6': question_S6, 'S7': question_S7, 'S8': question_S8, 'S9': question_S9, 'S10': question_S10,
+                   'row': i}
             form = Children_form(request.GET, instance=ins)
             forms.append(form)
-        context = {'forms': forms}
+        q_questions = Question.objects.filter(code__startswith='Q')[:3]
+        q_forms = []
+        for q in q_questions:
+            q_forms.append(Question_from(instance=q))
+        context = {'forms': forms, 'q_forms': q_forms}
         return render(request, 'Agah/Childern.html', context)
     # POST
     else:
         answersheet = get_object_or_404(AnswerSheet, pk=request.session.get('answersheet'))
-        question_S6 = Question.objects.get(code='S6')
-        question_S7 = Question.objects.get(code='S7')
-        question_S8 = Question.objects.get(code='S8')
-        question_S9 = Question.objects.get(code='S9')
-        question_S10 = Question.objects.get(code='S10')
         if answersheet.answers.filter(question=question_S6).exists():
             answersheet.answers.filter(question=question_S6).delete()
 
@@ -229,13 +232,83 @@ def Children(request):
             save_single_answer(question_S6, request.POST.get(f'S6_{i}'), answersheet, False)
             save_single_answer(question_S7, request.POST.get(f'S7_{i}'), answersheet, False)
             save_single_answer(question_S8, request.POST.get(f'S8_{i}'), answersheet, False)
-            save_single_answer(question_S9, request.POST.get(f'S9_{i}'), answersheet, False)
+            save_single_answer(question_S9, request.POST.get(f'S9_{i}_1'), answersheet, False)
+            save_single_answer(question_S9, request.POST.get(f'S9_{i}_2'), answersheet, False)
             save_single_answer(question_S10, request.POST.get(f'S10_{i}'), answersheet, False)
-        return redirect(reverse('question'))
+        q_questions = Question.objects.filter(code__startswith='Q')[:3]
+        question_Q1 = q_questions[0]
+        question_Q2 = q_questions[1]
+        question_Q3 = q_questions[2]
+        q1_answer = int(request.POST.get('Q1'))
+        q2_answer = int(request.POST.get('Q2'))
+        q3_answer = int(request.POST.get('Q3'))
+        save_single_answer(question_Q1, q1_answer, answersheet, True)
+        save_single_answer(question_Q2, q2_answer, answersheet, True)
+        save_single_answer(question_Q3, q3_answer, answersheet, True)
+        if all([q1_answer, q2_answer, q3_answer]):
+            request.session['show_rest_of_q'] = True
+        return redirect(reverse('main'))
 
 
-def Question_view(request):
-    print('')
-    pass
+def Main_view(request):
+    # fetch question
+    m_questions = Question.objects.filter(code__startswith='M')
+    M1 = m_questions[0]
+    M2 = m_questions[1]
+    M3 = m_questions[2]
+    context = {}
+    # fetch Q question
+    answersheet = request.session.get('answersheet')
+    answersheet = AnswerSheet.objects.get(pk=answersheet)
+    Q1_status = int(answersheet.answers.get(question__code='Q1').answer) == 1
+    Q2_status = int(answersheet.answers.get(question__code='Q2').answer) == 1
+    Q3_status = int(answersheet.answers.get(question__code='Q3').answer) == 1
+    if all([Q1_status, Q2_status, Q3_status]):
+        questions = Question.objects.filter(code__startswith='Q')[3:]
+        Q4 = questions[0]
+        Q4a = Q4.next_question
+        Q5 = Q4a.next_question
+        Q6 = Q5.next_question
+        Q7 = Q6.next_question
+        Q8 = Q7.next_question
+        Q9 = Q8.next_question
+    # GET
+    if request.method == 'GET':
+        rest = False
+        context = {}
+        # show rest of q questions...
+        if all([Q1_status, Q2_status, Q3_status]):
+            Q4_form = Question_from(instance=Q4)
+            Q4a_form = Question_from(instance=Q4a)
+            Q5_form = Question_from(instance=Q5)
+            Q6_form = Question_from(instance=Q6)
+            Q7_form = Question_from(instance=Q7)
+            Q8_form = Question_from(instance=Q8)
+            Q9_form = Question_from(instance=Q9)
+            context['Q4_form'] = Q4_form
+            context['Q4a_form'] = Q4a_form
+            context['Q5_form'] = Q5_form
+            context['Q6_form'] = Q6_form
+            context['Q7_form'] = Q7_form
+            context['Q8_form'] = Q8_form
+            context['Q9_form'] = Q9_form
+            rest = True
+
+        # show m questions
+        M1_form = Question_from(instance=M1)
+        M2_form = Question_from(instance=M2)
+        M3_form = Question_from(instance=M3)
+        context['M1_form'] = M1_form
+        context['M2_form'] = M2_form
+        context['M3_form'] = M3_form
+        context['Rest'] = rest
+        return render(request, 'Agah/Main.html', context)
+
+
+    # POST
+    else:
+        # show rest of q questions...
+        if all([Q1_status, Q2_status, Q3_status]):
+            pass
 
 # Create your views here.
