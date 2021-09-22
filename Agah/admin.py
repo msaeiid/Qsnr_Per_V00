@@ -31,8 +31,8 @@ class QuestionCustom(admin.ModelAdmin):
     list_display = (
         'survey', 'code', 'title', 'type', 'previous_question', 'next_question', 'has_other_in_options', 'is_required',
         'has_nothing_in_options',
-        'max_input_value',
-        'min_input_value')
+        'min_input_value',
+        'max_input_value')
     list_editable = ('type', 'previous_question', 'next_question', 'has_other_in_options', 'is_required',
                      'has_nothing_in_options',
                      'max_input_value',

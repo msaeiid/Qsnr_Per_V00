@@ -104,8 +104,8 @@ class Question(models.Model):
     type = models.CharField(max_length=50, choices=question_choices, blank=True)
     has_other_in_options = models.BooleanField(verbose_name='سایر دارد؟', default=False)
     has_nothing_in_options = models.BooleanField(verbose_name='هیچکدام دارد؟', default=False)
-    min_input_value = models.PositiveIntegerField(verbose_name='حداقل(فیلدهای عددی)')
-    max_input_value = models.PositiveIntegerField(verbose_name='حداکثر(فیلدهای عددی)')
+    min_input_value = models.PositiveIntegerField(verbose_name='حداقل(عدد-متن)')
+    max_input_value = models.PositiveIntegerField(verbose_name='حداکثر(عددی-متن)')
     is_required = models.BooleanField(verbose_name='اجباری است؟', default=False)
 
     def __str__(self):
