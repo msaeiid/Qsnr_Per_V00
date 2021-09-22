@@ -15,27 +15,35 @@
 {% block content %}
     <form method="post">
         {% csrf_token %}
-        <div class="table-responsive col-11 question">
-            <table class="table table-hover">
+        <div class="table table-bordered table-hover table-responsive table-sm question">
+            <table class="table">
                 <thead>
                 <tr>
-                    <th>
+                    <th rowspan="2" scope="col">
                         فرزند شماره
                     </th>
-                    <th>
+                    <th rowspan="2">
                         جنسیت
                     </th>
-                    <th>
+                    <th rowspan="2">
                         سال تولد
                     </th>
-                    <th>
+                    <th rowspan="2">
                         میزان پول توجیبی هفتگی(تومان)
                     </th>
-                    <th>
+                    <th colspan="2">
                         بیشترین زمان در هفته
                     </th>
-                    <th>
+                    <th rowspan="2">
                         تعداد تغذیه
+                    </th>
+                </tr>
+                <tr>
+                    <th scope="col">
+                        بیشترین
+                    </th>
+                    <th scope="col">
+                        دومین
                     </th>
                 </tr>
                 </thead>
@@ -67,12 +75,11 @@
             var user_input_value = parseInt($(user_input).val()) + 1300
             var year = moment().locale('fa').format('YYYY')
             var age = year - user_input_value
-            var html_class=$(user_input).attr('class')[0]
+            var html_class = $(user_input).attr('class')[0]
             if (age >= 3 && age <= 12) {
-                $('.'+html_class+'.option').prop('disabled',false)
-            }
-            else {
-                $('.'+html_class+'.option').prop('disabled',true)
+                $('.' + html_class + '.option').prop('disabled', false)
+            } else {
+                $('.' + html_class + '.option').prop('disabled', true)
             }
         }
     </script>
