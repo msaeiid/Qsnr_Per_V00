@@ -101,6 +101,13 @@ class Main_form(forms.Form):
         self.fields[f'Q9_{row}'] = option_maker(Q9, f'{row}')
 
 
+class Main_form_M_series(forms.Form):
+    def __init__(self):
+        super(Main_form_M_series, self).__init__()
+        self.fields['M1_form_1'] = forms.IntegerField(max_value=10, min_value=0)
+        self.fields['M1_form_2'] = forms.IntegerField(max_value=10, min_value=0)
+
+
 def option_maker(question, class_html, choice_list=None, has_other=False, dont_know=False):
     if choice_list is None:
         options = choice_maker(question)
@@ -144,33 +151,3 @@ def option_maker(question, class_html, choice_list=None, has_other=False, dont_k
                                  choices=options,
                                  label=f'{question.code} {question.title}',
                                  widget=forms.CheckboxSelectMultiple(attrs={'class': class_html}))
-
-# def option_maker_custom_choice_list(question, class_html, choice_list):
-#     # Int
-#     if question.type == 'IntegerField':
-#         return forms.CharField(label=f'{question.code} {question.title}', widget=forms.TextInput(
-#             attrs={'type': 'number', 'required': question.is_required, 'min': question.min_input_value,
-#                    'max': question.max_input_value, 'class': class_html}))
-#     # Text
-#     if question.type == 'CharField':
-#         return forms.CharField(required=question.is_required,
-#                                max_length=question.max_input_value,
-#                                label=f'{question.code} {question.title}')
-#     # Drop down
-#     if question.type == 'ChoiceField':
-#         return forms.ChoiceField(required=question.is_required,
-#                                  choices=choice_list,
-#                                  label=f'{question.code} {question.title}',
-#                                  widget=forms.Select(attrs={'class': class_html}))
-#     # Radio button
-#     if question.type == 'RadioSelect':
-#         return forms.ChoiceField(required=question.is_required,
-#                                  choices=choice_list,
-#                                  label=f'{question.code} {question.title}',
-#                                  widget=forms.RadioSelect(attrs={'class': class_html}))
-#     # Check box
-#     if question.type == 'MultipleChoiceField':
-#         return forms.ChoiceField(required=question.is_required,
-#                                  choices=choice_maker(question),
-#                                  label=f'{question.code} {question.title}',
-#                                  widget=forms.CheckboxSelectMultiple(attrs={'class': class_html}))

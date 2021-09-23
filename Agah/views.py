@@ -2,7 +2,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_protect
 
-from Agah.forms import Question_from, Interviewer_form, Answersheet_from, Responser_form, Children_form, Main_form
+from Agah.forms import Question_from, Interviewer_form, Answersheet_from, Responser_form, Children_form, Main_form, \
+    Main_form_M_series
 from Agah.models import Question, Interviewer, Survey, Answer, AnswerSheet, Brand, BrandCategory
 
 
@@ -199,6 +200,11 @@ def Children(request):
     question_S8 = Question.objects.get(code='S8')
     question_S9 = Question.objects.get(code='S9')
     question_S10 = Question.objects.get(code='S10')
+    answersheet = request.session.get('answersheet')
+    try:
+        answersheet = AnswerSheet.objects.get(pk=answersheet)
+    except:
+        return redirect(reverse('personal'))
     # GET
     if request.method == 'GET':
         number_of_children = request.session.get('children', False)
@@ -272,7 +278,10 @@ def Main_view(request):
     context = {}
     # fetch Q question
     answersheet = request.session.get('answersheet')
-    answersheet = AnswerSheet.objects.get(pk=answersheet)
+    try:
+        answersheet = AnswerSheet.objects.get(pk=answersheet)
+    except:
+        return redirect(reverse('personal'))
     Q1_status = int(answersheet.answers.get(question__code='Q1').answer) == 1
     Q2_status = int(answersheet.answers.get(question__code='Q2').answer) == 1
     Q3_status = int(answersheet.answers.get(question__code='Q3').answer) == 1
@@ -305,12 +314,11 @@ def Main_view(request):
                                       f'{Q9.code} {Q9.title}']
 
         # show m questions
-        M1_form = Question_from(instance=M1)
         M2_form = Question_from(instance=M2)
         M3_form = Question_from(instance=M3)
-        context['M1_form'] = M1_form
-        context['M2_form'] = M2_form
-        context['M3_form'] = M3_form
+        context['M_forms'] = [M2_form, M3_form]
+        context['M1'] = M1
+        context['M1_form'] = Main_form_M_series()
         context['Rest'] = rest
         return render(request, 'Agah/Main.html', context)
 
