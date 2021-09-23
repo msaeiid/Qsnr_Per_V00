@@ -254,17 +254,11 @@ def Children(request):
         q2_answer = int(request.POST.get('Q2'))
         q3_answer = int(request.POST.get('Q3'))
         # save or update Q1 answer
-        if answersheet.answers.filter(question=question_Q1).exists():
-            if answersheet.answers.get(question=question_Q1).answer != q1_answer:
-                save_single_answer(question_Q1, q1_answer, answersheet, True)
+        save_single_answer(question_Q1, q1_answer, answersheet, True)
         # save or update Q2 answer
-        if answersheet.answers.filter(question=question_Q2).exists():
-            if answersheet.answers.get(question=question_Q2).answer != q2_answer:
-                save_single_answer(question_Q2, q2_answer, answersheet, True)
+        save_single_answer(question_Q2, q2_answer, answersheet, True)
         # save or update Q3 answer
-        if answersheet.answers.filter(question=question_Q3).exists():
-            if answersheet.answers.get(question=question_Q3).answer != q3_answer:
-                save_single_answer(question_Q3, q3_answer, answersheet, True)
+        save_single_answer(question_Q3, q3_answer, answersheet, True)
         return redirect(reverse('main'))
 
 
