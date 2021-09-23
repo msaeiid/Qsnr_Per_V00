@@ -73,6 +73,13 @@
     inputs.addClass('form-control col-12')
     selects.addClass('custom-select col-12')
     textareas.addClass('form-control rounded-4')
+    $('select').change(function () {
+            if ($(this).val() == 0) {
+                var class_html=$(this).attr('name')
+                $(this).replaceWith('<input type="text" placeholder="سایر" name="'+class_html+'">')
+                $('input').addClass('form-control col-12')
+            }
+        });
 </script>
 {% block js %}
 {% endblock %}

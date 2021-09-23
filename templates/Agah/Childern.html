@@ -19,51 +19,53 @@
 {% block content %}
     <form method="post">
         {% csrf_token %}
-        <div class="question">
-            <table class="table table-bordered table-hover table-responsive table-sm">
-                <thead>
-                <tr>
-                    <th rowspan="2" scope="col">
-                        فرزند شماره
-                    </th>
-                    <th rowspan="2">
-                        جنسیت
-                    </th>
-                    <th rowspan="2">
-                        سال تولد
-                    </th>
-                    <th rowspan="2">
-                        میزان پول توجیبی هفتگی(تومان)
-                    </th>
-                    <th colspan="2">
-                        بیشترین زمان در هفته
-                    </th>
-                    <th rowspan="2">
-                        تعداد تغذیه
-                    </th>
-                </tr>
-                <tr>
-                    <th scope="col">
-                        بیشترین
-                    </th>
-                    <th scope="col">
-                        دومین
-                    </th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for row in forms %}
+        {% if Show %}
+            <div class="question">
+                <table class="table table-bordered table-hover table-responsive table-sm">
+                    <thead>
                     <tr>
-                        {% for column in row %}
-                            <td>
-                                {{ column }}
-                            </td>
-                        {% endfor %}
+                        <th rowspan="2" scope="col">
+                            فرزند شماره
+                        </th>
+                        <th rowspan="2">
+                            جنسیت
+                        </th>
+                        <th rowspan="2">
+                            سال تولد
+                        </th>
+                        <th rowspan="2">
+                            میزان پول توجیبی هفتگی(تومان)
+                        </th>
+                        <th colspan="2">
+                            بیشترین زمان در هفته
+                        </th>
+                        <th rowspan="2">
+                            تعداد تغذیه
+                        </th>
                     </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        </div>
+                    <tr>
+                        <th scope="col">
+                            بیشترین
+                        </th>
+                        <th scope="col">
+                            دومین
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for row in forms %}
+                        <tr>
+                            {% for column in row %}
+                                <td>
+                                    {{ column }}
+                                </td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
         <div class="row" style="margin: 40px">
             <h4 style="margin: auto;">پرسشنامه اصلی</h4>
         </div>

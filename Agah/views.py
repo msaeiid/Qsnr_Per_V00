@@ -43,11 +43,14 @@ def Personal(request):
         # check for some validation...
         if Interviewer_frm.is_valid() and Answersheet_frm.is_valid() and Responser_frm.is_valid():
             S1 = int(request.POST.get('S1', None))
-            S2 = int(request.POST.get('S2', None))
+            try:
+                S2 = int(request.POST.get('S2', None))
+            except ValueError:
+                S2 = request.POST.get('S2', None)
             S3 = get_age_category(int(request.POST.get('S3', None)))
             S4b = int(request.POST.get('S4b', None))
             S5 = int(request.POST.get('S5', 0))
-            if S1 in [1, 2, 3] or S2 == 0 or (S3 in [1, 5] and (S4b == 2 or (S4b == 1 and S5 == 0))):
+            if S1 in [1, 2, 3] or S2 not in [1, 2, 3, 4, 5] or (S3 in [1, 5] and (S4b == 2 or (S4b == 1 and S5 == 0))):
                 if answersheet:
                     answersheet.delete()
                     answersheet.responser.delete()
@@ -100,18 +103,19 @@ def Personal(request):
                 answersheet.save()
 
             # S1 save
-            save_single_answer('S1', int(request.POST.get('S1')), answersheet)
+            save_single_answer('S1', S1, answersheet)
             # S2 save
-            save_single_answer('S2', int(request.POST.get('S2')), answersheet)
+            save_single_answer('S2', S2, answersheet)
             # S3 save
-            save_single_answer('S3', get_age_category(int(request.POST.get('S3'))), answersheet)
+            save_single_answer('S3', S3, answersheet)
             # S4a save
-            save_single_answer('S4a', int(request.POST.get('S4a')), answersheet)
+            S4a = int(request.POST.get('S4a'))
+            save_single_answer('S4a', S4a, answersheet)
             # S4b save
-            save_single_answer('S4b', int(request.POST.get('S4b')), answersheet)
+            save_single_answer('S4b', S4b, answersheet)
             # S5 save
-            if request.POST.get('S5') is not None:
-                save_single_answer('S5', int(request.POST.get('S5')), answersheet)
+            if S5 is not None:
+                save_single_answer('S5', S5, answersheet)
             else:
                 S5 = Question.objects.get(code='S5')
                 if answersheet.answers.filter(question=S5).exists():
@@ -125,6 +129,8 @@ def Personal(request):
                 except:
                     pass
             answersheet.interviwer_category()
+            request.session['answersheet'] = answersheet.pk
+            request.session['number_of_children'] = int(S5)
             return redirect(reverse('children'))
         else:
             context = {'Interviewer_frm': Interviewer_frm, 'Answersheet_frm': Answersheet_frm,
@@ -141,6 +147,7 @@ def save_single_answer(question_code, user_answer, answersheet, override=True):
             if answersheet.answers.filter(question=question).exists():
                 answer = answersheet.answers.get(question=question)
                 answer.answer = user_answer
+                answer.option = None
                 answer.save()
             else:
                 answer = Answer(question=question, option=None, answersheet=answersheet, point=0, answer=user_answer)
@@ -195,20 +202,24 @@ def Children(request):
     # GET
     if request.method == 'GET':
         number_of_children = request.session.get('children', False)
-        if not number_of_children:
-            return redirect(reverse('main'))
-        questions = Question.objects.filter(code__startswith='s')
-        forms = []
-        for i in range(1, number_of_children + 1):
-            ins = {'S6': question_S6, 'S7': question_S7, 'S8': question_S8, 'S9': question_S9, 'S10': question_S10,
-                   'row': i}
-            form = Children_form(request.GET, instance=ins)
-            forms.append(form)
+        show = False
         q_questions = Question.objects.filter(code__startswith='Q')[:3]
         q_forms = []
         for q in q_questions:
             q_forms.append(Question_from(instance=q))
-        context = {'forms': forms, 'q_forms': q_forms}
+        context = {'q_forms': q_forms, 'Show': show}
+        if number_of_children >0 and number_of_children is not None:
+            show = True
+            # return redirect(reverse('main'))
+            questions = Question.objects.filter(code__startswith='s')
+            forms = []
+            for i in range(1, number_of_children + 1):
+                ins = {'S6': question_S6, 'S7': question_S7, 'S8': question_S8, 'S9': question_S9, 'S10': question_S10,
+                       'row': i}
+                form = Children_form(request.GET, instance=ins)
+                forms.append(form)
+            context['forms']=forms
+            context['Show'] = show
         return render(request, 'Agah/Childern.html', context)
     # POST
     else:
