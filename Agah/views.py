@@ -2,8 +2,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_protect
 
-from Agah.forms import Question_from, Interviewer_form, Answersheet_from, Responser_form, Children_form
-from Agah.models import Question, Interviewer, Survey, Answer, AnswerSheet
+from Agah.forms import Question_from, Interviewer_form, Answersheet_from, Responser_form, Children_form, Main_form
+from Agah.models import Question, Interviewer, Survey, Answer, AnswerSheet, Brand, BrandCategory
 
 
 @csrf_protect
@@ -242,7 +242,7 @@ def Children(request):
         q1_answer = int(request.POST.get('Q1'))
         q2_answer = int(request.POST.get('Q2'))
         q3_answer = int(request.POST.get('Q3'))
-        #save or update Q1 answer
+        # save or update Q1 answer
         if answersheet.answers.filter(question=question_Q1).exists():
             if answersheet.answers.get(question=question_Q1).answer != q1_answer:
                 save_single_answer(question_Q1, q1_answer, answersheet, True)
@@ -285,21 +285,15 @@ def Main_view(request):
         context = {}
         # show rest of q questions...
         if all([Q1_status, Q2_status, Q3_status]):
-            Q4_form = Question_from(instance=Q4)
-            Q4a_form = Question_from(instance=Q4a)
-            Q5_form = Question_from(instance=Q5)
-            Q6_form = Question_from(instance=Q6)
-            Q7_form = Question_from(instance=Q7)
-            Q8_form = Question_from(instance=Q8)
-            Q9_form = Question_from(instance=Q9)
-            context['Q4_form'] = Q4_form
-            context['Q4a_form'] = Q4a_form
-            context['Q5_form'] = Q5_form
-            context['Q6_form'] = Q6_form
-            context['Q7_form'] = Q7_form
-            context['Q8_form'] = Q8_form
-            context['Q9_form'] = Q9_form
+            Q_forms = []
+            brands_cats = BrandCategory.objects.all()
+            for i in range(1, 12):
+                ins = {'Q4': Q4, 'Q4a': Q4a, 'Q5': Q5, 'Q6': Q6, 'Q7': Q7, 'Q8': Q8, 'Q9': Q9, 'row': i,
+                       'brands_cat': brands_cats[i - 1]}
+                Q_forms.append(Main_form(instance=ins))
+                pass
             rest = True
+            context['Q_forms'] = Q_forms
 
         # show m questions
         M1_form = Question_from(instance=M1)

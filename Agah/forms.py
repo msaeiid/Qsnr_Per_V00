@@ -76,7 +76,46 @@ class Children_form(forms.Form):
         self.fields[f'S10_{row}'] = option_maker(S10, f'{row} option')
 
 
-def option_maker(question, class_html):
+class Main_form(forms.Form):
+
+    def __init__(self, *args, **kwargs):
+        super(Main_form, self).__init__()
+        row = kwargs.get('instance').get('row')
+        brands_cat = kwargs.get('instance').get('brands_cat')
+        Q4 = kwargs.get('instance').get('Q4')
+        Q4a = kwargs.get('instance').get('Q4a')
+        Q5 = kwargs.get('instance').get('Q5')
+        Q6 = kwargs.get('instance').get('Q6')
+        Q7 = kwargs.get('instance').get('Q7')
+        Q8 = kwargs.get('instance').get('Q8')
+        Q9 = kwargs.get('instance').get('Q9')
+        self.fields[f'{row}'] = forms.CharField(widget=forms.TextInput(attrs={'disabled': True, 'value': f'{row}'}))
+        self.fields[f'brand_{row}'] = forms.CharField(
+            widget=forms.TextInput(attrs={'disabled': True, 'value': f'{brands_cat}', 'class': 'brand col-2'}))
+        self.fields[f'Q4_{row}'] = option_maker(Q4, f'{row}', brands_cat.brands.all(), True, True)
+        self.fields[f'Q4a_{row}'] = option_maker(Q4a, f'{row}', brands_cat.brands.all(), True, True)
+        self.fields[f'Q5_{row}'] = option_maker(Q5, f'{row}', brands_cat.brands.all(), True, True)
+        self.fields[f'Q6_{row}'] = option_maker(Q6, f'{row}', brands_cat.brands.all(), True, True)
+        self.fields[f'Q7_{row}'] = option_maker(Q7, f'{row}', brands_cat.brands.all(), True, True)
+        self.fields[f'Q8_{row}'] = option_maker(Q8, f'{row}')
+        self.fields[f'Q9_{row}'] = option_maker(Q9, f'{row}')
+
+
+def option_maker(question, class_html, choice_list=None, has_other=False, dont_know=False):
+    if choice_list is None:
+        options = choice_maker(question)
+    else:
+        if question.type == 'ChoiceField':
+            options = [('', '')]
+        else:
+            options = []
+
+        for item in choice_list:
+            options.append((item.value, item.title))
+        if has_other:
+            options.append((0, 'سایر'))
+        if dont_know:
+            options.append((99, 'نمیدانم/ یادم نیست'))
     # Int
     if question.type == 'IntegerField':
         return forms.CharField(label=f'{question.code} {question.title}', widget=forms.TextInput(
@@ -90,17 +129,48 @@ def option_maker(question, class_html):
     # Drop down
     if question.type == 'ChoiceField':
         return forms.ChoiceField(required=question.is_required,
-                                 choices=choice_maker(question),
+                                 choices=options,
                                  label=f'{question.code} {question.title}',
                                  widget=forms.Select(attrs={'class': class_html}))
     # Radio button
     if question.type == 'RadioSelect':
         return forms.ChoiceField(required=question.is_required,
-                                 choices=choice_maker(question),
+                                 choices=options,
                                  label=f'{question.code} {question.title}',
                                  widget=forms.RadioSelect(attrs={'class': class_html}))
     # Check box
     if question.type == 'MultipleChoiceField':
         return forms.ChoiceField(required=question.is_required,
-                                 choices=choice_maker(question),
-                                 label=f'{question.code} {question.title}', widget=forms.CheckboxSelectMultiple(attrs={'class': class_html}))
+                                 choices=options,
+                                 label=f'{question.code} {question.title}',
+                                 widget=forms.CheckboxSelectMultiple(attrs={'class': class_html}))
+
+# def option_maker_custom_choice_list(question, class_html, choice_list):
+#     # Int
+#     if question.type == 'IntegerField':
+#         return forms.CharField(label=f'{question.code} {question.title}', widget=forms.TextInput(
+#             attrs={'type': 'number', 'required': question.is_required, 'min': question.min_input_value,
+#                    'max': question.max_input_value, 'class': class_html}))
+#     # Text
+#     if question.type == 'CharField':
+#         return forms.CharField(required=question.is_required,
+#                                max_length=question.max_input_value,
+#                                label=f'{question.code} {question.title}')
+#     # Drop down
+#     if question.type == 'ChoiceField':
+#         return forms.ChoiceField(required=question.is_required,
+#                                  choices=choice_list,
+#                                  label=f'{question.code} {question.title}',
+#                                  widget=forms.Select(attrs={'class': class_html}))
+#     # Radio button
+#     if question.type == 'RadioSelect':
+#         return forms.ChoiceField(required=question.is_required,
+#                                  choices=choice_list,
+#                                  label=f'{question.code} {question.title}',
+#                                  widget=forms.RadioSelect(attrs={'class': class_html}))
+#     # Check box
+#     if question.type == 'MultipleChoiceField':
+#         return forms.ChoiceField(required=question.is_required,
+#                                  choices=choice_maker(question),
+#                                  label=f'{question.code} {question.title}',
+#                                  widget=forms.CheckboxSelectMultiple(attrs={'class': class_html}))

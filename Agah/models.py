@@ -176,7 +176,7 @@ class BrandCategory(models.Model):
     class Meta:
         verbose_name = 'محصولات-دسته بندی'
         verbose_name_plural = 'محصولات-دسته بندی'
-        ordering = ['title']
+        #ordering = ['title']
 
     title = models.CharField(verbose_name='عنوان دسته بندی', max_length=50, blank=False, null=False)
 
@@ -188,7 +188,7 @@ class Brand(models.Model):
     class Meta:
         verbose_name = 'محصولات'
         verbose_name_plural = 'محصولات'
-        ordering = ['category', 'title']
+        ordering = ['pk']
 
     title = models.CharField(verbose_name='عنوان', max_length=50, blank=False, null=False)
     value = models.PositiveSmallIntegerField(verbose_name='کد')

@@ -6,8 +6,8 @@
     {% block content %}
         <form method="post">
             {% csrf_token %}
-                <div class="question col-12">
-                    <table>
+                <div class="question">
+                    <table class="table table-bordered table-hover table-responsive table-sm">
                         <thead>
                         <tr>
                             <th>{{ Answersheet_frm.number.label }}</th>

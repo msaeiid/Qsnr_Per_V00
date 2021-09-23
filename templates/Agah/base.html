@@ -58,15 +58,8 @@
 </nav>
 <div class="container">
     <div class="row">
-        <div class="col-lg-10 col-md-12 col-sm-12">
+        <div class="col-12">
             {% block content %}
-            {% endblock %}
-        </div>
-        <div class="col-lg-2 col-md-12 col-sm-12">
-            {% block side %}
-                <div class="#side">
-
-                </div>
             {% endblock %}
         </div>
     </div>
@@ -78,7 +71,7 @@
     var textareas = $('textarea')
     labels.addClass('col-6')
     inputs.addClass('form-control col-12')
-    selects.addClass('form-control col-12')
+    selects.addClass('custom-select col-12')
     textareas.addClass('form-control rounded-4')
 </script>
 {% block js %}
