@@ -26,7 +26,7 @@
             border-radius: 10px;
             background-color: lightsalmon;
             margin: 10px;
-            min-height: 150px;
+            {#min-height: 150px;#}
             padding: 10px;
         }
 
@@ -74,7 +74,7 @@
     selects.addClass('custom-select col-12')
     textareas.addClass('form-control rounded-4')
     $('select').change(function () {
-            if ($(this).val() == 0) {
+            if (parseInt($(this).val()) == 0) {
                 var class_html=$(this).attr('name')
                 $(this).replaceWith('<input type="text" placeholder="سایر" name="'+class_html+'">')
                 $('input').addClass('form-control col-12')

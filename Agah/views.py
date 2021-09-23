@@ -208,7 +208,7 @@ def Children(request):
         for q in q_questions:
             q_forms.append(Question_from(instance=q))
         context = {'q_forms': q_forms, 'Show': show}
-        if number_of_children >0 and number_of_children is not None:
+        if number_of_children > 0 and number_of_children is not None:
             show = True
             # return redirect(reverse('main'))
             questions = Question.objects.filter(code__startswith='s')
@@ -218,7 +218,7 @@ def Children(request):
                        'row': i}
                 form = Children_form(request.GET, instance=ins)
                 forms.append(form)
-            context['forms']=forms
+            context['forms'] = forms
             context['Show'] = show
         return render(request, 'Agah/Childern.html', context)
     # POST
@@ -262,6 +262,7 @@ def Children(request):
         return redirect(reverse('main'))
 
 
+@csrf_protect
 def Main_view(request):
     # fetch question
     m_questions = Question.objects.filter(code__startswith='M')
@@ -299,6 +300,9 @@ def Main_view(request):
                 pass
             rest = True
             context['Q_forms'] = Q_forms
+            context['Q_questions'] = [f'{Q4.code} {Q4.title}', f'{Q4a.code} {Q4a.title}', f'{Q5.code} {Q5.title}',
+                                      f'{Q6.code} {Q6.title}', f'{Q7.code} {Q7.title}', f'{Q8.code} {Q8.title}',
+                                      f'{Q9.code} {Q9.title}']
 
         # show m questions
         M1_form = Question_from(instance=M1)

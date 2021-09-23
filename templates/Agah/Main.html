@@ -9,6 +9,13 @@
                 <div class="row">
                     <h4 style="margin: auto">سوالات بخش M</h4>
                 </div>
+                <div class="row">
+                    {% for item in Q_questions %}
+                        <div class="question">
+                            {{ item }}
+                        </div>
+                    {% endfor %}
+                </div>
                 <div class="question">
                     <table class="table table-bordered table-hover table-responsive table-sm">
                         <thead>
