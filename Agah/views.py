@@ -349,8 +349,10 @@ def Main_view(request):
             # save Q9
             save_list_answer(Q9, Q9_answer, answersheet)
         # save M1
-        M1_answer = request.POST.get('M1')
-        save_single_answer(M1,M1_answer,answersheet)
+        M1_form_1_answer = request.POST.get('M1_form_1')
+        M1_form_2_answer = request.POST.get('M1_form_2')
+        save_single_answer(M1, M1_form_1_answer, answersheet,False)
+        save_single_answer(M1, M1_form_2_answer, answersheet,False)
         # save M2
         M2_answer = request.POST.get('M2')
         save_single_answer(M2, M2_answer, answersheet)
@@ -362,8 +364,9 @@ def Main_view(request):
 
 def save_list_answer(question, user_answer, answersheet):
     brands = Brand.objects.all()[:10]
-    for i in range(0, 10):
-        answer = Answer(question=question, answersheet=answersheet, answer=user_answer[i], point=0)
-        answer.save()
+    batch_size = 10
+    list_answer = [Answer(question=question, answersheet=answersheet, answer=user_answer[i], point=0) for i in
+                   range(10)]
+    bulk = Answer.objects.bulk_create(list_answer, batch_size)
 
 # Create your views here.
