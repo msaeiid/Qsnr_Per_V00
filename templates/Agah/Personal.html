@@ -4,63 +4,73 @@
 {% endblock %}
 <div class="container">
     {% block content %}
+        {% if messages %}
+            {% for msg in messages %}
+                <div class="alert
+{% if msg.level_tag == 'warning' %} alert-warning {% endif %}
+{% if msg.level_tag == 'success' %} alert-success {% endif %}
+             alert-dismissible fade show" role="alert">
+                    {{ msg }}
+                </div>
+            {% endfor %}
+        {% endif %}
         <form method="post">
             {% csrf_token %}
-                <div class="question">
-                    <table class="table table-bordered table-hover table-responsive table-sm">
-                        <thead>
-                        <tr>
-                            <th>{{ Answersheet_frm.number.label }}</th>
-                            <th>
-                                {{ Interviewer_frm.code.label }}
-                            </th>
-                            <th>
-                                {{ Responser_frm.firstname.label }}
-                            </th>
-                            <th>
-                                {{ Responser_frm.mobile.label }}
-                            </th>
-                            <th>
-                                {{ Answersheet_frm.day.label }}
-                            </th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>
-                                {{ Answersheet_frm.number }}
-                            </td>
-                            <td>
-                                {{ Interviewer_frm.code }}
-                            </td>
-                            <td>
-                                {{ Responser_frm.firstname }}
-                            </td>
-                            <td>
-                                {{ Responser_frm.mobile }}
-                            </td>
-                            <td>
-                                <div class="col-auto">
-                                    <div class="input-group">
-                                        {{ Answersheet_frm.day }}
-                                        <div class="input-group-text">1400-06</div>
-                                    </div>
+            <div class="question">
+                <table class="table table-bordered table-hover table-responsive table-sm">
+                    <thead>
+                    <tr>
+                        <th>{{ Answersheet_frm.number.label }}</th>
+                        <th>
+                            {{ Interviewer_frm.code.label }}
+                        </th>
+                        <th>
+                            {{ Responser_frm.firstname.label }}
+                        </th>
+                        <th>
+                            {{ Responser_frm.mobile.label }}
+                        </th>
+                        <th>
+                            {{ Answersheet_frm.day.label }}
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>
+                            {{ Answersheet_frm.number }}
+                        </td>
+                        <td>
+                            {{ Interviewer_frm.code }}
+                        </td>
+                        <td>
+                            {{ Responser_frm.firstname }}
+                        </td>
+                        <td>
+                            {{ Responser_frm.mobile }}
+                        </td>
+                        <td>
+                            <div class="col-auto">
+                                <div class="input-group">
+                                    {{ Answersheet_frm.day }}
+                                    <div class="input-group-text">1400-06</div>
                                 </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>
-                                {{ Responser_frm.address.label }}
-                            </th>
-                            <td colspan="4">
-                                <div class="form-group">
-                                    {{ Responser_frm.address }}
-                                </div>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ Responser_frm.address.label }}
+                        </th>
+                        <td colspan="4">
+                            <div class="form-group">
+                                {{ Responser_frm.address }}
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
             <div class="row">
                 <div class="col-6">
                     <div class="question">

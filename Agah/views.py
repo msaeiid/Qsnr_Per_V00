@@ -5,6 +5,7 @@ from django.views.decorators.csrf import csrf_protect
 from Agah.forms import Question_from, Interviewer_form, Answersheet_from, Responser_form, Children_form, Main_form, \
     Main_form_M_series
 from Agah.models import Question, Interviewer, Survey, Answer, AnswerSheet, Brand, BrandCategory
+from django.contrib import messages
 
 
 @csrf_protect
@@ -204,6 +205,7 @@ def Children(request):
     try:
         answersheet = AnswerSheet.objects.get(pk=answersheet)
     except:
+        messages.warning(request, 'پرسشنامه فعال ندارید')
         return redirect(reverse('personal'))
     # GET
     if request.method == 'GET':
@@ -281,6 +283,7 @@ def Main_view(request):
     try:
         answersheet = AnswerSheet.objects.get(pk=answersheet)
     except:
+        messages.warning(request, 'پرسشنامه فعال ندارید')
         return redirect(reverse('personal'))
     Q1_status = int(answersheet.answers.get(question__code='Q1').answer) == 1
     Q2_status = int(answersheet.answers.get(question__code='Q2').answer) == 1
@@ -365,7 +368,9 @@ def Main_view(request):
         # save M3
         M3_answer = request.POST.get('M3')
         save_single_answer(M3, M3_answer, answersheet)
-        print('')
+        messages.success(request, message='پرسشنامه با موفقیت ثبت شد')
+        request.session.flush()
+        return redirect(reverse('personal'))
 
 
 def save_list_answer(question, user_answer, answersheet):
