@@ -166,6 +166,7 @@ class Answer(models.Model):
     point = models.PositiveSmallIntegerField(verbose_name='امتیاز', editable=True, null=False, blank=False, default=0)
     option = models.ForeignKey(to=Option, verbose_name='گزینه ی انتخاب شده', editable=True, null=True, blank=True,
                                default=None, on_delete=models.PROTECT)
+    brand = models.ForeignKey(to='Brand', verbose_name='محصول', default=None, editable=True, blank=True, null=True,on_delete=models.PROTECT)
 
     def __str__(self):
         return f'پاسخ سوال' \
@@ -194,7 +195,8 @@ class Brand(models.Model):
     value = models.PositiveSmallIntegerField(verbose_name='کد')
     category = models.ForeignKey(to=BrandCategory, on_delete=models.PROTECT, verbose_name='دسته بندی',
                                  related_name='brands')
-    question = models.ForeignKey(verbose_name='پرسش', to=Question, on_delete=models.PROTECT, null=True,blank=True,editable=True)
+    question = models.ForeignKey(verbose_name='پرسش', to=Question, on_delete=models.PROTECT, null=True, blank=True,
+                                 editable=True)
 
     def __str__(self):
         return f'{self.title}'

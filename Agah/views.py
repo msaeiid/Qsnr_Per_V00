@@ -350,9 +350,15 @@ def Main_view(request):
             save_list_answer(Q9, Q9_answer, answersheet)
         # save M1
         M1_form_1_answer = request.POST.get('M1_form_1')
+        answer = Answer(question=M1, answersheet=answersheet, answer=M1_form_1_answer, point=0,
+                        option=M1.options.get(value=int(1)))
+        answer.save()
         M1_form_2_answer = request.POST.get('M1_form_2')
-        save_single_answer(M1, M1_form_1_answer, answersheet,False)
-        save_single_answer(M1, M1_form_2_answer, answersheet,False)
+        answer = Answer(question=M1, answersheet=answersheet, answer=M1_form_2_answer, point=0,
+                        option=M1.options.get(value=int(2)))
+        answer.save()
+        # save_single_answer(M1, M1_form_1_answer, answersheet,False)
+        # save_single_answer(M1, M1_form_2_answer, answersheet,False)
         # save M2
         M2_answer = request.POST.get('M2')
         save_single_answer(M2, M2_answer, answersheet)
@@ -363,9 +369,10 @@ def Main_view(request):
 
 
 def save_list_answer(question, user_answer, answersheet):
-    brands = Brand.objects.all()[:10]
+    category = BrandCategory.objects.all()[:10]
     batch_size = 10
-    list_answer = [Answer(question=question, answersheet=answersheet, answer=user_answer[i], point=0) for i in
+    list_answer = [Answer(question=question, answersheet=answersheet, answer=user_answer[i], point=0,
+                          brand=category[i].brands.get(value=int(user_answer[i]))) for i in
                    range(10)]
     bulk = Answer.objects.bulk_create(list_answer, batch_size)
 
