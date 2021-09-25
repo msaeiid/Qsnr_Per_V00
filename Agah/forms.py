@@ -92,13 +92,13 @@ class Main_form(forms.Form):
         self.fields[f'{row}'] = forms.CharField(widget=forms.TextInput(attrs={'disabled': True, 'value': f'{row}'}))
         self.fields[f'brand_{row}'] = forms.CharField(
             widget=forms.TextInput(attrs={'disabled': True, 'value': f'{brands_cat}', 'class': 'brand col-2'}))
-        self.fields[f'Q4_{row}'] = option_maker(Q4, f'{row}', brands_cat.brands.all(), True, True)
-        self.fields[f'Q4a_{row}'] = option_maker(Q4a, f'{row}', brands_cat.brands.all(), True, True)
-        self.fields[f'Q5_{row}'] = option_maker(Q5, f'{row}', brands_cat.brands.all(), True, True)
-        self.fields[f'Q6_{row}'] = option_maker(Q6, f'{row}', brands_cat.brands.all(), True, True)
-        self.fields[f'Q7_{row}'] = option_maker(Q7, f'{row}', brands_cat.brands.all(), True, True)
-        self.fields[f'Q8_{row}'] = option_maker(Q8, f'{row}')
-        self.fields[f'Q9_{row}'] = option_maker(Q9, f'{row}')
+        self.fields[f'Q4'] = option_maker(Q4, f'{row}', brands_cat.brands.all(), True, True)
+        self.fields[f'Q4a'] = option_maker(Q4a, f'{row}', brands_cat.brands.all(), True, True)
+        self.fields[f'Q5'] = option_maker(Q5, f'{row}', brands_cat.brands.all(), True, True)
+        self.fields[f'Q6'] = option_maker(Q6, f'{row}', brands_cat.brands.all(), True, True)
+        self.fields[f'Q7'] = option_maker(Q7, f'{row}', brands_cat.brands.all(), True, True)
+        self.fields[f'Q8'] = option_maker(Q8, f'{row}')
+        self.fields[f'Q9'] = option_maker(Q9, f'{row}')
 
 
 class Main_form_M_series(forms.Form):

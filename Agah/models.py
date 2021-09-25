@@ -176,7 +176,7 @@ class BrandCategory(models.Model):
     class Meta:
         verbose_name = 'محصولات-دسته بندی'
         verbose_name_plural = 'محصولات-دسته بندی'
-        #ordering = ['title']
+        # ordering = ['title']
 
     title = models.CharField(verbose_name='عنوان دسته بندی', max_length=50, blank=False, null=False)
 
@@ -194,6 +194,7 @@ class Brand(models.Model):
     value = models.PositiveSmallIntegerField(verbose_name='کد')
     category = models.ForeignKey(to=BrandCategory, on_delete=models.PROTECT, verbose_name='دسته بندی',
                                  related_name='brands')
+    question = models.ForeignKey(verbose_name='پرسش', to=Question, on_delete=models.PROTECT, null=True,blank=True,editable=True)
 
     def __str__(self):
         return f'{self.title}'

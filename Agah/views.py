@@ -327,6 +327,43 @@ def Main_view(request):
     else:
         # show rest of q questions...
         if all([Q1_status, Q2_status, Q3_status]):
-            pass
+            Q4_answer = request.POST.getlist('Q4')
+            Q4a_answer = request.POST.getlist('Q4a')
+            Q5_answer = request.POST.getlist('Q5')
+            Q6_answer = request.POST.getlist('Q6')
+            Q7_answer = request.POST.getlist('Q7')
+            Q8_answer = request.POST.getlist('Q8')
+            Q9_answer = request.POST.getlist('Q9')
+            # save Q4
+            save_list_answer(Q4, Q4_answer, answersheet)
+            # save Q4a
+            save_list_answer(Q4a, Q4a_answer, answersheet)
+            # save Q5
+            save_list_answer(Q5, Q5_answer, answersheet)
+            # save Q6
+            save_list_answer(Q6, Q6_answer, answersheet)
+            # save Q7
+            save_list_answer(Q7, Q7_answer, answersheet)
+            # save Q8
+            save_list_answer(Q8, Q8_answer, answersheet)
+            # save Q9
+            save_list_answer(Q9, Q9_answer, answersheet)
+        # save M1
+        M1_answer = request.POST.get('M1')
+        save_single_answer(M1,M1_answer,answersheet)
+        # save M2
+        M2_answer = request.POST.get('M2')
+        save_single_answer(M2, M2_answer, answersheet)
+        # save M3
+        M3_answer = request.POST.get('M3')
+        save_single_answer(M3, M3_answer, answersheet)
+        print('')
+
+
+def save_list_answer(question, user_answer, answersheet):
+    brands = Brand.objects.all()[:10]
+    for i in range(0, 10):
+        answer = Answer(question=question, answersheet=answersheet, answer=user_answer[i], point=0)
+        answer.save()
 
 # Create your views here.
