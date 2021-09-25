@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.db.models import Q
+from import_export.admin import ImportExportModelAdmin
 
 from Agah.models import Responder, Interviewer, Question, Survey, AnswerSheet, Option, Answer, BrandCategory, Brand
 
@@ -8,26 +9,47 @@ admin.site.site_title = 'نظرسنجی'
 admin.site.index_title = ''
 
 
-class AnswerSheetCustom(admin.ModelAdmin):
+@admin.register(AnswerSheet)
+class AnswerSheetCustom(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = (
         'interviewer', 'responser', 'survey', 'number', 'date', 'total_point',
         'social_class',)
 
+    class Meta:
+        model = AnswerSheet
+        fields = '__all__'
 
-class InterviewerCustom(admin.ModelAdmin):
+
+@admin.register(Interviewer)
+class InterviewerCustom(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = ('name', 'code',)
 
+    class Meta:
+        model = Interviewer
+        fields = '__all__'
 
-class ResponderCustom(admin.ModelAdmin):
+
+@admin.register(Responder)
+class ResponderCustom(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = ('firstname', 'mobile',)
     list_editable = ('mobile',)
 
+    class Meta:
+        model = Responder
+        fields = '__all__'
 
-class SurveyCustom(admin.ModelAdmin):
+
+@admin.register(Survey)
+class SurveyCustom(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = ('title',)
 
+    class Meta:
+        model = Survey
+        fields = '__all__'
 
-class QuestionCustom(admin.ModelAdmin):
+
+@admin.register(Question)
+class QuestionCustom(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = (
         'survey', 'code', 'title', 'type', 'previous_question', 'next_question', 'has_other_in_options', 'is_required',
         'has_nothing_in_options',
@@ -38,14 +60,28 @@ class QuestionCustom(admin.ModelAdmin):
                      'max_input_value',
                      'min_input_value')
 
+    class Meta:
+        model = Question
+        fields = '__all__'
 
-class OptionCustom(admin.ModelAdmin):
+
+@admin.register(Option)
+class OptionCustom(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = ('question', 'title', 'value', 'point',)
 
+    class Meta:
+        model = Option
+        fields = '__all__'
 
-class AnswerCustom(admin.ModelAdmin):
+
+@admin.register(Answer)
+class AnswerCustom(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = ('answersheet', 'question', 'option', 'answer', 'point',)
     search_fields = ['answersheet']
+
+    class Meta:
+        model = Answer
+        fields = '__all__'
 
     def get_search_results(self, request, queryset, search_term):
         if search_term != '':
@@ -55,22 +91,21 @@ class AnswerCustom(admin.ModelAdmin):
             return queryset, False
 
 
-class BrandCategoryCustom(admin.ModelAdmin):
+@admin.register(BrandCategory)
+class BrandCategoryCustom(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = ('title',)
 
+    class Meta:
+        model = BrandCategory
+        fields = '__all__'
 
-class BrandCustom(admin.ModelAdmin):
+
+@admin.register(Brand)
+class BrandCustom(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = ('category', 'title', 'value',)
 
-
-admin.site.register(Interviewer, InterviewerCustom)
-admin.site.register(Responder, ResponderCustom)
-admin.site.register(Survey, SurveyCustom)
-admin.site.register(Question, QuestionCustom)
-admin.site.register(AnswerSheet, AnswerSheetCustom)
-admin.site.register(Option, OptionCustom)
-admin.site.register(Answer, AnswerCustom)
-admin.site.register(BrandCategory, BrandCategoryCustom)
-admin.site.register(Brand, BrandCustom)
+    class Meta:
+        model = Brand
+        fields = '__all__'
 
 # Register your models here.
