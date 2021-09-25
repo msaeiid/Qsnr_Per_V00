@@ -4,6 +4,7 @@
 {% endblock %}
 {% block content %}
     <form method="post">
+        {% csrf_token %}
         <div class="row">
             {% if Rest %}
                 <div class="row">
@@ -113,7 +114,7 @@
                                 </td>
                             {% endfor %}
                             <td>
-
+                                <input type="text" name="result">
                             </td>
                         </tr>
                         </tbody>
@@ -136,8 +137,33 @@
         $('input[type=radio]').addClass('form-check-input')
         $('label').addClass('form-check-label')
         $('select.11').prop('disabled', true)
-        function sum(){
-            console.log('fmkepwmvpempre')
+
+        function sum() {
+            var num_one = $('input[type=number][name=M1_form_1]').val()
+            var num_two = $('input[type=number][name=M1_form_2]').val()
+            var sum = parseInt(num_one) + parseInt(num_two)
+            if (sum == 10) {
+                $('input[type=text][name=result]').val('تایید')
+                $('input[type=text][name=result]').addClass('text-success')
+                $('input[type=text][name=result]').removeClass('text-danger')
+            } else {
+                $('input[type=text][name=result]').val('خطا')
+                $('input[type=text][name=result]').addClass('text-danger')
+                $('input[type=text][name=result]').removeClass('text-success')
+            }
         }
+
+        $('form').submit(function () {
+            var num_one = parseInt($('input[type=number][name=M1_form_1]').val())
+            var num_two = parseInt($('input[type=number][name=M1_form_2]').val())
+            var sum = num_two + num_one
+            if (sum != 10) {
+                alert('مجموع خامه فرادما و خامه ساده مبایست 10 عدد باشد')
+                var btn = $('button[type=submit]')
+                btn.attr('disabled', false).text('مرحله بعد')
+                return false
+            }
+            return true
+        });
     </script>
 {% endblock %}
