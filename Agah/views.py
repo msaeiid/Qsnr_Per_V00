@@ -376,9 +376,14 @@ def Main_view(request):
 def save_list_answer(question, user_answer, answersheet):
     category = BrandCategory.objects.all()[:10]
     batch_size = 10
-    list_answer = [Answer(question=question, answersheet=answersheet, answer=user_answer[i], point=0,
-                          brand=category[i].brands.get(value=int(user_answer[i]))) for i in
-                   range(10)]
+    list_answer = []
+    for i in range(10):
+        try:
+            list_answer.append(Answer(question=question, answersheet=answersheet, answer=user_answer[i], point=0,
+                                      brand=category[i].brands.get(value=int(user_answer[i]))))
+        except:
+            list_answer.append(Answer(question=question, answersheet=answersheet, answer=user_answer[i], point=0))
+
     bulk = Answer.objects.bulk_create(list_answer, batch_size)
 
 # Create your views here.
