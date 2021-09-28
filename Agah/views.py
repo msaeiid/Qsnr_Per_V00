@@ -12,7 +12,7 @@ from django.contrib import messages
 def Personal(request):
     # GET
     if request.method == 'GET':
-        questions = Question.objects.filter(code__startswith='s')
+        questions = Question.objects.filter(code__startswith='S')
         S1_frm = Question_from(instance=questions.get(code__iexact='S1'))
         S2_frm = Question_from(instance=questions.get(code__iexact='S2'))
         S3_frm = Question_from(instance=questions.get(code__iexact='S3'))
@@ -124,7 +124,7 @@ def Personal(request):
                     answersheet.answers.get(question=S5).delete()
             request.session['answersheet'] = answersheet.pk
             if int(request.POST.get('S4b')) == 1 and int(request.POST.get('S4a')) == 1:
-                request.session['children'] = int(request.POST.get('S5'))
+                request.session['children'] = int(request.POST.get('S5',0))
             else:
                 try:
                     del request.session['children']
@@ -135,9 +135,20 @@ def Personal(request):
             request.session['number_of_children'] = int(S5)
             return redirect(reverse('children'))
         else:
-            context = {'Interviewer_frm': Interviewer_frm, 'Answersheet_frm': Answersheet_frm,
-                       'Responser_frm': Responser_frm}
-            return render(request, 'Agah/Personal.html', )
+            questions = Question.objects.filter(code__startswith='S')
+            S1_frm = Question_from(instance=questions.get(code__iexact='S1'))
+            S2_frm = Question_from(instance=questions.get(code__iexact='S2'))
+            S3_frm = Question_from(instance=questions.get(code__iexact='S3'))
+            S4a_frm = Question_from(instance=questions.get(code__iexact='S4a'))
+            S4b_frm = Question_from(instance=questions.get(code__iexact='S4b'))
+            S5_frm = Question_from(instance=questions.get(code__iexact='S5'))
+            Interviewer_frm = Interviewer_form(request.POST)
+            Answersheet_frm = Answersheet_from(request.POST)
+            Responser_frm = Responser_form(request.POST)
+            context = {'S1_frm': S1_frm, 'S2_frm': S2_frm, 'S3_frm': S3_frm, 'S4a_frm': S4a_frm, 'S4b_frm': S4b_frm,
+                       'S5_frm': S5_frm, 'Interviewer_frm': Interviewer_frm,
+                       'Answersheet_frm': Answersheet_frm, 'Responser_frm': Responser_frm,'POST':True}
+            return render(request, template_name='Agah/Personal.html', context=context)
 
 
 def save_single_answer(question_code, user_answer, answersheet, override=True):

@@ -14,6 +14,23 @@
                 </div>
             {% endfor %}
         {% endif %}
+        <div class="alert alert-danger" role="alert">
+        {% if POST %}
+            {%  for item in Interviewer_frm.errors.values %}
+                {{ item }}
+            {% endfor %}
+        {% endif %}
+        {% if POST %}
+            {%  for item in Responser_frm.errors.values %}
+                {{ item }}
+            {% endfor %}
+        {% endif %}
+        {% if POST %}
+            {%  for item in Answersheet_frm.errors.values %}
+                {{ item }}
+            {% endfor %}
+        {% endif %}
+        </div>
         <form method="post">
             {% csrf_token %}
             <div class="question">

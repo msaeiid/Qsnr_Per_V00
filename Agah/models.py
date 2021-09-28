@@ -13,10 +13,10 @@ class Interviewer(models.Model):
 
     code = models.CharField(verbose_name='کد پرسشگر', primary_key=True, unique=True, blank=False, null=False,
                             editable=True, max_length=5, validators=[
-            RegexValidator(regex='^[0-9]{5}$', message='تعداد ارقام میبایست حداقل و حداکثر 5 رقم باشند')])
+            RegexValidator(regex='^[0-9]{5}$', message='کد پرسشگر 5 رقم میباشد')])
     name = models.CharField(verbose_name='نام پرسشگر', max_length=100, blank=False, editable=True, null=False,
-                            validators=[RegexValidator(regex='[ آابپتسجچحخدذرزسشصضطظعغفقکلمنوهی]+',
-                                                       message='لطفا از زبان فارسی استفاده نمایید')])
+                            validators=[RegexValidator(regex='^\D+$',
+                                                       message='لطفا فقط از حروف فارسی یا انگلیسی استفاده نمایید')])
 
     def __str__(self):
         return self.name
@@ -32,12 +32,12 @@ class Responder(models.Model):
         verbose_name_plural = 'پاسخگو'
 
     firstname = models.CharField(verbose_name='نام پاسخگو', max_length=100, editable=True, blank=False, null=False,
-                                 validators=[RegexValidator(regex='[ آابپتسجچحخدذرزسشصضطظعغفقکلمنوهی]+',
-                                                            message='لطفا از زبان فارسی استفاده نمایید')])
+                                 validators=[RegexValidator(regex='^\D+$',
+                                                            message='نام را فارسی یا انگلیسی استفاده نمایید')])
     mobile = models.CharField(verbose_name='تلفن تماس پاسخگو', max_length=11, blank=False, null=False, editable=True,
                               validators=[
-                                  RegexValidator(regex='^09[0-9]{9}$',
-                                                 message='لطفا شماره موبایل را به صورت کامل وارد نمایید')])
+                                  RegexValidator(regex='^0[0-9]{10}$',
+                                                 message='شماره تلفن را کامل وارد نمایید-برای ثابت کد استان نیاز میباشد')])
     address = models.TextField(verbose_name='آدرس')
 
     def __str__(self):
@@ -166,7 +166,8 @@ class Answer(models.Model):
     point = models.PositiveSmallIntegerField(verbose_name='امتیاز', editable=True, null=False, blank=False, default=0)
     option = models.ForeignKey(to=Option, verbose_name='گزینه ی انتخاب شده', editable=True, null=True, blank=True,
                                default=None, on_delete=models.PROTECT)
-    brand = models.ForeignKey(to='Brand', verbose_name='محصول', default=None, editable=True, blank=True, null=True,on_delete=models.PROTECT)
+    brand = models.ForeignKey(to='Brand', verbose_name='محصول', default=None, editable=True, blank=True, null=True,
+                              on_delete=models.PROTECT)
 
     def __str__(self):
         return f'پاسخ سوال' \

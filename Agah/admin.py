@@ -85,8 +85,7 @@ class AnswerCustom(ImportExportModelAdmin, admin.ModelAdmin):
 
     def get_search_results(self, request, queryset, search_term):
         if search_term != '':
-            return queryset.filter(Q(answersheet__responser__firstname__icontains=search_term) | Q(
-                answersheet__responser__lastname__icontains=search_term)), True
+            return queryset.filter(answersheet__responser__firstname__icontains=search_term), True
         else:
             return queryset, False
 
