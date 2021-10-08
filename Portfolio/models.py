@@ -3,15 +3,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 
 
-class Portfolio(models.Model):
-    language = models.CharField(max_length=30, default='English')
-
-    def __str__(self):
-        return f'{self.profile.user.username}'
-
-
 class Profile(models.Model):
-    portfolio = models.OneToOneField(to=Portfolio, on_delete=models.CASCADE, related_name='profile')
     user = models.OneToOneField(to=User, on_delete=models.CASCADE, related_name='profile')
     Male = 1
     Female = 2
@@ -39,7 +31,7 @@ class Profile(models.Model):
 
 
 class Job(models.Model):
-    portfolio = models.ForeignKey(to=Portfolio, on_delete=models.CASCADE, related_name='jobs')
+    profile = models.ForeignKey(to=Profile, on_delete=models.CASCADE, related_name='jobs')
     title = models.CharField(verbose_name='Title', max_length=200, blank=True, editable=True, null=True)
     company = models.CharField(verbose_name='Company', max_length=100, blank=True, editable=True, null=True)
     start_dte = models.DateField(verbose_name='From', blank=True, editable=True, null=True)
@@ -53,7 +45,7 @@ class Job(models.Model):
 
 
 class Skill(models.Model):
-    portfolio = models.ForeignKey(to=Portfolio, on_delete=models.CASCADE, related_name='skills')
+    profile = models.ForeignKey(to=Profile, on_delete=models.CASCADE, related_name='skills')
     title = models.CharField(verbose_name='Title', max_length=200, blank=True, editable=True, null=True)
 
     point = models.IntegerField(verbose_name='How much you know about it',
@@ -65,7 +57,7 @@ class Skill(models.Model):
 
 
 class Education(models.Model):
-    portfolio = models.ForeignKey(to=Portfolio, on_delete=models.CASCADE, related_name='educations')
+    profile = models.ForeignKey(to=Profile, on_delete=models.CASCADE, related_name='educations')
     title = models.CharField(verbose_name='Title', max_length=200, blank=True, editable=True, null=True)
     university = models.CharField(verbose_name='University', max_length=200, blank=True, editable=True, null=True)
     from_dte = models.DateField(verbose_name='From', blank=True, editable=True, null=True)
@@ -92,7 +84,7 @@ class Education(models.Model):
 
 
 class Language(models.Model):
-    portfolio = models.ForeignKey(to=Portfolio, on_delete=models.CASCADE, related_name='languages')
+    profile = models.ForeignKey(to=Profile, on_delete=models.CASCADE, related_name='languages')
     title = models.CharField(verbose_name='Title', max_length=200, blank=True, editable=True, null=True)
     point = models.IntegerField(verbose_name='How much you know about it',
                                 validators=[MaxValueValidator(100), MinValueValidator(1)])
@@ -103,7 +95,7 @@ class Language(models.Model):
 
 
 class Certificate(models.Model):
-    portfolio = models.ForeignKey(to=Portfolio, on_delete=models.CASCADE, related_name='certificates')
+    profile = models.ForeignKey(to=Profile, on_delete=models.CASCADE, related_name='certificates')
     title = models.CharField(verbose_name='Title', max_length=200, blank=True, editable=True, null=True)
     date = models.DateField(verbose_name='Date', blank=True, editable=True, null=True)
     have_cert = models.BooleanField(verbose_name='Do you have certificate?', default=False, blank=True, editable=True,
