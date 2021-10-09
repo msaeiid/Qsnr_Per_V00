@@ -45,6 +45,30 @@ class JobCreate(CreateView):
     form_class = JobForm
     template_name = 'Portfolio/Job/Create.html'
 
+    def post(self, request, *args, **kwargs):
+        form = JobForm(request.POST)
+        if form.is_valid():
+            job = form.save(commit=False)
+            job.profile = request.user.profile
+            job.save()
+            return redirect(reverse('Portfolio:portfolio'))
+
+
+class JobUpdate(UpdateView):
+    model = Job
+    form_class = JobForm
+    template_name = 'Portfolio/Job/Create.html'
+
+    def post(self, request, *args, **kwargs):
+        job = Job.objects.get(pk=kwargs.get('pk'))
+        if request.user != job.profile.user:
+            return render(request, 'Portfolio/error.html', context={'error_title': 'Access denied!',
+                                                                    'error': ' only profile owner can update this profile'})
+        form = JobForm(request.POST, instance=job)
+        if form.is_valid():
+            form.save()
+            return redirect(reverse('Portfolio:portfolio'))
+
     def get_success_url(self):
         return reverse_lazy('Portfolio:portfolio')
 

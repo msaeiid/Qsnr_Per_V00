@@ -30,5 +30,7 @@ class JobForm(forms.ModelForm):
         model = Job
         exclude = ['profile']
         widgets = {
-            'already_work': django.forms.CheckboxInput
+            'already_work': django.forms.CheckboxInput,
+            'start_dte': DateInput(),
+            'end_dte': DateInput(),
         }

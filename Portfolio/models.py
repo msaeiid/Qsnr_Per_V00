@@ -42,7 +42,7 @@ class Job(models.Model):
     description = models.TextField('Description', blank=True, editable=True, null=True)
 
     def __str__(self):
-        return f'{self.portfolio.profile.user.username} {self.title}'
+        return f'{self.profile.user.username}   /  {self.title}'
 
 
 class Skill(models.Model):
