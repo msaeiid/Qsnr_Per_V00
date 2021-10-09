@@ -1,0 +1,15 @@
+{% extends 'Portfolio/base.html' %}
+{% block title %}
+    {{ error_title }}
+{% endblock %}
+{% block content %}
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <h3>
+            <strong>{{ error_title }}</strong>
+            {{ error }}
+        </h3>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+{% endblock %}

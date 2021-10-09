@@ -5,7 +5,7 @@
     <title>{% block title %}{% endblock %}</title>
     <style>
         .content, .side {
-            background-color: lightgray;
+            background-color: lightblue;
             padding: 30px;
             border-radius: 5px;
         }
@@ -38,7 +38,7 @@
 <div class="container">
     <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="#">{% if user.is_authenticated %}
-            {{ user.get_full_name }}
+            {{ user.get_username }}
         {% endif %}</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -69,6 +69,16 @@
             </ul>
         </div>
     </nav>
+    {% if form.errors %}
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {% for error in form.errors.values %}
+                <strong>{{ error }}</strong>
+            {% endfor %}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    {% endif %}
     <div class="row">
         <div class="col-3 side content">
             {% block side_bar %}
@@ -81,9 +91,11 @@
     </div>
 </div>
 <script type="application/javascript">
-    $('input[type=text]').addClass('form-control')
-    $('input[type=email]').addClass('form-control')
-    $('input[type=password]').addClass('form-control')
+    $('input').addClass('form-control')
+    $('textarea').addClass('form-control')
+    $('select').addClass('custom-select')
+    $('input[type=file]').removeClass('form-control')
+    $('input[type=file]').addClass('custom-file-input')
 </script>
 {% block extra_js %}
 {% endblock %}

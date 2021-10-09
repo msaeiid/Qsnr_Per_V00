@@ -20,7 +20,7 @@ class Profile(models.Model):
     occupation = models.CharField(verbose_name='Occupation', max_length=200, blank=True, editable=True, null=True)
     country = models.CharField(verbose_name='Country', max_length=100, blank=True, editable=True, null=True)
     city = models.CharField(verbose_name='City', max_length=100, blank=True, editable=True, null=True)
-    image = models.ImageField(verbose_name='Image', blank=True, editable=True, null=True)
+    image = models.ImageField(verbose_name='Image', blank=True, editable=True, null=True, upload_to='profile/')
     about_me = models.TextField(verbose_name='About me', blank=True, editable=True, null=True)
     title = models.CharField(verbose_name='Title', max_length=150, blank=True, editable=True, null=True)
     phone = models.CharField(verbose_name='Phone number', max_length=11, blank=True, editable=True, null=True)
@@ -100,7 +100,7 @@ class Certificate(models.Model):
     date = models.DateField(verbose_name='Date', blank=True, editable=True, null=True)
     have_cert = models.BooleanField(verbose_name='Do you have certificate?', default=False, blank=True, editable=True,
                                     null=True)
-    image = models.ImageField(verbose_name='Image', blank=True, editable=True, null=True)
+    image = models.ImageField(verbose_name='Image', blank=True, editable=True, null=True, upload_to='certificate/')
     authorized_by = models.CharField(verbose_name='Authorized by', max_length=200, blank=True, editable=True, null=True)
     url = models.URLField(verbose_name='Certificate Url', blank=True, editable=True, null=True)
 

@@ -1,0 +1,58 @@
+{% extends 'Portfolio/base.html' %}
+{% block title %}
+    Profile Edit
+{% endblock %}
+{% block content %}
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-row">
+            <div class="form-group col-md-12">
+                <label for="title">Title</label>
+                {{ form.title }}
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="birthday">Birthday</label>
+                {{ form.birthday }}
+            </div>
+            <div class="form-group col-md-6">
+                <label for="occupation">Occupation</label>
+                {{ form.occupation }}
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="gender">Gender</label>
+                {{ form.gender }}
+            </div>
+            <div class="form-group col-md-6">
+                <label for="marital_status">Marital Status</label>
+                {{ form.marital_status }}
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="country">Country</label>
+                {{ form.country }}
+            </div>
+            <div class="form-group col-md-6">
+                <label for="city">City</label>
+                {{ form.city }}
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-12">
+                <label for="about_me">About me</label>
+                {{ form.about_me }}
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-12">
+                <label for="image" class="custom-file-label">Image</label>
+                {{ form.image }}
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Update</button>
+    </form>
+{% endblock %}
