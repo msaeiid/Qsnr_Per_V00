@@ -1,11 +1,10 @@
 from django.contrib.auth.views import LoginView, LogoutView
-from django.http import HttpResponseNotAllowed, HttpResponse
-from django.shortcuts import get_object_or_404, render
-from django.urls import reverse_lazy
+from django.shortcuts import get_object_or_404, render, redirect
+from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, UpdateView
 
-from Portfolio.forms import RegisterForm, ProfileUpdateForm
-from Portfolio.models import Profile
+from Portfolio.forms import RegisterForm, ProfileUpdateForm, JobForm
+from Portfolio.models import Profile, Job
 
 
 class RegisterView(CreateView):
@@ -24,7 +23,7 @@ class LogoutView(LogoutView):
     pass
 
 
-class ProfileEditView(UpdateView):
+class ProfileUpdateView(UpdateView):
     model = Profile
     template_name = 'Portfolio/Profile/Update.html'
     form_class = ProfileUpdateForm
@@ -34,7 +33,24 @@ class ProfileEditView(UpdateView):
         if profile.user != request.user:
             return render(request, 'Portfolio/error.html', context={'error_title': 'Access denied!',
                                                                     'error': ' only profile owner can update this profile'})
+
         form = ProfileUpdateForm(request.POST, instance=profile, files=request.FILES)
         if form.is_valid():
             form.save()
+        return redirect(reverse('Portfolio:portfolio'))
+
+
+class JobCreate(CreateView):
+    model = Job
+    form_class = JobForm
+    template_name = 'Portfolio/Job/Create.html'
+
+    def get_success_url(self):
+        return reverse_lazy('Portfolio:portfolio')
+
+
+def PortfolioView(request):
+    if request.method == 'GET':
+        pass
+
 # Create your views here.

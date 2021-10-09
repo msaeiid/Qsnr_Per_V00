@@ -95,7 +95,8 @@
     $('textarea').addClass('form-control')
     $('select').addClass('custom-select')
     $('input[type=file]').removeClass('form-control')
-    $('input[type=file]').addClass('custom-file-input')
+    $('input[type=checkbox]').removeClass('form-control')
+    $('input[type=checkbox]').addClass('form-check-input')
 </script>
 {% block extra_js %}
 {% endblock %}

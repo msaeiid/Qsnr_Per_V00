@@ -36,7 +36,8 @@ class Job(models.Model):
     company = models.CharField(verbose_name='Company', max_length=100, blank=True, editable=True, null=True)
     start_dte = models.DateField(verbose_name='From', blank=True, editable=True, null=True)
     end_dte = models.DateField(verbose_name='To', blank=True, editable=True, null=True)
-    already_work = models.BooleanField(verbose_name='I already work', default=False, blank=True, editable=True,
+    already_work = models.BooleanField(verbose_name='I already work', default=False,
+                                       blank=True, editable=True,
                                        null=True)
     description = models.TextField('Description', blank=True, editable=True, null=True)
 

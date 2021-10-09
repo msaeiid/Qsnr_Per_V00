@@ -7,52 +7,53 @@
         {% csrf_token %}
         <div class="form-row">
             <div class="form-group col-md-12">
-                <label for="title">Title</label>
+                <label for="{{ form.title.id_for_label }}">{{ form.title.label }}</label>
                 {{ form.title }}
             </div>
         </div>
         <div class="form-row">
             <div class="form-group col-md-6">
-                <label for="birthday">Birthday</label>
+                <label for="{{ form.birthday.id_for_label }}">{{ form.birthday.label }}</label>
                 {{ form.birthday }}
             </div>
             <div class="form-group col-md-6">
-                <label for="occupation">Occupation</label>
+                <label for="{{ form.occupation.id_for_label }}">{{ form.occupation.label }}</label>
                 {{ form.occupation }}
             </div>
         </div>
         <div class="form-row">
             <div class="form-group col-md-6">
-                <label for="gender">Gender</label>
+                <label for="{{ form.gender.id_for_label }}">{{ form.gender.label }}</label>
                 {{ form.gender }}
             </div>
             <div class="form-group col-md-6">
-                <label for="marital_status">Marital Status</label>
+                <label for="{{ form.marital_status.id_for_label }}">{{ form.marital_status.label }}</label>
                 {{ form.marital_status }}
             </div>
         </div>
         <div class="form-row">
             <div class="form-group col-md-6">
-                <label for="country">Country</label>
+                <label for="{{ form.country.id_for_label }}">{{ form.country.label }}</label>
                 {{ form.country }}
             </div>
             <div class="form-group col-md-6">
-                <label for="city">City</label>
+                <label for="{{ form.city.id_for_label }}">{{ form.city.label }}</label>
                 {{ form.city }}
             </div>
         </div>
         <div class="form-row">
             <div class="form-group col-md-12">
-                <label for="about_me">About me</label>
+                <label for="{{ form.about_me.id_for_label }}">{{ form.about_me.label }}</label>
                 {{ form.about_me }}
             </div>
         </div>
         <div class="form-row">
             <div class="form-group col-md-12">
-                <label for="image" class="custom-file-label">Image</label>
                 {{ form.image }}
             </div>
         </div>
         <button type="submit" class="btn btn-primary">Update</button>
     </form>
+    <script type="application/javascript">
+    </script>
 {% endblock %}
