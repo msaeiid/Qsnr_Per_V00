@@ -21,6 +21,8 @@ urlpatterns = [
     path('language/', views.LanguageCreate.as_view(), name='language_create'),
     path('language/update/<int:pk>', views.LanguageUpdate.as_view(), name='language_update'),
     path('language/remove/<int:pk>', views.LanguageDelete, name='language_delete'),
-
-    path('', views.PortfolioView, name='portfolio'),
+    path('certificate/', views.CertificateCreate.as_view(), name='certificate_create'),
+    path('certificate/update/<int:pk>', views.CertificateUpdate.as_view(), name='certificate_update'),
+    path('certificate/remove/<int:pk>', views.CertificateDelete, name='certificate_delete'),
+    path('', views.PortfolioView, name='portfolio')
 ]

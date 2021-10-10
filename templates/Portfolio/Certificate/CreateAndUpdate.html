@@ -1,0 +1,43 @@
+{% extends 'Portfolio/base.html' %}
+{% block title %}
+    Add a skill
+{% endblock %}
+{% block content %}
+    <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="{{ form.title.id_for_label }}">{{ form.title.label }}</label>
+                {{ form.title }}
+            </div>
+            <div class="form-group col-md-6">
+                <label for="{{ form.date.id_for_label }}">{{ form.date.label }}</label>
+                {{ form.date }}
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-md-6">
+                <div class="form-check">
+                {{ form.have_cert }}
+                <label for="{{ form.have_cert.id_for_label }}" class="form-check-label">{{ form.have_cert.label }}</label>
+            </div>
+            </div>
+            <div class="form-group col-md-6">
+                <label for="{{ form.image.id_for_label }}">{{ form.image.label }}</label>
+                {{ form.image }}
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="{{ form.authorized_by.id_for_label }}">{{ form.authorized_by.label }}</label>
+                {{ form.authorized_by }}
+            </div>
+            <div class="form-group col-md-6">
+                <label for="{{ form.url.id_for_label }}">{{ form.url.label }}</label>
+                {{ form.url }}
+            </div>
+        </div>
+        <br>
+        <button type="submit" class="btn btn-primary">Update</button>
+    </form>
+{% endblock %}

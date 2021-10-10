@@ -2,7 +2,7 @@ import django.forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from Agah import forms
-from Portfolio.models import Profile, Job, Skill, Education, Language
+from Portfolio.models import Profile, Job, Skill, Education, Language, Certificate
 
 
 class RegisterForm(UserCreationForm):
@@ -56,3 +56,13 @@ class LanguageForm(forms.ModelForm):
     class Meta:
         model = Language
         exclude = ['profile']
+
+
+class CertificateForm(forms.ModelForm):
+    class Meta:
+        model = Certificate
+        exclude = ['profile']
+        widgets = {
+            'date': DateInput(),
+            'have_cert': django.forms.CheckboxInput
+        }

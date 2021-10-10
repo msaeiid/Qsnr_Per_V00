@@ -3,8 +3,9 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, UpdateView
 
-from Portfolio.forms import RegisterForm, ProfileUpdateForm, JobForm, SkillForm, EducationForm, LanguageForm
-from Portfolio.models import Profile, Job, Skill, Education, Language
+from Portfolio.forms import RegisterForm, ProfileUpdateForm, JobForm, SkillForm, EducationForm, LanguageForm, \
+    CertificateForm
+from Portfolio.models import Profile, Job, Skill, Education, Language, Certificate
 
 
 class RegisterView(CreateView):
@@ -197,6 +198,47 @@ def LanguageDelete(request, pk):
             return render(request, 'Portfolio/error.html', context={'error_title': 'Access denied!',
                                                                     'error': ' only profile owner can update this profile'})
         language.delete()
+        return redirect(reverse('Portfolio:portfolio'))
+
+
+# here
+class CertificateCreate(CreateView):
+    model = Certificate
+    form_class = CertificateForm
+    template_name = 'Portfolio/Certificate/CreateAndUpdate.html'
+
+    def post(self, request, *args, **kwargs):
+        form = CertificateForm(request.POST, files=request.FILES)
+        if form.is_valid():
+            certificate = form.save(commit=False)
+            certificate.profile = request.user.profile
+            certificate.save()
+            return redirect(reverse('Portfolio:portfolio'))
+
+
+class CertificateUpdate(UpdateView):
+    model = Certificate
+    form_class = CertificateForm
+    template_name = 'Portfolio/Certificate/CreateAndUpdate.html'
+
+    def post(self, request, *args, **kwargs):
+        certificate = Certificate.objects.get(pk=kwargs.get('pk'))
+        if request.user != certificate.profile.user:
+            return render(request, 'Portfolio/error.html', context={'error_title': 'Access denied!',
+                                                                    'error': ' only profile owner can update this profile'})
+        form = CertificateForm(request.POST, instance=certificate, files=request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect(reverse('Portfolio:portfolio'))
+
+
+def CertificateDelete(request, pk):
+    if request.method == 'GET':
+        certificate = get_object_or_404(Certificate, pk=pk)
+        if request.user != certificate.profile.user:
+            return render(request, 'Portfolio/error.html', context={'error_title': 'Access denied!',
+                                                                    'error': ' only profile owner can update this profile'})
+        certificate.delete()
         return redirect(reverse('Portfolio:portfolio'))
 
 
