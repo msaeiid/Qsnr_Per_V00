@@ -2,7 +2,7 @@ import django.forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from Agah import forms
-from Portfolio.models import Profile, Job, Skill, Education
+from Portfolio.models import Profile, Job, Skill, Education, Language
 
 
 class RegisterForm(UserCreationForm):
@@ -50,3 +50,9 @@ class EducationForm(forms.ModelForm):
             'from_dte': DateInput(),
             'to_dte': DateInput(),
         }
+
+
+class LanguageForm(forms.ModelForm):
+    class Meta:
+        model = Language
+        exclude = ['profile']

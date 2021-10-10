@@ -3,8 +3,8 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, UpdateView
 
-from Portfolio.forms import RegisterForm, ProfileUpdateForm, JobForm, SkillForm, EducationForm
-from Portfolio.models import Profile, Job, Skill, Education
+from Portfolio.forms import RegisterForm, ProfileUpdateForm, JobForm, SkillForm, EducationForm, LanguageForm
+from Portfolio.models import Profile, Job, Skill, Education, Language
 
 
 class RegisterView(CreateView):
@@ -120,7 +120,6 @@ def SkillDelete(request, pk):
         return redirect(reverse('Portfolio:portfolio'))
 
 
-# here
 class EducationCreate(CreateView):
     model = Education
     form_class = EducationForm
@@ -158,6 +157,46 @@ def EducationDelete(request, pk):
             return render(request, 'Portfolio/error.html', context={'error_title': 'Access denied!',
                                                                     'error': ' only profile owner can update this profile'})
         education.delete()
+        return redirect(reverse('Portfolio:portfolio'))
+
+
+class LanguageCreate(CreateView):
+    model = Language
+    form_class = LanguageForm
+    template_name = 'Portfolio/Language/CreateAndUpdate.html'
+
+    def post(self, request, *args, **kwargs):
+        form = LanguageForm(request.POST)
+        if form.is_valid():
+            language = form.save(commit=False)
+            language.profile = request.user.profile
+            language.save()
+            return redirect(reverse('Portfolio:portfolio'))
+
+
+class LanguageUpdate(UpdateView):
+    model = Language
+    form_class = LanguageForm
+    template_name = 'Portfolio/Language/CreateAndUpdate.html'
+
+    def post(self, request, *args, **kwargs):
+        language = Language.objects.get(pk=kwargs.get('pk'))
+        if request.user != language.profile.user:
+            return render(request, 'Portfolio/error.html', context={'error_title': 'Access denied!',
+                                                                    'error': ' only profile owner can update this profile'})
+        form = LanguageForm(request.POST, instance=language)
+        if form.is_valid():
+            form.save()
+            return redirect(reverse('Portfolio:portfolio'))
+
+
+def LanguageDelete(request, pk):
+    if request.method == 'GET':
+        language = get_object_or_404(Language, pk=pk)
+        if request.user != language.profile.user:
+            return render(request, 'Portfolio/error.html', context={'error_title': 'Access denied!',
+                                                                    'error': ' only profile owner can update this profile'})
+        language.delete()
         return redirect(reverse('Portfolio:portfolio'))
 
 

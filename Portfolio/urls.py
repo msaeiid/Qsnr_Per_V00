@@ -18,6 +18,9 @@ urlpatterns = [
     path('education/', views.EducationCreate.as_view(), name='education_create'),
     path('education/update/<int:pk>', views.EducationUpdate.as_view(), name='education_update'),
     path('education/remove/<int:pk>', views.EducationDelete, name='education_delete'),
+    path('language/', views.LanguageCreate.as_view(), name='language_create'),
+    path('language/update/<int:pk>', views.LanguageUpdate.as_view(), name='language_update'),
+    path('language/remove/<int:pk>', views.LanguageDelete, name='language_delete'),
 
     path('', views.PortfolioView, name='portfolio'),
 ]
