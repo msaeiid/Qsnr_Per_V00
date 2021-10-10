@@ -2,7 +2,7 @@ import django.forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from Agah import forms
-from Portfolio.models import Profile, Job
+from Portfolio.models import Profile, Job, Skill, Education
 
 
 class RegisterForm(UserCreationForm):
@@ -33,4 +33,20 @@ class JobForm(forms.ModelForm):
             'already_work': django.forms.CheckboxInput,
             'start_dte': DateInput(),
             'end_dte': DateInput(),
+        }
+
+
+class SkillForm(forms.ModelForm):
+    class Meta:
+        model = Skill
+        exclude = ['profile']
+
+
+class EducationForm(forms.ModelForm):
+    class Meta:
+        model = Education
+        fields = ['title', 'university', 'from_dte', 'to_dte', 'grade', 'degree']
+        widgets = {
+            'from_dte': DateInput(),
+            'to_dte': DateInput(),
         }

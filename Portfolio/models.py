@@ -49,12 +49,12 @@ class Skill(models.Model):
     profile = models.ForeignKey(to=Profile, on_delete=models.CASCADE, related_name='skills')
     title = models.CharField(verbose_name='Title', max_length=200, blank=True, editable=True, null=True)
 
-    point = models.IntegerField(verbose_name='How much you know about it',
+    point = models.IntegerField(verbose_name='How much you know about it (1 to 100)',blank=True, editable=True, null=True,
                                 validators=[MaxValueValidator(100), MinValueValidator(1)])
     description = models.TextField(verbose_name='Description', blank=True, editable=True, null=True)
 
     def __str__(self):
-        return f'{self.portfolio.profile.user.username} {self.title}'
+        return f'{self.profile.user.username} {self.title}'
 
 
 class Education(models.Model):

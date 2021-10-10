@@ -3,8 +3,8 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, UpdateView
 
-from Portfolio.forms import RegisterForm, ProfileUpdateForm, JobForm
-from Portfolio.models import Profile, Job
+from Portfolio.forms import RegisterForm, ProfileUpdateForm, JobForm, SkillForm, EducationForm
+from Portfolio.models import Profile, Job, Skill, Education
 
 
 class RegisterView(CreateView):
@@ -43,7 +43,7 @@ class ProfileUpdateView(UpdateView):
 class JobCreate(CreateView):
     model = Job
     form_class = JobForm
-    template_name = 'Portfolio/Job/Create.html'
+    template_name = 'Portfolio/Job/CreateAndUpdate.html'
 
     def post(self, request, *args, **kwargs):
         form = JobForm(request.POST)
@@ -57,7 +57,7 @@ class JobCreate(CreateView):
 class JobUpdate(UpdateView):
     model = Job
     form_class = JobForm
-    template_name = 'Portfolio/Job/Create.html'
+    template_name = 'Portfolio/Job/CreateAndUpdate.html'
 
     def post(self, request, *args, **kwargs):
         job = Job.objects.get(pk=kwargs.get('pk'))
@@ -69,8 +69,99 @@ class JobUpdate(UpdateView):
             form.save()
             return redirect(reverse('Portfolio:portfolio'))
 
-    def get_success_url(self):
-        return reverse_lazy('Portfolio:portfolio')
+
+def JobDelete(request, pk):
+    if request.method == 'GET':
+        job = get_object_or_404(Job, pk=pk)
+        if request.user != job.profile.user:
+            return render(request, 'Portfolio/error.html', context={'error_title': 'Access denied!',
+                                                                    'error': ' only profile owner can update this profile'})
+        job.delete()
+        return redirect(reverse('Portfolio:portfolio'))
+
+
+class SkillCreate(CreateView):
+    model = Skill
+    form_class = SkillForm
+    template_name = 'Portfolio/Skill/CreateAndUpdate.html'
+
+    def post(self, request, *args, **kwargs):
+        form = SkillForm(request.POST)
+        if form.is_valid():
+            skill = form.save(commit=False)
+            skill.profile = request.user.profile
+            skill.save()
+            return redirect(reverse('Portfolio:portfolio'))
+
+
+class SkillUpdate(UpdateView):
+    model = Skill
+    form_class = SkillForm
+    template_name = 'Portfolio/Skill/CreateAndUpdate.html'
+
+    def post(self, request, *args, **kwargs):
+        skill = Skill.objects.get(pk=kwargs.get('pk'))
+        if request.user != skill.profile.user:
+            return render(request, 'Portfolio/error.html', context={'error_title': 'Access denied!',
+                                                                    'error': ' only profile owner can update this profile'})
+        form = SkillForm(request.POST, instance=skill)
+        if form.is_valid():
+            form.save()
+            return redirect(reverse('Portfolio:portfolio'))
+
+
+def SkillDelete(request, pk):
+    if request.method == 'GET':
+        skill = get_object_or_404(Skill, pk=pk)
+        if request.user != skill.profile.user:
+            return render(request, 'Portfolio/error.html', context={'error_title': 'Access denied!',
+                                                                    'error': ' only profile owner can update this profile'})
+        skill.delete()
+        return redirect(reverse('Portfolio:portfolio'))
+
+
+# here
+class EducationCreate(CreateView):
+    model = Education
+    form_class = EducationForm
+    template_name = 'Portfolio/Education/CreateAndUpdate.html'
+
+    def post(self, request, *args, **kwargs):
+        form = EducationForm(request.POST)
+        if form.is_valid():
+            education = form.save(commit=False)
+            education.profile = request.user.profile
+            education.save()
+            return redirect(reverse('Portfolio:portfolio'))
+
+
+class EducationUpdate(UpdateView):
+    model = Education
+    form_class = EducationForm
+    template_name = 'Portfolio/Education/CreateAndUpdate.html'
+
+    def post(self, request, *args, **kwargs):
+        education = Education.objects.get(pk=kwargs.get('pk'))
+        if request.user != education.profile.user:
+            return render(request, 'Portfolio/error.html', context={'error_title': 'Access denied!',
+                                                                    'error': ' only profile owner can update this profile'})
+        form = EducationForm(request.POST, instance=education)
+        if form.is_valid():
+            form.save()
+            return redirect(reverse('Portfolio:portfolio'))
+
+
+def EducationDelete(request, pk):
+    if request.method == 'GET':
+        education = get_object_or_404(Education, pk=pk)
+        if request.user != education.profile.user:
+            return render(request, 'Portfolio/error.html', context={'error_title': 'Access denied!',
+                                                                    'error': ' only profile owner can update this profile'})
+        education.delete()
+        return redirect(reverse('Portfolio:portfolio'))
+
+
+# here
 
 
 def PortfolioView(request):

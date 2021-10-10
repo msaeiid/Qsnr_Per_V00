@@ -1,0 +1,41 @@
+{% extends 'Portfolio/base.html' %}
+{% block title %}
+    Add a skill
+{% endblock %}
+{% block content %}
+    <form method="post">
+    {% csrf_token %}
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="{{ form.title.id_for_label }}">{{ form.title.label }}</label>
+                {{ form.title }}
+            </div>
+            <div class="form-group col-md-6">
+                <label for="{{ form.university.id_for_label }}">{{ form.university.label }}</label>
+                {{ form.university }}
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="{{ form.from_dte.id_for_label }}">{{ form.from_dte.label }}</label>
+                {{ form.from_dte }}
+            </div>
+            <div class="form-group col-md-6">
+                <label for="{{ form.to_dte.id_for_label }}">{{ form.to_dte.label }}</label>
+                {{ form.to_dte }}
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="{{ form.grade.id_for_label }}">{{ form.grade.label }}</label>
+                {{ form.grade }}
+            </div>
+            <div class="form-group col-md-6">
+                <label for="{{ form.degree.id_for_label }}">{{ form.degree.label }}</label>
+                {{ form.degree }}
+            </div>
+        </div>
+        <br>
+        <button type="submit" class="btn btn-primary">Update</button>
+    </form>
+{% endblock %}
