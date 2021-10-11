@@ -24,5 +24,5 @@ urlpatterns = [
     path('certificate/', views.CertificateCreate.as_view(), name='certificate_create'),
     path('certificate/update/<int:pk>', views.CertificateUpdate.as_view(), name='certificate_update'),
     path('certificate/remove/<int:pk>', views.CertificateDelete, name='certificate_delete'),
-    path('', views.PortfolioView, name='portfolio')
+    path('', views.Protfolio, name='portfolio')
 ]

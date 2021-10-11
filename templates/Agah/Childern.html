@@ -21,6 +21,36 @@
         {% csrf_token %}
         {% if Show %}
             <div class="question">
+                <p>
+                    <strong>
+                        {{ S6.code }} &nbsp;
+                    </strong>
+                    {{ S6.title }}
+                </p>
+                <p>
+                    <strong>
+                        {{ S7.code }} &nbsp;
+                    </strong>
+                    {{ S7.title }}
+                </p>
+                <p>
+                    <strong>
+                        {{ S8.code }} &nbsp;
+                    </strong>
+                    {{ S8.title }}
+                </p>
+                <p>
+                    <strong>
+                        {{ S9.code }} &nbsp;
+                    </strong>
+                    {{ S9.title }}
+                </p>
+                <p>
+                    <strong>
+                        {{ S10.code }} &nbsp;
+                    </strong>
+                    {{ S10.title }}
+                </p>
                 <table class="table table-bordered table-hover table-responsive table-sm">
                     <thead>
                     <tr>
@@ -28,18 +58,20 @@
                             فرزند شماره
                         </th>
                         <th rowspan="2">
-                            جنسیت
+                            S6 جنسیت
                         </th>
                         <th rowspan="2">
-                            سال تولد
+                            S7 سال تولد
                         </th>
                         <th rowspan="2">
-                            میزان پول توجیبی هفتگی(تومان)
+                            S8 میزان پول توجیبی هفتگی(تومان)
                         </th>
                         <th colspan="2">
+                            S9
                             بیشترین زمان در هفته
                         </th>
                         <th rowspan="2">
+                            S10
                             تعداد تغذیه
                         </th>
                     </tr>

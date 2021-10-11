@@ -201,7 +201,6 @@ def LanguageDelete(request, pk):
         return redirect(reverse('Portfolio:portfolio'))
 
 
-# here
 class CertificateCreate(CreateView):
     model = Certificate
     form_class = CertificateForm
@@ -242,11 +241,19 @@ def CertificateDelete(request, pk):
         return redirect(reverse('Portfolio:portfolio'))
 
 
-# here
-
-
 def PortfolioView(request):
     if request.method == 'GET':
         pass
+
+
+def Protfolio(request):
+    if request.method == 'GET':
+        context = {'profile': request.user.profile,
+                   'jobs': request.user.profile.jobs,
+                   'skills': request.user.profile.skills,
+                   'education': request.user.profile.educations,
+                   'language': request.user.profile.languages,
+                   'certificate': request.user.profile.certificates}
+        return render(request, 'Portfolio/Portfolio/detail.html', context)
 
 # Create your views here.

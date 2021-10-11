@@ -1,0 +1,85 @@
+{% extends 'Portfolio/base.html' %}
+{% block title %}
+    {{ profile.user.get_full_name }}
+{% endblock %}
+{% block content %}
+    <h6>
+        Personal information
+    </h6>
+    <div class="form-row">
+        <div class="form-group col-md-12">
+            <h3>
+                {% if profile.gender == 1 %}
+                    Mr&nbsp;
+                {% else %}
+                    Miss&nbsp;
+                {% endif %}
+                <strong>
+                    {{ profile.user.get_full_name }}
+                </strong>
+            </h3>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-12">
+            <h5>
+                <strong>
+                    {{ profile.title }}
+                </strong>
+            </h5>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <h6>State: &nbsp;
+                <strong>
+                    {{ profile.country }}&nbsp;,{{ profile.city }}
+                </strong>
+            </h6>
+        </div>
+
+        <div class="form-group col-md-6">
+            <h6>Birthday: &nbsp;
+                <strong>
+                    {{ profile.birthday|date:"d M Y" }}
+                </strong>
+            </h6>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <h6>Marital Status: &nbsp;
+                <strong>
+                    {{ profile.get_marital_status_display }}
+                </strong>
+            </h6>
+        </div>
+        <div class="form-group col-md-6">
+            <h6>Occupation: &nbsp;
+                <strong>
+                    {{ profile.occupation }}
+                </strong>
+            </h6>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <h6>Email: &nbsp;
+                <strong>
+                    {{ profile.user.email }}
+                </strong>
+            </h6>
+        </div>
+        <div class="form-group col-md-6">
+            <h6>Phone: &nbsp;
+                <strong>
+                    {{ profile.phone }}
+                </strong>
+            </h6>
+        </div>
+    </div>
+
+
+
+
+{% endblock %}

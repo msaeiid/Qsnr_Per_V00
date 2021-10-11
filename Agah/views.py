@@ -124,7 +124,7 @@ def Personal(request):
                     answersheet.answers.get(question=S5).delete()
             request.session['answersheet'] = answersheet.pk
             if int(request.POST.get('S4b')) == 1 and int(request.POST.get('S4a')) == 1:
-                request.session['children'] = int(request.POST.get('S5',0))
+                request.session['children'] = int(request.POST.get('S5', 0))
             else:
                 try:
                     del request.session['children']
@@ -147,7 +147,7 @@ def Personal(request):
             Responser_frm = Responser_form(request.POST)
             context = {'S1_frm': S1_frm, 'S2_frm': S2_frm, 'S3_frm': S3_frm, 'S4a_frm': S4a_frm, 'S4b_frm': S4b_frm,
                        'S5_frm': S5_frm, 'Interviewer_frm': Interviewer_frm,
-                       'Answersheet_frm': Answersheet_frm, 'Responser_frm': Responser_frm,'POST':True}
+                       'Answersheet_frm': Answersheet_frm, 'Responser_frm': Responser_frm, 'POST': True}
             return render(request, template_name='Agah/Personal.html', context=context)
 
 
@@ -239,6 +239,11 @@ def Children(request):
                 forms.append(form)
             context['forms'] = forms
             context['Show'] = show
+            context['S6'] = question_S6
+            context['S7'] = question_S7
+            context['S8'] = question_S8
+            context['S9'] = question_S9
+            context['S10'] = question_S10
         return render(request, 'Agah/Childern.html', context)
     # POST
     else:
