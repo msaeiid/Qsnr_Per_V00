@@ -2,6 +2,14 @@
 {% block title %}
     پرسشنامه اصلی
 {% endblock %}
+{% block extra_header %}
+    <style>
+        input[type=checkbox] {
+            margin-top: 8px;
+            margin-right: -20px;
+        }
+    </style>
+{% endblock %}
 {% block content %}
     <form method="post">
         {% csrf_token %}
@@ -18,7 +26,7 @@
                     {% endfor %}
                 </div>
                 <div class="question">
-                    <table class="table table-bordered table-hover table-responsive table-sm">
+                    <table class="table table-bordered table-responsive">
                         <thead>
                         <tr>
                             <th rowspan="2" width="60px">
@@ -78,7 +86,9 @@
                             <tr>
                                 {% for column in row %}
                                     <td>
-                                        {{ column }}
+                                        <div class="form-check">
+                                            {{ column }}
+                                        </div>
                                     </td>
                                 {% endfor %}
                             </tr>
@@ -137,6 +147,16 @@
         $('input[type=radio]').addClass('form-check-input')
         $('label').addClass('form-check-label')
         $('select.11').prop('disabled', true)
+        $('input[type=checkbox]').removeClass('form-control col-12').addClass('form-check-input')
+        $('.form-check-label').removeClass('col-6')
+        $('input[type=checkbox]').change(function () {
+            if ($(this).val() == 0 && this.checked) {
+                var name = $(this).attr('name')
+                var class_html = $(this).attr('class')
+                var id = $(this).attr('id')
+                $(this).replaceWith('<input type="checkbox" name="' + name + '" value="0" class="' + class_html + '" id="' + id + '"><input class="form-control" required type="text" placeholder="سایر" name="' + name + '">')
+            }
+        })
 
         function sum() {
             var num_one = $('input[type=number][name=M1_form_1]').val()

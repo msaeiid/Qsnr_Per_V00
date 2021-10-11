@@ -18,6 +18,9 @@
             integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
             crossorigin="anonymous"></script>
     <style>
+        .custom_container{
+            margin: 30px;
+        }
         label {
             text-align: right;
         }
@@ -60,9 +63,9 @@
         <span class="navbar-toggler-icon"></span>
     </button>
 </nav>
-<div class="container">
+<div class="custom_container">
     <div class="row">
-        <div class="col-12">
+        <div class="col-lg-12">
             {% block content %}
             {% endblock %}
         </div>

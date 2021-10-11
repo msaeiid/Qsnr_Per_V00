@@ -10,10 +10,10 @@ def choice_maker(question):
         options = []
     for item in question.options.all():
         options.append((item.value, item.title))
-    if question.has_other_in_options:
-        options.append((0, 'سایر'))
-    if question.has_nothing_in_options:
-        options.append((4, 'هیچکدام'))
+    # if question.has_other_in_options:
+    #     options.append((0, 'سایر'))
+    # if question.has_nothing_in_options:
+    #     options.append((4, 'هیچکدام'))
     return options
 
 
@@ -119,9 +119,9 @@ def option_maker(question, class_html, choice_list=None, has_other=False, dont_k
 
         for item in choice_list:
             options.append((item.value, item.title))
-        if has_other:
+        if  question.has_other_in_options:
             options.append((0, 'سایر'))
-        if dont_know:
+        if question.has_nothing_in_options:
             options.append((99, 'نمیدانم/ یادم نیست'))
     # Int
     if question.type == 'IntegerField':
