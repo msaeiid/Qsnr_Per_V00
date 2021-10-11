@@ -328,9 +328,7 @@ def Main_view(request):
                 pass
             rest = True
             context['Q_forms'] = Q_forms
-            context['Q_questions'] = [f'{Q4.code} {Q4.title}', f'{Q4a.code} {Q4a.title}', f'{Q5.code} {Q5.title}',
-                                      f'{Q6.code} {Q6.title}', f'{Q7.code} {Q7.title}', f'{Q8.code} {Q8.title}',
-                                      f'{Q9.code} {Q9.title}']
+            context['Q_questions'] = [Q4, Q4a, Q5, Q6, Q7, Q8, Q9]
 
         # show m questions
         M2_form = Question_from(instance=M2)

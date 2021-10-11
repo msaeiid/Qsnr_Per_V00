@@ -16,16 +16,18 @@
         <div class="row">
             {% if Rest %}
                 <div class="row">
-                    <h4 style="margin: auto">سوالات بخش M</h4>
-                </div>
-                <div class="row">
-                    {% for item in Q_questions %}
-                        <div class="question">
-                            {{ item }}
-                        </div>
-                    {% endfor %}
                 </div>
                 <div class="question">
+                    {% for item in Q_questions %}
+                        <div>
+                            <p>
+                                <strong>
+                                    {{ item.code }} &nbsp;
+                                </strong>
+                                {{ item.title }}
+                            </p>
+                        </div>
+                    {% endfor %}
                     <table class="table table-bordered table-responsive">
                         <thead>
                         <tr>
