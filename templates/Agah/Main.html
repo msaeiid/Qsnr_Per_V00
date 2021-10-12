@@ -86,13 +86,33 @@
                         <tbody>
                         {% for row in Q_forms %}
                             <tr>
-                                {% for column in row %}
-                                    <td>
-                                        <div class="form-check">
-                                            {{ column }}
-                                        </div>
-                                    </td>
-                                {% endfor %}
+                                <th>
+                                    {{ row.row.label }}
+                                </th>
+                                <th>
+                                    {{ row.brand.label }}
+                                </th>
+                                <td>
+                                    {{ row.Q4 }}
+                                </td>
+                                <td>
+                                    {{ row.Q4a }}
+                                </td>
+                                <td>
+                                    {{ row.Q5 }}
+                                </td>
+                                <td>
+                                    {{ row.Q6 }}
+                                </td>
+                                <td>
+                                    {{ row.Q7 }}
+                                </td>
+                                <td>
+                                    {{ row.Q8 }}
+                                </td>
+                                <td>
+                                    {{ row.Q9 }}
+                                </td>
                             </tr>
                         {% endfor %}
                         </tbody>
@@ -148,7 +168,8 @@
     <script type="application/javascript">
         $('input[type=radio]').addClass('form-check-input')
         $('label').addClass('form-check-label')
-        $('select.11').prop('disabled', true)
+        $('.11').prop('disabled', true).css('display','none')
+        $('td').addClass('align-middle')
         $('input[type=checkbox]').removeClass('form-control col-12').addClass('form-check-input')
         $('.form-check-label').removeClass('col-6')
         $('input[type=checkbox]').change(function () {

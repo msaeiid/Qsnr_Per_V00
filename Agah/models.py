@@ -147,7 +147,7 @@ class AnswerSheet(models.Model):
 
         if all(check):
             result = 'General'
-            if int(S4.answer) == 1 and int(S5.answer) > 0:
+            if int(S4.option.value) == 1 and int(S5.answer) > 0:
                 result = 'POP'
             self.social_class = result
             self.save()

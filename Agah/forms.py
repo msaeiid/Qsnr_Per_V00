@@ -9,11 +9,11 @@ def choice_maker(question):
     else:
         options = []
     for item in question.options.all():
-        options.append((item.value, item.title))
-    # if question.has_other_in_options:
-    #     options.append((0, 'سایر'))
-    # if question.has_nothing_in_options:
-    #     options.append((4, 'هیچکدام'))
+        options.append((item.pk, item.title))
+    if question.has_other_in_options:
+        options.append((0, 'سایر'))
+    if question.has_nothing_in_options:
+        options.append((4, 'هیچکدام'))
     return options
 
 
@@ -90,8 +90,8 @@ class Main_form(forms.Form):
         Q8 = kwargs.get('instance').get('Q8')
         Q9 = kwargs.get('instance').get('Q9')
         self.fields[f'{row}'] = forms.CharField(widget=forms.TextInput(attrs={'disabled': True, 'value': f'{row}'}))
-        self.fields[f'brand_{row}'] = forms.CharField(
-            widget=forms.TextInput(attrs={'disabled': True, 'value': f'{brands_cat}', 'class': 'brand col-2'}))
+        self.fields[f'brand'] = forms.CharField(label=brands_cat.title)
+        self.fields[f'row'] = forms.CharField(label=row)
         self.fields[f'Q4'] = option_maker(Q4, f'{row}', brands_cat.brands.all(), True, True)
         self.fields[f'Q4a'] = option_maker(Q4a, f'{row}', brands_cat.brands.all(), True, True)
         self.fields[f'Q5'] = option_maker(Q5, f'{row}', brands_cat.brands.all(), True, True)
@@ -118,8 +118,8 @@ def option_maker(question, class_html, choice_list=None, has_other=False, dont_k
             options = []
 
         for item in choice_list:
-            options.append((item.value, item.title))
-        if  question.has_other_in_options:
+            options.append((item.id, item.title))
+        if question.has_other_in_options:
             options.append((0, 'سایر'))
         if question.has_nothing_in_options:
             options.append((99, 'نمیدانم/ یادم نیست'))

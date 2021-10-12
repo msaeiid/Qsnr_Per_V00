@@ -131,7 +131,8 @@
         function female_and_married() {
             var the_div = $('.number_of_child')
             var the_input = $('.number_of_child input')
-            if (parseInt($('#id_S4b').val()) === 1 && parseInt($('#id_S4a').val()) == 1) {
+            if (parseInt($('#id_S4b').val()) === 13 && parseInt($('#id_S4a').val()) === 11) {
+                console.log('here')
                 the_div.removeClass('hide')
                 the_input.prop('disabled', false).prop('required', true);
             } else {

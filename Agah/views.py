@@ -52,12 +52,6 @@ def Personal(request):
             S3 = get_age_category(int(request.POST.get('S3', None)))
             S4b = int(request.POST.get('S4b', None))
             S5 = int(request.POST.get('S5', 0))
-            if S1 in [1, 2, 3] or S2 not in [1, 2, 3, 4, 5] or (S3 in [1, 5] and (S4b == 2 or (S4b == 1 and S5 == 0))):
-                if answersheet:
-                    answersheet.delete()
-                    answersheet.responser.delete()
-                    request.session.flush()
-                raise ValueError('خاتمه نظرسنجی GENERAL')
 
             # save or update responser data
             if answersheet:
@@ -105,19 +99,19 @@ def Personal(request):
                 answersheet.save()
 
             # S1 save
-            save_single_answer('S1', S1, answersheet)
+            S1 = save_single_answer('S1', S1, answersheet)
             # S2 save
-            save_single_answer('S2', S2, answersheet)
+            S2 = save_single_answer('S2', S2, answersheet)
             # S3 save
-            save_single_answer('S3', S3, answersheet)
+            S3 = save_single_answer('S3', S3, answersheet)
             # S4a save
             S4a = int(request.POST.get('S4a'))
-            save_single_answer('S4a', S4a, answersheet)
+            S4a = save_single_answer('S4a', S4a, answersheet)
             # S4b save
-            save_single_answer('S4b', S4b, answersheet)
+            S4b = save_single_answer('S4b', S4b, answersheet)
             # S5 save
             if S5 is not None:
-                save_single_answer('S5', S5, answersheet)
+                S5 = save_single_answer('S5', S5, answersheet)
             else:
                 S5 = Question.objects.get(code='S5')
                 if answersheet.answers.filter(question=S5).exists():
@@ -127,12 +121,21 @@ def Personal(request):
                 request.session['children'] = int(request.POST.get('S5', 0))
             else:
                 try:
-                    del request.session['children']
+                    del request.session['number_of_children']
                 except:
                     pass
+            # Constrain check
+            if S1.option.value in [1, 2, 3] or S2.option.value not in [1, 2, 3, 4, 5] or (S3.answer in [1, 5] and (
+                    S4b.option.value == 2 or (S4b.option.value == 1 and S5.answer == 0))):
+                if answersheet:
+                    answersheet.delete()
+                    answersheet.responser.delete()
+                    request.session.flush()
+                raise ValueError('خاتمه نظرسنجی GENERAL')
+
             answersheet.interviwer_category()
             request.session['answersheet'] = answersheet.pk
-            request.session['number_of_children'] = int(S5)
+            request.session['number_of_children'] = int(S5.answer)
             return redirect(reverse('children'))
         else:
             questions = Question.objects.filter(code__startswith='S')
@@ -155,39 +158,45 @@ def save_single_answer(question_code, user_answer, answersheet, override=True):
     if override:
         question = Question.objects.get(code__iexact=question_code)
         try:
-            option = question.options.get(value=user_answer)
+            option = question.options.get(pk=user_answer)
         except:
             if answersheet.answers.filter(question=question).exists():
                 answer = answersheet.answers.get(question=question)
                 answer.answer = user_answer
                 answer.option = None
                 answer.save()
+                return answer
             else:
                 answer = Answer(question=question, option=None, answersheet=answersheet, point=0, answer=user_answer)
                 answer.save()
+                return answer
         else:
             if answersheet.answers.filter(question=question).exists():
                 if answersheet.answers.get(question=question).option != option:
                     answer = answersheet.answers.get(question=question)
                     answer.option = option
-                    answer.answer = option.value
-                    answer.point = option.point
+                    # answer.answer = option.value
+                    answer.point = 0
                     answer.save()
+                    return answer
+                else:
+                    return answersheet.answers.get(question=question)
             else:
-                answer = Answer(question=question, option=option, answersheet=answersheet, point=option.point,
-                                answer=option.value)
+                answer = Answer(question=question, option=option, answersheet=answersheet, point=option.point)
                 answer.save()
+                return answer
     else:
         question = Question.objects.get(code__iexact=question_code)
         try:
-            option = question.options.get(value=user_answer)
+            option = question.options.get(pk=user_answer)
         except:
             answer = Answer(question=question, option=None, answersheet=answersheet, point=0, answer=user_answer)
             answer.save()
+            return answer
         else:
-            answer = Answer(question=question, option=option, answersheet=answersheet, point=option.point,
-                            answer=option.value)
+            answer = Answer(question=question, option=option, answersheet=answersheet, point=option.point)
             answer.save()
+            return answer
 
 
 def get_age_category(age):
@@ -220,7 +229,7 @@ def Children(request):
         return redirect(reverse('personal'))
     # GET
     if request.method == 'GET':
-        number_of_children = request.session.get('children', False)
+        number_of_children = request.session.get('number_of_children', False)
         show = False
         q_questions = Question.objects.filter(code__startswith='Q')[:3]
         q_forms = []
@@ -263,7 +272,7 @@ def Children(request):
         if answersheet.answers.filter(question=question_S10).exists():
             answersheet.answers.filter(question=question_S10).delete()
 
-        for i in range(1, request.session['children'] + 1):
+        for i in range(1, request.session['number_of_children'] + 1):
             save_single_answer(question_S6, request.POST.get(f'S6_{i}'), answersheet, False)
             save_single_answer(question_S7, request.POST.get(f'S7_{i}'), answersheet, False)
             save_single_answer(question_S8, request.POST.get(f'S8_{i}'), answersheet, False)
@@ -301,9 +310,9 @@ def Main_view(request):
     except:
         messages.warning(request, 'پرسشنامه فعال ندارید')
         return redirect(reverse('personal'))
-    Q1_status = int(answersheet.answers.get(question__code='Q1').answer) == 1
-    Q2_status = int(answersheet.answers.get(question__code='Q2').answer) == 1
-    Q3_status = int(answersheet.answers.get(question__code='Q3').answer) == 1
+    Q1_status = int(answersheet.answers.get(question__code='Q1').option.value) == 1
+    Q2_status = int(answersheet.answers.get(question__code='Q2').option.value) == 1
+    Q3_status = int(answersheet.answers.get(question__code='Q3').option.value) == 1
     if all([Q1_status, Q2_status, Q3_status]):
         questions = Question.objects.filter(code__startswith='Q')[3:]
         Q4 = questions[0]
@@ -362,9 +371,9 @@ def Main_view(request):
             # save Q7
             save_list_answer(Q7, Q7_answer, answersheet)
             # save Q8
-            save_list_answer(Q8, Q8_answer, answersheet)
+            save_list_answer(Q8, Q8_answer, answersheet,False)
             # save Q9
-            save_list_answer(Q9, Q9_answer, answersheet)
+            save_list_answer(Q9, Q9_answer, answersheet,False)
         # save M1
         M1_form_1_answer = request.POST.get('M1_form_1')
         answer = Answer(question=M1, answersheet=answersheet, answer=M1_form_1_answer, point=0,
@@ -372,7 +381,8 @@ def Main_view(request):
         answer.save()
         M1_form_2_answer = request.POST.get('M1_form_2')
         answer = Answer(question=M1, answersheet=answersheet, answer=M1_form_2_answer, point=0,
-                        option=M1.options.get(value=int(2)))
+                        option=M1.options.get(value
+                                              =int(2)))
         answer.save()
         # save_single_answer(M1, M1_form_1_answer, answersheet,False)
         # save_single_answer(M1, M1_form_2_answer, answersheet,False)
@@ -383,20 +393,21 @@ def Main_view(request):
         M3_answer = request.POST.get('M3')
         save_single_answer(M3, M3_answer, answersheet)
         messages.success(request, message='پرسشنامه با موفقیت ثبت شد')
-        request.session.flush()
+        # request.session.flush()
         return redirect(reverse('personal'))
 
 
-def save_list_answer(question, user_answer, answersheet):
-    category = BrandCategory.objects.all()[:10]
-    batch_size = 10
+def save_list_answer(question, user_answer, answersheet,brand=True):
+    #category = BrandCategory.objects.all()[:10]
+    batch_size = len(user_answer)
     list_answer = []
-    for i in range(10):
-        try:
-            list_answer.append(Answer(question=question, answersheet=answersheet, answer=user_answer[i], point=0,
-                                      brand=category[i].brands.get(value=int(user_answer[i]))))
-        except:
-            list_answer.append(Answer(question=question, answersheet=answersheet, answer=user_answer[i], point=0))
+    for i in range(len(user_answer)):
+        if brand:
+            list_answer.append(Answer(question=question, answersheet=answersheet, point=0,
+                                      brand=Brand.objects.get(pk=int(user_answer[i]))))
+        else:
+            option = question.options.get(pk=user_answer[i])
+            list_answer.append(Answer(question=question, answersheet=answersheet, option=option, point=0))
 
     bulk = Answer.objects.bulk_create(list_answer, batch_size)
 

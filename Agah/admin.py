@@ -76,7 +76,7 @@ class OptionCustom(ImportExportModelAdmin, admin.ModelAdmin):
 
 @admin.register(Answer)
 class AnswerCustom(ImportExportModelAdmin, admin.ModelAdmin):
-    list_display = ('answersheet', 'question', 'brand', 'option', 'answer', 'point',)
+    list_display = ('answersheet', 'question', 'brand', 'option', 'answer',)
     search_fields = ['answersheet']
 
     class Meta:
