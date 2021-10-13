@@ -155,48 +155,50 @@ def Personal(request):
 
 
 def save_single_answer(question_code, user_answer, answersheet, override=True):
-    if override:
-        question = Question.objects.get(code__iexact=question_code)
-        try:
-            option = question.options.get(pk=user_answer)
-        except:
-            if answersheet.answers.filter(question=question).exists():
-                answer = answersheet.answers.get(question=question)
-                answer.answer = user_answer
-                answer.option = None
-                answer.save()
-                return answer
-            else:
-                answer = Answer(question=question, option=None, answersheet=answersheet, point=0, answer=user_answer)
-                answer.save()
-                return answer
-        else:
-            if answersheet.answers.filter(question=question).exists():
-                if answersheet.answers.get(question=question).option != option:
+    if user_answer is not None:
+        if override:
+            question = Question.objects.get(code__iexact=question_code)
+            try:
+                option = question.options.get(pk=user_answer)
+            except:
+                if answersheet.answers.filter(question=question).exists():
                     answer = answersheet.answers.get(question=question)
-                    answer.option = option
-                    # answer.answer = option.value
-                    answer.point = 0
+                    answer.answer = user_answer
+                    answer.option = None
                     answer.save()
                     return answer
                 else:
-                    return answersheet.answers.get(question=question)
+                    answer = Answer(question=question, option=None, answersheet=answersheet, point=0,
+                                    answer=user_answer)
+                    answer.save()
+                    return answer
+            else:
+                if answersheet.answers.filter(question=question).exists():
+                    if answersheet.answers.get(question=question).option != option:
+                        answer = answersheet.answers.get(question=question)
+                        answer.option = option
+                        # answer.answer = option.value
+                        answer.point = 0
+                        answer.save()
+                        return answer
+                    else:
+                        return answersheet.answers.get(question=question)
+                else:
+                    answer = Answer(question=question, option=option, answersheet=answersheet, point=option.point)
+                    answer.save()
+                    return answer
+        else:
+            question = Question.objects.get(code__iexact=question_code)
+            try:
+                option = question.options.get(pk=user_answer)
+            except:
+                answer = Answer(question=question, option=None, answersheet=answersheet, point=0, answer=user_answer)
+                answer.save()
+                return answer
             else:
                 answer = Answer(question=question, option=option, answersheet=answersheet, point=option.point)
                 answer.save()
                 return answer
-    else:
-        question = Question.objects.get(code__iexact=question_code)
-        try:
-            option = question.options.get(pk=user_answer)
-        except:
-            answer = Answer(question=question, option=None, answersheet=answersheet, point=0, answer=user_answer)
-            answer.save()
-            return answer
-        else:
-            answer = Answer(question=question, option=option, answersheet=answersheet, point=option.point)
-            answer.save()
-            return answer
 
 
 def get_age_category(age):
@@ -232,10 +234,7 @@ def Children(request):
         number_of_children = request.session.get('number_of_children', False)
         show = False
         q_questions = Question.objects.filter(code__startswith='Q')[:3]
-        q_forms = []
-        for q in q_questions:
-            q_forms.append(Question_from(instance=q))
-        context = {'q_forms': q_forms, 'Show': show}
+        context = {'Show': show}
         if number_of_children > 0 and number_of_children is not None:
             show = True
             # return redirect(reverse('main'))
@@ -279,19 +278,6 @@ def Children(request):
             save_single_answer(question_S9, request.POST.get(f'S9_{i}_1'), answersheet, False)
             save_single_answer(question_S9, request.POST.get(f'S9_{i}_2'), answersheet, False)
             save_single_answer(question_S10, request.POST.get(f'S10_{i}'), answersheet, False)
-        q_questions = Question.objects.filter(code__startswith='Q')[:3]
-        question_Q1 = q_questions[0]
-        question_Q2 = q_questions[1]
-        question_Q3 = q_questions[2]
-        q1_answer = int(request.POST.get('Q1'))
-        q2_answer = int(request.POST.get('Q2'))
-        q3_answer = int(request.POST.get('Q3'))
-        # save or update Q1 answer
-        save_single_answer(question_Q1, q1_answer, answersheet, True)
-        # save or update Q2 answer
-        save_single_answer(question_Q2, q2_answer, answersheet, True)
-        # save or update Q3 answer
-        save_single_answer(question_Q3, q3_answer, answersheet, True)
         return redirect(reverse('main'))
 
 
@@ -310,34 +296,31 @@ def Main_view(request):
     except:
         messages.warning(request, 'پرسشنامه فعال ندارید')
         return redirect(reverse('personal'))
-    Q1_status = int(answersheet.answers.get(question__code='Q1').option.value) == 1
-    Q2_status = int(answersheet.answers.get(question__code='Q2').option.value) == 1
-    Q3_status = int(answersheet.answers.get(question__code='Q3').option.value) == 1
-    if all([Q1_status, Q2_status, Q3_status]):
-        questions = Question.objects.filter(code__startswith='Q')[3:]
-        Q4 = questions[0]
-        Q4a = Q4.next_question
-        Q5 = Q4a.next_question
-        Q6 = Q5.next_question
-        Q7 = Q6.next_question
-        Q8 = Q7.next_question
-        Q9 = Q8.next_question
+    questions = Question.objects.filter(code__startswith='Q')
+    Q1 = questions[0]
+    Q2 = Q1.next_question
+    Q3 = Q2.next_question
+    Q4 = Q3.next_question
+    Q4a = Q4.next_question
+    Q5 = Q4a.next_question
+    Q6 = Q5.next_question
+    Q7 = Q6.next_question
+    Q8 = Q7.next_question
+    Q9 = Q8.next_question
     # GET
     if request.method == 'GET':
         rest = False
         context = {}
-        # show rest of q questions...
-        if all([Q1_status, Q2_status, Q3_status]):
-            Q_forms = []
-            brands_cats = BrandCategory.objects.all()
-            for i in range(1, 12):
-                ins = {'Q4': Q4, 'Q4a': Q4a, 'Q5': Q5, 'Q6': Q6, 'Q7': Q7, 'Q8': Q8, 'Q9': Q9, 'row': i,
-                       'brands_cat': brands_cats[i - 1]}
-                Q_forms.append(Main_form(instance=ins))
-                pass
-            rest = True
-            context['Q_forms'] = Q_forms
-            context['Q_questions'] = [Q4, Q4a, Q5, Q6, Q7, Q8, Q9]
+        # show q questions...
+        Q_forms = []
+        brands_cats = BrandCategory.objects.all()
+        for i in range(1, 12):
+            ins = {'Q1': Q1, 'Q2': Q2, 'Q3': Q3, 'Q4': Q4, 'Q4a': Q4a, 'Q5': Q5, 'Q6': Q6, 'Q7': Q7, 'Q8': Q8, 'Q9': Q9,
+                   'row': i,
+                   'brands_cat': brands_cats[i - 1]}
+            Q_forms.append(Main_form(instance=ins))
+        context['Q_forms'] = Q_forms
+        context['Q_questions'] = [Q4, Q4a, Q5, Q6, Q7, Q8, Q9]
 
         # show m questions
         M2_form = Question_from(instance=M2)
@@ -345,7 +328,6 @@ def Main_view(request):
         context['M_forms'] = [M2_form, M3_form]
         context['M1'] = M1
         context['M1_form'] = Main_form_M_series()
-        context['Rest'] = rest
         return render(request, 'Agah/Main.html', context)
 
 

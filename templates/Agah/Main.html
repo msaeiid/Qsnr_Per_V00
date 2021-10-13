@@ -14,111 +14,136 @@
     <form method="post">
         {% csrf_token %}
         <div class="row">
-            {% if Rest %}
-                <div class="row">
-                </div>
-                <div class="question">
-                    {% for item in Q_questions %}
-                        <div>
-                            <p>
-                                <strong>
-                                    {{ item.code }} &nbsp;
-                                </strong>
-                                {{ item.title }}
-                            </p>
-                        </div>
+            <div class="row">
+            </div>
+            <div class="question">
+                {% for item in Q_questions %}
+                    <div>
+                        <p>
+                            <strong>
+                                {{ item.code }} &nbsp;
+                            </strong>
+                            {{ item.title }}
+                        </p>
+                    </div>
+                {% endfor %}
+                <table class="table table-bordered table-responsive">
+                    <thead>
+                    <tr>
+                        <th rowspan="2" width="60px">
+                            #
+                        </th>
+                        <th rowspan="2">
+                            دسته بندی محصولات
+                        </th>
+                        <th>
+                            Q1
+                        </th>
+                        <th>
+                            Q2
+                        </th>
+                        <th>
+                            Q3
+                        </th>
+                        <th>
+                            Q4
+                        </th>
+                        <th>
+                            Q4a
+                        </th>
+                        <th>
+                            Q5
+                        </th>
+                        <th>
+                            Q6
+                        </th>
+                        <th>
+                            Q7
+                        </th>
+                        <th>
+                            Q8
+                        </th>
+                        <th>
+                            Q9
+                        </th>
+                    </tr>
+                    <tr>
+                        <th>
+                            12ماه گذشته
+                        </th>
+                        <th>
+                            3 ماه گذشته
+                        </th>
+                        <th>
+                            استفاده منظم
+                        </th>
+                        <th>
+                            ملکه ذهنی(اولین مارک)
+                        </th>
+                        <th>
+                            آگاهی بدون کمک
+                        </th>
+                        <th>
+                            آگاهی با کمک
+                        </th>
+                        <th>
+                            برندهای استفاده شده اخیر
+                        </th>
+                        <th>
+                            برند محبوب MPSA
+                        </th>
+                        <th>
+                            چند وقت یکبار
+                        </th>
+                        <th>
+                            بیشتر از کجا میخرید
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for row in Q_forms %}
+                        <tr>
+                            <th>
+                                {{ row.row.label }}
+                            </th>
+                            <th>
+                                {{ row.brand.label }}
+                            </th>
+                            <td>
+                                {{ row.Q1 }}
+                            </td>
+                            <td>
+                                {{ row.Q2 }}
+                            </td>
+                            <td>
+                                {{ row.Q3 }}
+                            </td>
+                            <td>
+                                {{ row.Q4 }}
+                            </td>
+                            <td>
+                                {{ row.Q4a }}
+                            </td>
+                            <td>
+                                {{ row.Q5 }}
+                            </td>
+                            <td>
+                                {{ row.Q6 }}
+                            </td>
+                            <td>
+                                {{ row.Q7 }}
+                            </td>
+                            <td>
+                                {{ row.Q8 }}
+                            </td>
+                            <td>
+                                {{ row.Q9 }}
+                            </td>
+                        </tr>
                     {% endfor %}
-                    <table class="table table-bordered table-responsive">
-                        <thead>
-                        <tr>
-                            <th rowspan="2" width="60px">
-                                #
-                            </th>
-                            <th rowspan="2">
-                                دسته بندی محصولات
-                            </th>
-                            <th>
-                                Q4
-                            </th>
-                            <th>
-                                Q4a
-                            </th>
-                            <th>
-                                Q5
-                            </th>
-                            <th>
-                                Q6
-                            </th>
-                            <th>
-                                Q7
-                            </th>
-                            <th>
-                                Q8
-                            </th>
-                            <th>
-                                Q9
-                            </th>
-                        </tr>
-                        <tr>
-                            <th>
-                                ملکه ذهنی(اولین مارک)
-                            </th>
-                            <th>
-                                آگاهی بدون کمک
-                            </th>
-                            <th>
-                                آگاهی با کمک
-                            </th>
-                            <th>
-                                برندهای استفاده شده اخیر
-                            </th>
-                            <th>
-                                برند محبوب MPSA
-                            </th>
-                            <th>
-                                چند وقت یکبار
-                            </th>
-                            <th>
-                                بیشتر از کجا میخرید
-                            </th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {% for row in Q_forms %}
-                            <tr>
-                                <th>
-                                    {{ row.row.label }}
-                                </th>
-                                <th>
-                                    {{ row.brand.label }}
-                                </th>
-                                <td>
-                                    {{ row.Q4 }}
-                                </td>
-                                <td>
-                                    {{ row.Q4a }}
-                                </td>
-                                <td>
-                                    {{ row.Q5 }}
-                                </td>
-                                <td>
-                                    {{ row.Q6 }}
-                                </td>
-                                <td>
-                                    {{ row.Q7 }}
-                                </td>
-                                <td>
-                                    {{ row.Q8 }}
-                                </td>
-                                <td>
-                                    {{ row.Q9 }}
-                                </td>
-                            </tr>
-                        {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-            {% endif %}
+                    </tbody>
+                </table>
+            </div>
             <div class="col-5">
                 <div class="question">
                     <p>
@@ -168,7 +193,8 @@
     <script type="application/javascript">
         $('input[type=radio]').addClass('form-check-input')
         $('label').addClass('form-check-label')
-        $('.11').prop('disabled', true).css('display','none')
+        $('.11').prop('disabled', true).css('display', 'none')
+        $('.11.check').prop('disabled', false).css('display', 'block')
         $('td').addClass('align-middle')
         $('input[type=checkbox]').removeClass('form-control col-12').addClass('form-check-input')
         $('.form-check-label').removeClass('col-6')
@@ -208,5 +234,29 @@
             }
             return true
         });
+
+
+        $('.check').change(function () {
+            enable_rest($(this))
+        })
+
+        function enable_rest(input) {
+            var temp_class = $(input).attr('class').split(" ")[0]
+            var count = 0
+            $('.check.' + temp_class + ' :selected').each(function () {
+                if ($(this).text() == 'بله') {
+                    count += 1
+                }
+            })
+            console.log(count)
+            var rest_of_row = $('.' + temp_class).not('.check')
+            if (count >= 3) {
+                rest_of_row.slideDown(1000).attr('disabled', false)
+                count=0
+            } else {
+                rest_of_row.slideUp(1000).attr('disabled', true)
+                count=0
+            }
+        }
     </script>
 {% endblock %}
