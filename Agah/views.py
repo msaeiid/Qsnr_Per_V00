@@ -371,9 +371,9 @@ def Main_view(request):
             # save Q7
             save_list_answer(Q7, Q7_answer, answersheet)
             # save Q8
-            save_list_answer(Q8, Q8_answer, answersheet,False)
+            save_list_answer(Q8, Q8_answer, answersheet, False)
             # save Q9
-            save_list_answer(Q9, Q9_answer, answersheet,False)
+            save_list_answer(Q9, Q9_answer, answersheet, False)
         # save M1
         M1_form_1_answer = request.POST.get('M1_form_1')
         answer = Answer(question=M1, answersheet=answersheet, answer=M1_form_1_answer, point=0,
@@ -397,8 +397,8 @@ def Main_view(request):
         return redirect(reverse('personal'))
 
 
-def save_list_answer(question, user_answer, answersheet,brand=True):
-    #category = BrandCategory.objects.all()[:10]
+def save_list_answer(question, user_answer, answersheet, brand=True):
+    # category = BrandCategory.objects.all()[:10]
     batch_size = len(user_answer)
     list_answer = []
     for i in range(len(user_answer)):
