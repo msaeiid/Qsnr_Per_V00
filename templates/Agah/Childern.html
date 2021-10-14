@@ -115,8 +115,10 @@
             var age = year - user_input_value
             var html_class = $(user_input).attr('class')[0]
             if (age >= 3 && age <= 12) {
+                $('.' + html_class + '.option').slideDown('fast')
                 $('.' + html_class + '.option').prop('disabled', false)
             } else {
+                $('.' + html_class + '.option').slideUp('fast')
                 $('.' + html_class + '.option').prop('disabled', true)
             }
         }

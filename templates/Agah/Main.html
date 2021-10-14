@@ -11,6 +11,7 @@
     </style>
 {% endblock %}
 {% block content %}
+    <h2>پرسشنامه اصلی</h2>
     <form method="post">
         {% csrf_token %}
         <div class="row">
@@ -248,13 +249,12 @@
                     count += 1
                 }
             })
-            console.log(count)
-            var rest_of_row = $('.' + temp_class).not('.check')
+            var rest_of_row = $('.' + temp_class).not('.check').not('.11')
             if (count >= 3) {
-                rest_of_row.slideDown(1000).attr('disabled', false)
+                rest_of_row.slideDown(600).attr('disabled', false)
                 count=0
             } else {
-                rest_of_row.slideUp(1000).attr('disabled', true)
+                rest_of_row.slideUp(600).attr('disabled', true)
                 count=0
             }
         }
