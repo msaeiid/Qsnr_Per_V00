@@ -4,7 +4,7 @@ from django.views.decorators.csrf import csrf_protect
 
 from Agah.forms import Question_from, Interviewer_form, Answersheet_from, Responser_form, Children_form, Main_form, \
     Main_form_M_series
-from Agah.models import Question, Interviewer, Survey, Answer, AnswerSheet, Brand, BrandCategory
+from Agah.models import Question, Interviewer, Survey, Answer, AnswerSheet, Brand, BrandCategory, Option
 from django.contrib import messages
 
 
@@ -125,18 +125,23 @@ def Personal(request):
                 except:
                     pass
             # Constrain check
+            if S2.option is None:
+                S2.option = Option.objects.get(pk=10)
+                S2.save()
             if S1.option.value in [1, 2, 3] or S2.option.value not in [1, 2, 3, 4, 5] or (S3.answer in [1, 5] and (
                     S4b.option.value == 2 or (S4b.option.value == 1 and S5.answer == 0))):
                 if answersheet:
-                    answersheet.delete()
-                    answersheet.responser.delete()
-                    request.session.flush()
-                raise ValueError('خاتمه نظرسنجی GENERAL')
+                    del request.session['answersheet']
+                messages.warning(request, 'خاتمه نظرسنجی')
+                return redirect(reverse('personal'))
 
             answersheet.interviwer_category()
             request.session['answersheet'] = answersheet.pk
-            request.session['number_of_children'] = int(S5.answer)
-            return redirect(reverse('children'))
+            if S5.answer:
+                request.session['number_of_children'] = int(S5.answer)
+                return redirect(reverse('children'))
+            else:
+                return redirect(reverse('main'))
         else:
             questions = Question.objects.filter(code__startswith='S')
             S1_frm = Question_from(instance=questions.get(code__iexact='S1'))
@@ -320,7 +325,8 @@ def Main_view(request):
                    'brands_cat': brands_cats[i - 1]}
             Q_forms.append(Main_form(instance=ins))
         context['Q_forms'] = Q_forms
-        context['Q_questions'] = [Q4, Q4a, Q5, Q6, Q7, Q8, Q9]
+        context['Q_questions'] = {'Q1': Q1, 'Q2': Q2, 'Q3': Q3, 'Q4': Q4, 'Q4a': Q4a, 'Q5': Q5, 'Q6': Q6, 'Q7': Q7,
+                                  'Q8': Q8, 'Q9': Q9}
 
         # show m questions
         M2_form = Question_from(instance=M2)
@@ -333,29 +339,41 @@ def Main_view(request):
 
     # POST
     else:
-        # show rest of q questions...
-        if all([Q1_status, Q2_status, Q3_status]):
-            Q4_answer = request.POST.getlist('Q4')
-            Q4a_answer = request.POST.getlist('Q4a')
-            Q5_answer = request.POST.getlist('Q5')
-            Q6_answer = request.POST.getlist('Q6')
-            Q7_answer = request.POST.getlist('Q7')
-            Q8_answer = request.POST.getlist('Q8')
-            Q9_answer = request.POST.getlist('Q9')
-            # save Q4
-            save_list_answer(Q4, Q4_answer, answersheet)
-            # save Q4a
-            save_list_answer(Q4a, Q4a_answer, answersheet)
-            # save Q5
-            save_list_answer(Q5, Q5_answer, answersheet)
-            # save Q6
-            save_list_answer(Q6, Q6_answer, answersheet)
-            # save Q7
-            save_list_answer(Q7, Q7_answer, answersheet)
-            # save Q8
-            save_list_answer(Q8, Q8_answer, answersheet, False)
-            # save Q9
-            save_list_answer(Q9, Q9_answer, answersheet, False)
+        # get answers...
+        Q1_answer = request.POST.getlist('Q1')
+        Q2_answer = request.POST.getlist('Q2')
+        Q3_answer = request.POST.getlist('Q3')
+        Q4_answer = request.POST.getlist('Q4')
+        Q4a_answer = request.POST.getlist('Q4a')
+        Q5_answer = request.POST.getlist('Q5')
+        Q6_answer = request.POST.getlist('Q6')
+        Q7_answer = request.POST.getlist('Q7')
+        Q8_answer = request.POST.getlist('Q8')
+        Q9_answer = request.POST.getlist('Q9')
+
+
+        # save Q1
+        save_list_answer(Q1, Q1_answer, answersheet)
+        # save Q2
+        save_list_answer(Q2, Q2_answer, answersheet)
+        # save Q3
+        save_list_answer(Q3, Q3_answer, answersheet)
+
+
+        # save Q4
+        save_list_answer(Q4, Q4_answer, answersheet)
+        # save Q4a
+        save_list_answer(Q4a, Q4a_answer, answersheet)
+        # save Q5
+        save_list_answer(Q5, Q5_answer, answersheet)
+        # save Q6
+        save_list_answer(Q6, Q6_answer, answersheet)
+        # save Q7
+        save_list_answer(Q7, Q7_answer, answersheet)
+        # save Q8
+        save_list_answer(Q8, Q8_answer, answersheet, False)
+        # save Q9
+        save_list_answer(Q9, Q9_answer, answersheet, False)
         # save M1
         M1_form_1_answer = request.POST.get('M1_form_1')
         answer = Answer(question=M1, answersheet=answersheet, answer=M1_form_1_answer, point=0,

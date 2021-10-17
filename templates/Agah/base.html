@@ -80,16 +80,34 @@
     var labels = $('label')
     var textareas = $('textarea')
     labels.addClass('col-6')
-    inputs.addClass('form-control col-12')
-    selects.addClass('custom-select col-12')
+    inputs.addClass('form-control')
+    selects.addClass('custom-select')
     textareas.addClass('form-control rounded-4')
     $('select').change(function () {
-        if (parseInt($(this).val()) == 0) {
-            var class_html = $(this).attr('name')
-            $(this).replaceWith('<input type="text" placeholder="سایر" required name="' + class_html + '">')
-            $('input').addClass('form-control col-12')
+        show_hide_other_select($(this))
+    });
+    $('input[type=checkbox]').click(function () {
+        var name_ = $(this).attr('name')
+        var class_ = $(this).attr('class').split(" ")[0]
+        var temp = $('input[type=text][name=' + name_ + '].' + class_ + '')
+        if (parseInt($(this).val()) == 0 && $(this).is(':checked')) {
+            temp.slideDown(600).prop('disabled', false).prop('required', true)
+        }
+        else if (parseInt($(this).val()) == 0 && $(this).not(':checked')) {
+            temp.slideUp(600).prop('disabled', true).prop('required', false)
         }
     });
+
+    function show_hide_other_select(element) {
+        var name_ = $(element).attr('name')
+        var class_ = $(element).attr('class').split(" ")[0]
+        var temp = $('input[type=text][name=' + name_ + '].' + class_ + '')
+        if (parseInt($(element).val()) == 0) {
+            temp.slideDown(600).prop('disabled', false).prop('required', true)
+        } else {
+            temp.slideUp(600).prop('disabled', true).prop('required', false)
+        }
+    }
 
 
     $(function () {

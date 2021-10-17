@@ -162,7 +162,7 @@ class Answer(models.Model):
     question = models.ForeignKey(verbose_name='پرسش', to=Question, on_delete=models.PROTECT)
     answersheet = models.ForeignKey(verbose_name='پاسخنامه', to=AnswerSheet, related_name='answers',
                                     on_delete=models.CASCADE)
-    answer = models.CharField(verbose_name='مقدار', max_length=10, default=None, null=True, blank=True, editable=True)
+    answer = models.CharField(verbose_name='مقدار', max_length=200, default=None, null=True, blank=True, editable=True)
     point = models.PositiveSmallIntegerField(verbose_name='امتیاز', editable=True, null=False, blank=False, default=0)
     option = models.ForeignKey(to=Option, verbose_name='گزینه ی انتخاب شده', editable=True, null=True, blank=True,
                                default=None, on_delete=models.PROTECT)

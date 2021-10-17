@@ -18,16 +18,16 @@
             <div class="row">
             </div>
             <div class="question">
-                {% for item in Q_questions %}
-                    <div>
-                        <p>
-                            <strong>
-                                {{ item.code }} &nbsp;
-                            </strong>
-                            {{ item.title }}
-                        </p>
-                    </div>
-                {% endfor %}
+                {% include 'Agah/extention/Main_question__.html' with code=Q_questions.Q1.code title=Q_questions.Q1.title %}
+                {% include 'Agah/extention/Main_question__.html' with code=Q_questions.Q2.code title=Q_questions.Q2.title %}
+                {% include 'Agah/extention/Main_question__.html' with code=Q_questions.Q3.code title=Q_questions.Q3.title %}
+                {% include 'Agah/extention/Main_question__.html' with code=Q_questions.Q4.code title=Q_questions.Q4.title %}
+                {% include 'Agah/extention/Main_question__.html' with code=Q_questions.Q4a.code title=Q_questions.Q4a.title %}
+                {% include 'Agah/extention/Main_question__.html' with code=Q_questions.Q5.code title=Q_questions.Q5.title %}
+                {% include 'Agah/extention/Main_question__.html' with code=Q_questions.Q6.code title=Q_questions.Q6.title %}
+                {% include 'Agah/extention/Main_question__.html' with code=Q_questions.Q7.code title=Q_questions.Q7.title %}
+                {% include 'Agah/extention/Main_question__.html' with code=Q_questions.Q8.code title=Q_questions.Q8.title %}
+                {% include 'Agah/extention/Main_question__.html' with code=Q_questions.Q9.code title=Q_questions.Q9.title %}
                 <table class="table table-bordered table-responsive">
                     <thead>
                     <tr>
@@ -104,42 +104,18 @@
                     <tbody>
                     {% for row in Q_forms %}
                         <tr>
-                            <th>
-                                {{ row.row.label }}
-                            </th>
-                            <th>
-                                {{ row.brand.label }}
-                            </th>
-                            <td>
-                                {{ row.Q1 }}
-                            </td>
-                            <td>
-                                {{ row.Q2 }}
-                            </td>
-                            <td>
-                                {{ row.Q3 }}
-                            </td>
-                            <td>
-                                {{ row.Q4 }}
-                            </td>
-                            <td>
-                                {{ row.Q4a }}
-                            </td>
-                            <td>
-                                {{ row.Q5 }}
-                            </td>
-                            <td>
-                                {{ row.Q6 }}
-                            </td>
-                            <td>
-                                {{ row.Q7 }}
-                            </td>
-                            <td>
-                                {{ row.Q8 }}
-                            </td>
-                            <td>
-                                {{ row.Q9 }}
-                            </td>
+                            {% include 'Agah/extention/Main_td__.html' with data=row.row.label %}
+                            {% include 'Agah/extention/Main_td__.html' with data=row.brand.label %}
+                            {% include 'Agah/extention/Main_td__.html' with data=row.Q1 %}
+                            {% include 'Agah/extention/Main_td__.html' with data=row.Q2 %}
+                            {% include 'Agah/extention/Main_td__.html' with data=row.Q3 %}
+                            {% include 'Agah/extention/Main_td_with_include__.html' with data=row.Q4 name='Q4' class=row.row.label %}
+                            {% include 'Agah/extention/Main_td_with_include__.html' with data=row.Q4a name='Q4a' class=row.row.label %}
+                            {% include 'Agah/extention/Main_td_with_include__.html' with data=row.Q5 name='Q5' class=row.row.label %}
+                            {% include 'Agah/extention/Main_td_with_include__.html' with data=row.Q6 name='Q6' class=row.row.label %}
+                            {% include 'Agah/extention/Main_td_with_include__.html' with data=row.Q7 name='Q7' class=row.row.label %}
+                            {% include 'Agah/extention/Main_td_with_include__.html' with data=row.Q8 name='Q8' class=row.row.label %}
+                            {% include 'Agah/extention/Main_td_with_include__.html' with data=row.Q9 name='Q9' class=row.row.label %}
                         </tr>
                     {% endfor %}
                     </tbody>
@@ -172,7 +148,7 @@
                                 </td>
                             {% endfor %}
                             <td>
-                                <input type="text" name="result">
+                                <input type="text" name="result" disabled>
                             </td>
                         </tr>
                         </tbody>
@@ -199,14 +175,20 @@
         $('td').addClass('align-middle')
         $('input[type=checkbox]').removeClass('form-control col-12').addClass('form-check-input')
         $('.form-check-label').removeClass('col-6')
-        $('input[type=checkbox]').change(function () {
-            if ($(this).val() == 0 && this.checked) {
-                var name = $(this).attr('name')
-                var class_html = $(this).attr('class')
-                var id = $(this).attr('id')
-                $(this).replaceWith('<input type="checkbox" name="' + name + '" value="0" class="' + class_html + '" id="' + id + '"><input class="form-control" required type="text" placeholder="سایر" name="' + name + '">')
+        {% comment %}$('input[value=0]').click(function () {
+            var name = $(this).attr('name')
+            var item_id = $(this).attr('id')
+            if ($(this).prop('checked', true)) {
+                $(this).replaceWith('<input type="checkbox" value="0" class="10 hide form-check-input" id="' + item_id + '" style="display: inline-block;">' +
+                    '<input class="form-control" required type="text" placeholder="سایر" name="' + name + '">')
+                $(this).attr('checked', true)
+            } else {
+                console.log('happend')
+                $(this).replaceWith('<label for="' + item_id + '" class="form-check-label">' +
+                    '<input type="checkbox" name="' + name + '" value="0" class="9 hide form-check-input" id="' + item_id + '" style="display: inline-block;">سایر' +
+                    '</label>')
             }
-        })
+        }){% endcomment %}
 
         function sum() {
             var num_one = $('input[type=number][name=M1_form_1]').val()
@@ -249,13 +231,13 @@
                     count += 1
                 }
             })
-            var rest_of_row = $('.' + temp_class).not('.check').not('.11')
+            var rest_of_row = $('.' + temp_class).not('.check').not('.11').not('.other')
             if (count >= 3) {
                 rest_of_row.slideDown(600).attr('disabled', false)
-                count=0
+                count = 0
             } else {
                 rest_of_row.slideUp(600).attr('disabled', true)
-                count=0
+                count = 0
             }
         }
     </script>
