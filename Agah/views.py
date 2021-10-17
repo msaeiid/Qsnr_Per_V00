@@ -387,10 +387,6 @@ def Main_view(request):
         # save M2
         M2_answer = request.POST.get('M2')
         save_single_answer(M2, M2_answer, answersheet)
-        if Option.objects.get(pk=int(M2_answer)).title != 'خیر':
-            messages.success(request, message='پرسشنامه با موفقیت ثبت شد')
-        else:
-            messages.warning(request, 'خاتمه نظرسنجی سوال M2 خیر انتخاب شده')
         # save M3
         M3_answer = request.POST.get('M3')
         save_single_answer(M3, M3_answer, answersheet)
@@ -398,6 +394,7 @@ def Main_view(request):
             del request.session['answersheet']
         if request.session.get('number_of_children', False):
             del request.session['number_of_children']
+        messages.success(request, message='پرسشنامه با موفقیت ثبت شد')
         return redirect(reverse('personal'))
 
 

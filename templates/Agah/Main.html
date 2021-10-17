@@ -240,5 +240,20 @@
                 count = 0
             }
         }
+
+        $('#id_M2').change(function () {
+
+            if ($('#id_M2 option:selected').text() == 'بلی') {
+                $('div.question').last().slideDown(600)
+                $('#id_M3').prop('required',true)
+            } else {
+                $('div.question').last().slideUp(600)
+                $('#id_M3').prop('required',false)
+            }
+        });
+        $(document).ready(function () {
+            $('div.question').last().addClass('hide')
+            $('#id_M3').prop('required',false)
+        });
     </script>
 {% endblock %}
