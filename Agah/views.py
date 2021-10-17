@@ -132,6 +132,7 @@ def Personal(request):
                     S4b.option.value == 2 or (S4b.option.value == 1 and S5.answer == 0))):
                 if answersheet:
                     del request.session['answersheet']
+                    del request.session['number_of_children']
                 messages.warning(request, 'خاتمه نظرسنجی')
                 return redirect(reverse('personal'))
 
@@ -351,29 +352,26 @@ def Main_view(request):
         Q8_answer = request.POST.getlist('Q8')
         Q9_answer = request.POST.getlist('Q9')
 
-
         # save Q1
-        save_list_answer(Q1, Q1_answer, answersheet)
+        save_list_answer(Q1, Q1_answer[::-1], answersheet, brand=False)
         # save Q2
-        save_list_answer(Q2, Q2_answer, answersheet)
+        save_list_answer(Q2, Q2_answer[::-1], answersheet, brand=False)
         # save Q3
-        save_list_answer(Q3, Q3_answer, answersheet)
-
-
+        save_list_answer(Q3, Q3_answer[::-1], answersheet, brand=False)
         # save Q4
-        save_list_answer(Q4, Q4_answer, answersheet)
+        save_list_answer(Q4, Q4_answer[::-1], answersheet)
         # save Q4a
-        save_list_answer(Q4a, Q4a_answer, answersheet)
+        save_list_answer(Q4a, Q4a_answer[::-1], answersheet)
         # save Q5
-        save_list_answer(Q5, Q5_answer, answersheet)
+        save_list_answer(Q5, Q5_answer[::-1], answersheet)
         # save Q6
-        save_list_answer(Q6, Q6_answer, answersheet)
+        save_list_answer(Q6, Q6_answer[::-1], answersheet)
         # save Q7
-        save_list_answer(Q7, Q7_answer, answersheet)
+        save_list_answer(Q7, Q7_answer[::-1], answersheet)
         # save Q8
-        save_list_answer(Q8, Q8_answer, answersheet, False)
+        save_list_answer(Q8, Q8_answer[::-1], answersheet, brand=False)
         # save Q9
-        save_list_answer(Q9, Q9_answer, answersheet, False)
+        save_list_answer(Q9, Q9_answer[::-1], answersheet, brand=False)
         # save M1
         M1_form_1_answer = request.POST.get('M1_form_1')
         answer = Answer(question=M1, answersheet=answersheet, answer=M1_form_1_answer, point=0,
@@ -389,26 +387,38 @@ def Main_view(request):
         # save M2
         M2_answer = request.POST.get('M2')
         save_single_answer(M2, M2_answer, answersheet)
+        if Option.objects.get(pk=int(M2_answer)).title != 'خیر':
+            messages.success(request, message='پرسشنامه با موفقیت ثبت شد')
+        else:
+            messages.warning(request, 'خاتمه نظرسنجی سوال M2 خیر انتخاب شده')
         # save M3
         M3_answer = request.POST.get('M3')
         save_single_answer(M3, M3_answer, answersheet)
-        messages.success(request, message='پرسشنامه با موفقیت ثبت شد')
-        # request.session.flush()
+        if request.session.get('answersheet', False):
+            del request.session['answersheet']
+        if request.session.get('number_of_children', False):
+            del request.session['number_of_children']
         return redirect(reverse('personal'))
 
 
 def save_list_answer(question, user_answer, answersheet, brand=True):
-    # category = BrandCategory.objects.all()[:10]
-    batch_size = len(user_answer)
-    list_answer = []
-    for i in range(len(user_answer)):
-        if brand:
-            list_answer.append(Answer(question=question, answersheet=answersheet, point=0,
-                                      brand=Brand.objects.get(pk=int(user_answer[i]))))
-        else:
-            option = question.options.get(pk=user_answer[i])
-            list_answer.append(Answer(question=question, answersheet=answersheet, option=option, point=0))
+    if len(user_answer) > 0:
+        batch_size = len(user_answer)
+        list_answer = []
+        for i in range(len(user_answer)):
+            if user_answer[i] != '0':
+                if brand:
+                    try:
+                        list_answer.append(Answer(question=question, answersheet=answersheet, point=0,
+                                                  brand=Brand.objects.get(pk=int(user_answer[i]))))
+                    except:
+                        list_answer.append(
+                            Answer(question=question, answersheet=answersheet, point=0, answer=user_answer[i]))
 
-    bulk = Answer.objects.bulk_create(list_answer, batch_size)
+                else:
+                    option = question.options.get(pk=user_answer[i])
+                    list_answer.append(Answer(question=question, answersheet=answersheet, option=option, point=0))
+
+        bulk = Answer.objects.bulk_create(list_answer, batch_size)
 
 # Create your views here.
