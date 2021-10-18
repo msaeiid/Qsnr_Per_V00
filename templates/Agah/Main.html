@@ -175,20 +175,6 @@
         $('td').addClass('align-middle')
         $('input[type=checkbox]').removeClass('form-control col-12').addClass('form-check-input')
         $('.form-check-label').removeClass('col-6')
-        {% comment %}$('input[value=0]').click(function () {
-            var name = $(this).attr('name')
-            var item_id = $(this).attr('id')
-            if ($(this).prop('checked', true)) {
-                $(this).replaceWith('<input type="checkbox" value="0" class="10 hide form-check-input" id="' + item_id + '" style="display: inline-block;">' +
-                    '<input class="form-control" required type="text" placeholder="سایر" name="' + name + '">')
-                $(this).attr('checked', true)
-            } else {
-                console.log('happend')
-                $(this).replaceWith('<label for="' + item_id + '" class="form-check-label">' +
-                    '<input type="checkbox" name="' + name + '" value="0" class="9 hide form-check-input" id="' + item_id + '" style="display: inline-block;">سایر' +
-                    '</label>')
-            }
-        }){% endcomment %}
 
         function sum() {
             var num_one = $('input[type=number][name=M1_form_1]').val()
@@ -258,38 +244,81 @@
         $('select').not('.check').change(function () {
             var nme = $(this).attr('name')
             var val = $(this).val()
-            if (nme == 'Q4' && val != 0 && val != 99) {
-                $('input[type=checkbox][name=Q4a]').prop('disabled', false).prop('checked', false)
-                $('input[type=checkbox][name=Q4a][value=' + val + ']').prop('disabled', true).prop('checked', false)
-                $('input[type=checkbox][name=Q5]').prop('disabled', false).prop('checked', false)
-                $('input[type=checkbox][name=Q5][value=' + val + ']').prop('disabled', true).prop('checked', false)
-                $('input[type=checkbox][name=Q6]').prop('disabled', true).prop('checked', false)
-                $('input[type=checkbox][name=Q6][value=' + val + ']').prop('disabled', false).prop('checked', false)
+            var cls = $(this).attr('class').split(' ')[0]
 
+                $('input[type=text][name=Q4a]').prop('disabled', false).slideUp(600)
+                $('input[type=text][name=Q5]').prop('disabled', false).slideUp(600)
+                $('input[type=text][name=Q6]').prop('disabled', false).slideUp(600)
+
+
+            if (nme == 'Q4' && val != 0 && val != 99) {
+                $('input[type=checkbox][name=Q4a]').prop('disabled', false).prop('checked', false).removeClass('disabled')
+                $('input[type=checkbox][name=Q4a][value=' + val + ']').prop('disabled', true).prop('checked', false).addClass('disabled')
+                $('input[type=checkbox][name=Q5]').prop('disabled', false).prop('checked', false).removeClass('disabled')
+                $('input[type=checkbox][name=Q5][value=' + val + ']').prop('disabled', true).prop('checked', false).addClass('disabled')
+                $('input[type=checkbox][name=Q6]').prop('disabled', true).prop('checked', false).addClass('disabled')
+                $('input[type=checkbox][name=Q6][value=' + val + ']').prop('disabled', false).prop('checked', false).removeClass('disabled')
+                $('input[type=checkbox][name=Q6][value=0]').prop('disabled', false).prop('checked', false).removeClass('disabled')
+                $('input[type=checkbox][name=Q6][value=99]').prop('disabled', false).prop('checked', false).removeClass('disabled')
+                $('select[name=Q7].' + cls + ' option').each(function () {
+                    if (this.value == val) {
+                        $(this).prop('disabled', true).addClass('disabled')
+                    } else {
+                        $(this).prop('disabled', false).removeClass('disabled')
+                    }
+                })
             } else if (nme == 'Q4' && (val == 0 || val == 99)) {
+                console.log('here')
                 $('input[type=checkbox][name=Q4a]').prop('disabled', false)
+                $('input[type=text][name=Q4a]').slideUp(600).prop('disabled', false)
+                $('input[type=checkbox][name=Q5]').prop('disabled', false)
+                $('input[type=text][name=Q5]').prop('disabled', false).slideUp(600)
+                $('input[type=checkbox][name=Q6]').prop('disabled', true)
+                $('input[type=text][name=Q6]').prop('disabled', false).slideUp(600)
             }
         })
         $('input[type=checkbox]').click(function () {
             var nme = $(this).attr('name')
             var val = $(this).val()
             var checked_ = $(this).prop('checked')
+            var cls = $(this).attr('class').split(' ')[0]
             //Q4a change
             if (nme == 'Q4a' && val != 0 && val != 99 && checked_ == true) {
-                $('input[type=checkbox][name=Q5][value=' + val + ']').prop('disabled', true)
-                $('input[type=checkbox][name=Q6][value=' + val + ']').prop('disabled', false)
+                $('input[type=checkbox][name=Q5][value=' + val + ']').prop('disabled', true).addClass('disabled')
+                $('input[type=checkbox][name=Q6][value=' + val + ']').prop('disabled', false).removeClass('disabled')
+                $('select[name=Q7].' + cls + ' option').each(function () {
+                    if (this.value == val) {
+                        $(this).prop('disabled', true).addClass('disabled')
+                    }
+                })
+
             } else if (nme == 'Q4a' && val != 0 && val != 99 && checked_ == false) {
-                $('input[type=checkbox][name=Q5][value=' + val + ']').prop('disabled', false)
-                $('input[type=checkbox][name=Q6][value=' + val + ']').prop('disabled', true)
+                $('input[type=checkbox][name=Q5][value=' + val + ']').prop('disabled', false).removeClass('disabled')
+                $('input[type=checkbox][name=Q6][value=' + val + ']').prop('disabled', true).addClass('disabled')
+                $('select[name=Q7].' + cls + ' option').each(function () {
+                    if (this.value == val) {
+                        $(this).prop('disabled', false).removeClass('disabled')
+                    }
+                })
             } else if (nme == 'Q4a' && (val == 0 || val == 99)) {
-                $('input[type=checkbox][name=Q5]').prop('disabled', false)
+                $('input[type=checkbox][name=Q5]').prop('disabled', false).removeClass('disabled')
             }
 
             //Q5 change
             if (nme == 'Q5' && val != 0 && val != 99 && checked_ == true) {
-                $('input[type=checkbox][name=Q6][value=' + val + ']').prop('disabled', false)
+                $('input[type=checkbox][name=Q6][value=' + val + ']').prop('disabled', false).removeClass('disabled')
+                $('select[name=Q7].' + cls + ' option').each(function () {
+                    if (this.value == val) {
+                        $(this).prop('disabled', true).addClass('disabled')
+                    }
+                })
             } else if (nme == 'Q5' && val != 0 && val != 99 && checked_ == false) {
-                $('input[type=checkbox][name=Q6][value=' + val + ']').prop('disabled', true)
+                $('input[type=checkbox][name=Q6][value=' + val + ']').prop('disabled', true).addClass('disabled')
+                $('select[name=Q7].' + cls + ' option').each(function () {
+                    if (this.value == val) {
+                        $(this).prop('disabled', false).removeClass('disabled')
+                    }
+                })
             } else if (nme == 'Q5' && (val == 0 || val == 99)) {
                 $('input[type=checkbox][name=Q5]').prop('disabled', false)
             }
