@@ -245,15 +245,57 @@
 
             if ($('#id_M2 option:selected').text() == 'بلی') {
                 $('div.question').last().slideDown(600)
-                $('#id_M3').prop('required',true)
+                $('#id_M3').prop('required', true)
             } else {
                 $('div.question').last().slideUp(600)
-                $('#id_M3').prop('required',false)
+                $('#id_M3').prop('required', false)
             }
         });
         $(document).ready(function () {
             $('div.question').last().addClass('hide')
-            $('#id_M3').prop('required',false)
+            $('#id_M3').prop('required', false)
         });
+        $('select').not('.check').change(function () {
+            var nme = $(this).attr('name')
+            var val = $(this).val()
+            if (nme == 'Q4' && val != 0 && val != 99) {
+                $('input[type=checkbox][name=Q4a]').prop('disabled', false).prop('checked', false)
+                $('input[type=checkbox][name=Q4a][value=' + val + ']').prop('disabled', true).prop('checked', false)
+                $('input[type=checkbox][name=Q5]').prop('disabled', false).prop('checked', false)
+                $('input[type=checkbox][name=Q5][value=' + val + ']').prop('disabled', true).prop('checked', false)
+                $('input[type=checkbox][name=Q6]').prop('disabled', true).prop('checked', false)
+                $('input[type=checkbox][name=Q6][value=' + val + ']').prop('disabled', false).prop('checked', false)
+
+            } else if (nme == 'Q4' && (val == 0 || val == 99)) {
+                $('input[type=checkbox][name=Q4a]').prop('disabled', false)
+            }
+        })
+        $('input[type=checkbox]').click(function () {
+            var nme = $(this).attr('name')
+            var val = $(this).val()
+            var checked_ = $(this).prop('checked')
+            //Q4a change
+            if (nme == 'Q4a' && val != 0 && val != 99 && checked_ == true) {
+                $('input[type=checkbox][name=Q5][value=' + val + ']').prop('disabled', true)
+                $('input[type=checkbox][name=Q6][value=' + val + ']').prop('disabled', false)
+            } else if (nme == 'Q4a' && val != 0 && val != 99 && checked_ == false) {
+                $('input[type=checkbox][name=Q5][value=' + val + ']').prop('disabled', false)
+                $('input[type=checkbox][name=Q6][value=' + val + ']').prop('disabled', true)
+            } else if (nme == 'Q4a' && (val == 0 || val == 99)) {
+                $('input[type=checkbox][name=Q5]').prop('disabled', false)
+            }
+
+            //Q5 change
+            if (nme == 'Q5' && val != 0 && val != 99 && checked_ == true) {
+                $('input[type=checkbox][name=Q6][value=' + val + ']').prop('disabled', false)
+            } else if (nme == 'Q5' && val != 0 && val != 99 && checked_ == false) {
+                $('input[type=checkbox][name=Q6][value=' + val + ']').prop('disabled', true)
+            } else if (nme == 'Q5' && (val == 0 || val == 99)) {
+                $('input[type=checkbox][name=Q5]').prop('disabled', false)
+            }
+
+
+        })
+
     </script>
 {% endblock %}
