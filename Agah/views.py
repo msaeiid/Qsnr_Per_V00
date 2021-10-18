@@ -130,8 +130,9 @@ def Personal(request):
                 S2.save()
             if S1.option.value in [1, 2, 3] or S2.option.value not in [1, 2, 3, 4, 5] or (S3.answer in [1, 5] and (
                     S4b.option.value == 2 or (S4b.option.value == 1 and S5.answer == 0))):
-                if answersheet:
+                if request.session.get('answersheet', False):
                     del request.session['answersheet']
+                if request.session.get('number_of_children', False):
                     del request.session['number_of_children']
                 messages.warning(request, 'خاتمه نظرسنجی')
                 return redirect(reverse('personal'))
