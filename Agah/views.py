@@ -404,7 +404,7 @@ def save_list_answer(question, user_answer, answersheet, brand=True):
         batch_size = len(user_answer)
         list_answer = []
         for i in range(len(user_answer)):
-            if user_answer[i] != '0':
+            if user_answer[i] not in ['0', '']:
                 if brand:
                     try:
                         list_answer.append(Answer(question=question, answersheet=answersheet, point=0,

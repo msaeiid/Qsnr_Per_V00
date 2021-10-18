@@ -246,20 +246,20 @@
             var val = $(this).val()
             var cls = $(this).attr('class').split(' ')[0]
 
-                $('input[type=text][name=Q4a]').prop('disabled', false).slideUp(600)
-                $('input[type=text][name=Q5]').prop('disabled', false).slideUp(600)
-                $('input[type=text][name=Q6]').prop('disabled', false).slideUp(600)
+                $('input[type=text][name=Q4a].'+cls).prop('disabled', false).slideUp(600)
+                $('input[type=text][name=Q5].'+cls).prop('disabled', false).slideUp(600)
+                $('input[type=text][name=Q6].'+cls).prop('disabled', false).slideUp(600)
 
 
             if (nme == 'Q4' && val != 0 && val != 99) {
-                $('input[type=checkbox][name=Q4a]').prop('disabled', false).prop('checked', false).removeClass('disabled')
-                $('input[type=checkbox][name=Q4a][value=' + val + ']').prop('disabled', true).prop('checked', false).addClass('disabled')
-                $('input[type=checkbox][name=Q5]').prop('disabled', false).prop('checked', false).removeClass('disabled')
-                $('input[type=checkbox][name=Q5][value=' + val + ']').prop('disabled', true).prop('checked', false).addClass('disabled')
-                $('input[type=checkbox][name=Q6]').prop('disabled', true).prop('checked', false).addClass('disabled')
-                $('input[type=checkbox][name=Q6][value=' + val + ']').prop('disabled', false).prop('checked', false).removeClass('disabled')
-                $('input[type=checkbox][name=Q6][value=0]').prop('disabled', false).prop('checked', false).removeClass('disabled')
-                $('input[type=checkbox][name=Q6][value=99]').prop('disabled', false).prop('checked', false).removeClass('disabled')
+                $('input[type=checkbox][name=Q4a].'+cls).prop('disabled', false).prop('checked', false).removeClass('disabled')
+                $('input[type=checkbox][name=Q4a][value=' + val + '].'+cls).prop('disabled', true).prop('checked', false).addClass('disabled')
+                $('input[type=checkbox][name=Q5].'+cls).prop('disabled', false).prop('checked', false).removeClass('disabled')
+                $('input[type=checkbox][name=Q5][value=' + val + '].'+cls).prop('disabled', true).prop('checked', false).addClass('disabled')
+                $('input[type=checkbox][name=Q6].'+cls).prop('disabled', true).prop('checked', false).addClass('disabled')
+                $('input[type=checkbox][name=Q6][value=' + val + '].'+cls).prop('disabled', false).prop('checked', false).removeClass('disabled')
+                $('input[type=checkbox][name=Q6][value=0].'+cls).prop('disabled', false).prop('checked', false).removeClass('disabled')
+                $('input[type=checkbox][name=Q6][value=99].'+cls).prop('disabled', false).prop('checked', false).removeClass('disabled')
                 $('select[name=Q7].' + cls + ' option').each(function () {
                     if (this.value == val) {
                         $(this).prop('disabled', true).addClass('disabled')
@@ -269,12 +269,12 @@
                 })
             } else if (nme == 'Q4' && (val == 0 || val == 99)) {
                 console.log('here')
-                $('input[type=checkbox][name=Q4a]').prop('disabled', false)
-                $('input[type=text][name=Q4a]').slideUp(600).prop('disabled', false)
-                $('input[type=checkbox][name=Q5]').prop('disabled', false)
-                $('input[type=text][name=Q5]').prop('disabled', false).slideUp(600)
-                $('input[type=checkbox][name=Q6]').prop('disabled', true)
-                $('input[type=text][name=Q6]').prop('disabled', false).slideUp(600)
+                $('input[type=checkbox][name=Q4a].'+cls).prop('disabled', false)
+                $('input[type=text][name=Q4a].'+cls).slideUp(600).prop('disabled', false)
+                $('input[type=checkbox][name=Q5].'+cls).prop('disabled', false)
+                $('input[type=text][name=Q5].'+cls).prop('disabled', false).slideUp(600)
+                $('input[type=checkbox][name=Q6].'+cls).prop('disabled', true)
+                $('input[type=text][name=Q6].'+cls).prop('disabled', false).slideUp(600)
             }
         })
         $('input[type=checkbox]').click(function () {
