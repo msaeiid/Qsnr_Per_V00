@@ -32,7 +32,6 @@ class InterviewerCustom(ImportExportModelAdmin, admin.ModelAdmin):
 @admin.register(Responder)
 class ResponderCustom(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = ('firstname', 'mobile',)
-    list_editable = ('mobile',)
 
     class Meta:
         model = Responder
