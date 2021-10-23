@@ -3,83 +3,182 @@
     {{ profile.user.get_full_name }}
 {% endblock %}
 {% block content %}
-    <h6>
-        Personal information
-    </h6>
-    <div class="form-row">
-        <div class="form-group col-md-12">
-            <h3>
-                {% if profile.gender == 1 %}
-                    Mr&nbsp;
-                {% else %}
-                    Miss&nbsp;
-                {% endif %}
-                <strong>
-                    {{ profile.user.get_full_name }}
-                </strong>
-            </h3>
+    <div class="row">
+        <div class="col-4">
+            <img src="{{ profile.image.url }}" width="100%">
         </div>
-    </div>
-    <div class="form-row">
-        <div class="form-group col-md-12">
-            <h5>
-                <strong>
-                    {{ profile.title }}
-                </strong>
-            </h5>
-        </div>
-    </div>
-    <div class="form-row">
-        <div class="form-group col-md-6">
-            <h6>State: &nbsp;
-                <strong>
-                    {{ profile.country }}&nbsp;,{{ profile.city }}
-                </strong>
-            </h6>
-        </div>
-
-        <div class="form-group col-md-6">
-            <h6>Birthday: &nbsp;
-                <strong>
-                    {{ profile.birthday|date:"d M Y" }}
-                </strong>
-            </h6>
-        </div>
-    </div>
-    <div class="form-row">
-        <div class="form-group col-md-6">
-            <h6>Marital Status: &nbsp;
-                <strong>
-                    {{ profile.get_marital_status_display }}
-                </strong>
-            </h6>
-        </div>
-        <div class="form-group col-md-6">
-            <h6>Occupation: &nbsp;
-                <strong>
-                    {{ profile.occupation }}
-                </strong>
-            </h6>
-        </div>
-    </div>
-    <div class="form-row">
-        <div class="form-group col-md-6">
-            <h6>Email: &nbsp;
-                <strong>
-                    {{ profile.user.email }}
-                </strong>
-            </h6>
-        </div>
-        <div class="form-group col-md-6">
-            <h6>Phone: &nbsp;
-                <strong>
+        <div class="col-6">
+            <div class="form-row">
+                <div class="form-group col-md-12">
+                    <h1>
+                        <strong>
+                            {{ profile.user.get_full_name }}
+                        </strong>
+                    </h1>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-12">
+                    <h3>
+                        <strong style="letter-spacing: 4px;">
+                            {{ profile.title }}
+                        </strong>
+                    </h3>
+                </div>
+            </div>
+            <div class="form-row">
+                <h4>
+                    Contact
+                </h4>
+                <div class="form-group col-md-12">
+                    <strong>MOBILE</strong><br>
                     {{ profile.phone }}
-                </strong>
-            </h6>
+                </div>
+                <div class="form-group col-md-12">
+                    <strong>ADDRESS</strong><br>
+                    {{ profile.address }},&nbsp;{{ profile.city }},&nbsp;{{ profile.country }}
+                </div>
+                <div class="form-group col-md-12">
+                    <strong>MAIL</strong>
+                    <br>
+                    {{ profile.user.email }}
+                </div>
+            </div>
         </div>
     </div>
+    <div class="row">
+        <div class="col-4">
+            <div class="form-row">
+                <h4>
+                    EXPERIENCES
+                </h4>
+                {% if jobs %}
+                    {% for job in jobs %}
+                        <div class="form-row">
+                            <div class="form-group col-md-12">
+                                <h6>
+                                    <strong>
+                                        {% if job.title %}
+                                            {{ job.title }}
+                                        {% endif %}
+                                    </strong>
+                                </h6>
+                            </div>
+                            <div class="form-group col-md-12">
+                                <strong>
+                                    {% if job.company %}
+                                        {{ job.company }}
+                                    {% endif %}
+                                </strong>
+                            </div>
+                            <div class="form-group col-md-12">
+                                {% if job.description %}
+                                    <p>
+                                        {{ job.description }}
+                                    </p>
+                                {% endif %}
+                            </div>
+                            <div class="form-group col-md-12">
+                                <h6>
+                            <span class="badge badge-info">
+                                {% if job.start_dte %}
+                                {{ job.start_dte }}
+                            {% endif %}
+                                to
+                                {% if job.end_dte %}
+                                    {{ job.end_dte }}
+                                {% else %}
+                                    currently work
+                                {% endif %}</span>
+                                </h6>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="form-row">
+                <h4>
+                    EDUCATION
+                </h4>
+                {% if educations %}
+                    {% for education in educations %}
+                        <div class="form-row">
+                            <div class="form-group col-md-12">
+                                <h6>
+                                    <strong>
+                                        {% if education.title %}
+                                            {{ education.title }}
+                                        {% endif %}
+                                    </strong>
+                                </h6>
+                            </div>
+                            <div class="form-group col-md-12">
+                                <strong>
+                                    {% if education.university %}
+                                        {{ education.university }}
+                                    {% endif %}
+                                </strong>
+                            </div>
+                            <div class="form-group col-md-12">
+                                <h6><span class="badge badge-info">{% if education.grade %}
+                                    {{ education.grade }}{% endif %}</span>
+                                    <span class="badge badge-info">{% if education.degree %}
+                                        {{ education.get_degree_display }}{% endif %}</span>
+                                </h6>
 
+                            </div>
+                            <div class="form-group col-md-12">
 
-
-
+                                <h6><span
+                                        class="badge badge-info">
+                                    {% if education.from_dte %}
+                                        {{ education.from_dte }}
+                                    {% endif %}
+                                    to
+                                    {% if education.to_dte %}
+                                        {{ education.to_dte }}
+                                    {% else %}
+                                        I'm not graduate
+                                    {% endif %}</span>
+                                </h6>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="form-row">
+                <h4>
+                    SKILLS
+                </h4>
+                {% if skills %}
+                    {% for skill in skills %}
+                        <div class="col-md-12">
+                            <h6>
+                                {% if skill.title %}
+                                    <strong>
+                                        {{ skill.title }}
+                                    </strong>
+                                {% endif %}
+                            </h6>
+                            <div class="progress" style="height:10px">
+                                <div class="progress-bar bg-success" style="width:{{ skill.point }}%">{{ skill.point }}%
+                                </div>
+                            </div>
+                            <div class="form-group col-md-12">
+                                {% if skill.description %}
+                                    <p>
+                                        {{ skill.description }}
+                                    </p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
 {% endblock %}

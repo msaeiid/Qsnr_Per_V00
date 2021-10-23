@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView, LogoutView
 from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse_lazy, reverse
@@ -246,14 +247,18 @@ def PortfolioView(request):
         pass
 
 
-def Protfolio(request):
+def Protfolio(request, username=None):
     if request.method == 'GET':
-        context = {'profile': request.user.profile,
-                   'jobs': request.user.profile.jobs,
-                   'skills': request.user.profile.skills,
-                   'education': request.user.profile.educations,
-                   'language': request.user.profile.languages,
-                   'certificate': request.user.profile.certificates}
+        try:
+            user = get_object_or_404(User, username=username)
+        except:
+            user=request.user
+        context = {'profile': user.profile,
+                   'jobs': user.profile.jobs.all(),
+                   'skills': user.profile.skills.all(),
+                   'educations': user.profile.educations.all(),
+                   'languages': user.profile.languages.all(),
+                   'certificates': user.profile.certificates.all()}
         return render(request, 'Portfolio/Portfolio/detail.html', context)
 
 # Create your views here.

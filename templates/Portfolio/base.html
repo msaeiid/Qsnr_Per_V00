@@ -4,10 +4,9 @@
     <meta charset="UTF-8">
     <title>{% block title %}{% endblock %}</title>
     <style>
-        .content, .side {
-            background-color: lightblue;
+        .content {
+            background-color: gray;
             padding: 30px;
-            border-radius: 5px;
         }
 
         .side {
@@ -80,11 +79,7 @@
         </div>
     {% endif %}
     <div class="row">
-        <div class="col-3 side content">
-            {% block side_bar %}
-            {% endblock %}
-        </div>
-        <div class="col-8 content side">
+        <div class="col-12 content side">
             {% block content %}
             {% endblock %}
         </div>
