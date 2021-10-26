@@ -40,7 +40,10 @@
                 </div>
                 <div class="form-row">
                     <h4>
-                        <span class="badge badge-light">CONTACT</span>
+                        CONTACT
+                        {% if show_control_box %}
+                            <a href="#" class="btn btn-sm btn-success"><i class="fas fa-pen"></i></a>
+                        {% endif %}
                     </h4>
                     <div class="form-group col-md-12">
                         <strong>
@@ -71,11 +74,13 @@
     <div class="row">
         <div class="col-4">
             <div class="form-row">
-
                 {% if jobs %}
                     <div class="wrapper">
                         <h4>
-                            <span class="badge badge-light">EXPERIENCES</span>
+                            EXPERIENCES
+                            {% if show_control_box %}
+                                <a href="" class="btn btn-sm btn-success float-right"><i class="fas fa-plus"></i></a>
+                            {% endif %}
                         </h4>
                         {% for job in jobs %}
                             <div class="form-row">
@@ -105,20 +110,26 @@
                                 <div class="form-group col-md-12">
                                     <h6>
                                         {% if job.start_dte %}
-                                            <span class="badge badge-info">
+                                            <span class="badge badge-secondary">
                                                 {{ job.start_dte }}
                                             </span>
                                         {% endif %}
                                         {% if job.end_dte %}
-                                            <span class="badge badge-info">
+                                            <span class="badge badge-secondary">
                                             {{ job.end_dte }}
                                             </span>
                                         {% else %}
-                                            <span class="badge badge-info">
+                                            <span class="badge badge-secondary">
                                             currently work
                                             </span>
                                         {% endif %}
                                     </h6>
+                                    {% if show_control_box %}
+                                        <div class="btn-group" role="group" aria-label="Basic example">
+                                            <a href="" class="btn btn-sm btn-success"><i class="fas fa-pen"></i></a>
+                                            <a href="" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></a>
+                                        </div>
+                                    {% endif %}
                                 </div>
                             </div>
                         {% endfor %}
@@ -131,7 +142,10 @@
                 {% if educations %}
                     <div class="wrapper">
                         <h4>
-                            <span class="badge badge-light">EDUCATION</span>
+                            EDUCATION
+                            {% if show_control_box %}
+                                <a href="" class="btn btn-sm btn-success float-right"><i class="fas fa-plus"></i></a>
+                            {% endif %}
                         </h4>
                         {% for education in educations %}
                             <div class="form-row">
@@ -154,31 +168,36 @@
                                 <div class="form-group col-md-12">
                                     <h6>
                                         {% if education.grade %}
-                                            <span class="badge badge-info">
+                                            <span class="badge badge-secondary">
                                         {{ education.grade }}
                                         </span>
                                         {% endif %}
                                         {% if education.degree %}
-                                            <span class="badge badge-info">
+                                            <span class="badge badge-secondary">
                                             {{ education.get_degree_display }}
                                         </span>
                                         {% endif %}
                                         {% if education.from_dte %}
-                                            <span class="badge badge-info">
+                                            <span class="badge badge-secondary">
                                             {{ education.from_dte }}
                                             </span>
                                         {% endif %}
                                         {% if education.to_dte %}
-                                            <span class="badge badge-info">
+                                            <span class="badge badge-secondary">
                                             {{ education.to_dte }}
                                             </span>
                                         {% else %}
-                                            <span class="badge badge-info">
+                                            <span class="badge badge-secondary">
                                             I'm not graduate
                                             </span>
                                         {% endif %}
                                     </h6>
-
+                                    {% if show_control_box %}
+                                        <div class="btn-group" role="group" aria-label="Basic example">
+                                            <a href="" class="btn btn-sm btn-success"><i class="fas fa-pen"></i></a>
+                                            <a href="" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></a>
+                                        </div>
+                                    {% endif %}
                                 </div>
                             </div>
                         {% endfor %}
@@ -189,7 +208,10 @@
                 {% if languages %}
                     <div class="wrapper">
                         <h4>
-                            <span class="badge badge-light">LANGUAGES</span>
+                            LANGUAGES
+                            {% if show_control_box %}
+                                <a href="" class="btn btn-sm btn-success float-right"><i class="fas fa-plus"></i></a>
+                            {% endif %}
                         </h4>
                         {% for language in languages %}
                             <div class="form-row">
@@ -208,11 +230,19 @@
                                     {% endif %}
                                 </div>
                                 <div class="form-group col-md-12">
-                                    <span class="badge badge-info">
+                                    <span class="badge badge-secondary">
                                         {% if language.level %}
                                             {{ language.level }}
                                         {% endif %}
                                     </span>
+                                </div>
+                                <div class="form-group col-md-12">
+                                    {% if show_control_box %}
+                                        <div class="btn-group" role="group" aria-label="Basic example">
+                                            <a href="" class="btn btn-sm btn-success"><i class="fas fa-pen"></i></a>
+                                            <a href="" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></a>
+                                        </div>
+                                    {% endif %}
                                 </div>
                             </div>
                         {% endfor %}
@@ -225,7 +255,10 @@
                 {% if skills %}
                     <div class="wrapper">
                         <h4>
-                            <span class="badge badge-light">SKILLS</span>
+                            SKILLS
+                            {% if show_control_box %}
+                                <a href="" class="btn btn-sm btn-success float-right"><i class="fas fa-plus"></i></a>
+                            {% endif %}
                         </h4>
                         {% for skill in skills %}
                             <div class="col-md-12">
@@ -237,7 +270,7 @@
                                     {% endif %}
                                 </h6>
                                 <div class="progress" style="height:10px">
-                                    <div class="progress-bar bg-success"
+                                    <div class="progress-bar bg-primary"
                                          style="width:{{ skill.point }}%">{{ skill.point }}%
                                     </div>
                                 </div>
@@ -249,6 +282,14 @@
                                     {% endif %}
                                 </div>
                             </div>
+                            <div class="col-md-12">
+                                {% if show_control_box %}
+                                    <div class="btn-group" role="group" aria-label="Basic example">
+                                        <a href="" class="btn btn-sm btn-success"><i class="fas fa-pen"></i></a>
+                                        <a href="" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></a>
+                                    </div>
+                                {% endif %}
+                            </div>
                         {% endfor %}
                     </div>
                 {% endif %}
@@ -257,7 +298,10 @@
                 {% if certificates %}
                     <div class="wrapper">
                         <h4>
-                            <span class="badge badge-light">CERTIFICATE</span>
+                            CERTIFICATE
+                            {% if show_control_box %}
+                                <a href="" class="btn btn-sm btn-success float-right"><i class="fas fa-plus"></i></a>
+                            {% endif %}
                         </h4>
                         {% for certificate in certificates %}
                             <div class="form-row">
@@ -290,7 +334,7 @@
                                 <div class="form-group col-md-12">
                                     <h6>
                                         {% if certificate.date %}
-                                            <span class="badge badge-info">
+                                            <span class="badge badge-secondary">
                                             {{ certificate.date }}
                                             </span>
                                         {% endif %}
@@ -301,6 +345,14 @@
                                     </span>
                                         {% endif %}
                                     </h6>
+                                </div>
+                                <div class="form-group col-md-12">
+                                    {% if show_control_box %}
+                                        <div class="btn-group" role="group" aria-label="Basic example">
+                                            <a href="" class="btn btn-sm btn-success"><i class="fas fa-pen"></i></a>
+                                            <a href="" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></a>
+                                        </div>
+                                    {% endif %}
                                 </div>
                             </div>
                         {% endfor %}

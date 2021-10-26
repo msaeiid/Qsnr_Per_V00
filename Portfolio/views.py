@@ -249,16 +249,20 @@ def PortfolioView(request):
 
 def Protfolio(request, username=None):
     if request.method == 'GET':
+        show_control_box = False
         try:
             user = get_object_or_404(User, username=username)
         except:
-            user=request.user
+            user = request.user
+        if request.user.is_authenticated and request.user == user.profile.user:
+            show_control_box = True
         context = {'profile': user.profile,
                    'jobs': user.profile.jobs.all(),
                    'skills': user.profile.skills.all(),
                    'educations': user.profile.educations.all(),
                    'languages': user.profile.languages.all(),
-                   'certificates': user.profile.certificates.all()}
+                   'certificates': user.profile.certificates.all(),
+                   'show_control_box': show_control_box}
         return render(request, 'Portfolio/Portfolio/detail.html', context)
 
 # Create your views here.
