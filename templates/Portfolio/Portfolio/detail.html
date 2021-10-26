@@ -74,14 +74,15 @@
     <div class="row">
         <div class="col-4">
             <div class="form-row">
-                {% if jobs %}
-                    <div class="wrapper">
-                        <h4>
-                            EXPERIENCES
-                            {% if show_control_box %}
-                                <a href="" class="btn btn-sm btn-success float-right"><i class="fas fa-plus"></i></a>
-                            {% endif %}
-                        </h4>
+                <div class="wrapper">
+                    <h4>
+                        EXPERIENCES
+                        {% if show_control_box %}
+                            <a href="{% url 'Portfolio:job_create' %}" class="btn btn-sm btn-success float-right"><i
+                                    class="fas fa-plus"></i></a>
+                        {% endif %}
+                    </h4>
+                    {% if jobs %}
                         {% for job in jobs %}
                             <div class="form-row">
                                 <div class="form-group col-md-12">
@@ -126,27 +127,30 @@
                                     </h6>
                                     {% if show_control_box %}
                                         <div class="btn-group" role="group" aria-label="Basic example">
-                                            <a href="" class="btn btn-sm btn-success"><i class="fas fa-pen"></i></a>
-                                            <a href="" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></a>
+                                            <a href="{% url 'Portfolio:job_update' job.pk %}"
+                                               class="btn btn-sm btn-success"><i class="fas fa-pen"></i></a>
+                                            <a href="{% url 'Portfolio:job_delete' job.pk %}"
+                                               class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></a>
                                         </div>
                                     {% endif %}
                                 </div>
                             </div>
                         {% endfor %}
-                    </div>
-                {% endif %}
+                    {% endif %}
+                </div>
             </div>
         </div>
         <div class="col-4">
             <div class="form-row">
-                {% if educations %}
-                    <div class="wrapper">
-                        <h4>
-                            EDUCATION
-                            {% if show_control_box %}
-                                <a href="" class="btn btn-sm btn-success float-right"><i class="fas fa-plus"></i></a>
-                            {% endif %}
-                        </h4>
+                <div class="wrapper">
+                    <h4>
+                        EDUCATION
+                        {% if show_control_box %}
+                            <a href="{% url 'Portfolio:education_create' %}" class="btn btn-sm btn-success float-right"><i
+                                    class="fas fa-plus"></i></a>
+                        {% endif %}
+                    </h4>
+                    {% if educations %}
                         {% for education in educations %}
                             <div class="form-row">
                                 <div class="form-group col-md-12">
@@ -194,25 +198,28 @@
                                     </h6>
                                     {% if show_control_box %}
                                         <div class="btn-group" role="group" aria-label="Basic example">
-                                            <a href="" class="btn btn-sm btn-success"><i class="fas fa-pen"></i></a>
-                                            <a href="" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></a>
+                                            <a href="{% url 'Portfolio:education_update' education.pk %}"
+                                               class="btn btn-sm btn-success"><i class="fas fa-pen"></i></a>
+                                            <a href="{% url 'Portfolio:education_delete' education.pk %}"
+                                               class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></a>
                                         </div>
                                     {% endif %}
                                 </div>
                             </div>
                         {% endfor %}
-                    </div>
-                {% endif %}
+                    {% endif %}
+                </div>
             </div>
             <div class="form-row">
-                {% if languages %}
-                    <div class="wrapper">
-                        <h4>
-                            LANGUAGES
-                            {% if show_control_box %}
-                                <a href="" class="btn btn-sm btn-success float-right"><i class="fas fa-plus"></i></a>
-                            {% endif %}
-                        </h4>
+                <div class="wrapper">
+                    <h4>
+                        LANGUAGES
+                        {% if show_control_box %}
+                            <a href="{% url 'Portfolio:language_create' %}"
+                               class="btn btn-sm btn-success float-right"><i class="fas fa-plus"></i></a>
+                        {% endif %}
+                    </h4>
+                    {% if languages %}
                         {% for language in languages %}
                             <div class="form-row">
                                 <div class="form-group col-md-12">
@@ -239,27 +246,31 @@
                                 <div class="form-group col-md-12">
                                     {% if show_control_box %}
                                         <div class="btn-group" role="group" aria-label="Basic example">
-                                            <a href="" class="btn btn-sm btn-success"><i class="fas fa-pen"></i></a>
-                                            <a href="" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></a>
+                                            <a href="{% url 'Portfolio:language_update' language.pk %}"
+                                               class="btn btn-sm btn-success"><i class="fas fa-pen"></i></a>
+                                            <a href="{% url 'Portfolio:language_delete' language.pk %}"
+                                               class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></a>
                                         </div>
                                     {% endif %}
                                 </div>
                             </div>
                         {% endfor %}
-                    </div>
-                {% endif %}
+                    {% endif %}
+                </div>
             </div>
         </div>
         <div class="col-4">
             <div class="form-row">
-                {% if skills %}
-                    <div class="wrapper">
-                        <h4>
-                            SKILLS
-                            {% if show_control_box %}
-                                <a href="" class="btn btn-sm btn-success float-right"><i class="fas fa-plus"></i></a>
-                            {% endif %}
-                        </h4>
+
+                <div class="wrapper">
+                    <h4>
+                        SKILLS
+                        {% if show_control_box %}
+                            <a href="{% url 'Portfolio:skill_create' %}" class="btn btn-sm btn-success float-right"><i
+                                    class="fas fa-plus"></i></a>
+                        {% endif %}
+                    </h4>
+                    {% if skills %}
                         {% for skill in skills %}
                             <div class="col-md-12">
                                 <h6>
@@ -285,24 +296,27 @@
                             <div class="col-md-12">
                                 {% if show_control_box %}
                                     <div class="btn-group" role="group" aria-label="Basic example">
-                                        <a href="" class="btn btn-sm btn-success"><i class="fas fa-pen"></i></a>
-                                        <a href="" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></a>
+                                        <a href="{% url 'Portfolio:skill_update' skill.pk %}"
+                                           class="btn btn-sm btn-success"><i class="fas fa-pen"></i></a>
+                                        <a href="{% url 'Portfolio:skill_delete' skill.pk %}"
+                                           class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></a>
                                     </div>
                                 {% endif %}
                             </div>
                         {% endfor %}
-                    </div>
-                {% endif %}
+                    {% endif %}
+                </div>
             </div>
             <div class="form-row">
-                {% if certificates %}
-                    <div class="wrapper">
-                        <h4>
-                            CERTIFICATE
-                            {% if show_control_box %}
-                                <a href="" class="btn btn-sm btn-success float-right"><i class="fas fa-plus"></i></a>
-                            {% endif %}
-                        </h4>
+                <div class="wrapper">
+                    <h4>
+                        CERTIFICATE
+                        {% if show_control_box %}
+                            <a href="{% url 'Portfolio:certificate_create' %}"
+                               class="btn btn-sm btn-success float-right"><i class="fas fa-plus"></i></a>
+                        {% endif %}
+                    </h4>
+                    {% if certificates %}
                         {% for certificate in certificates %}
                             <div class="form-row">
                                 <div class="form-group col-md-12">
@@ -349,15 +363,17 @@
                                 <div class="form-group col-md-12">
                                     {% if show_control_box %}
                                         <div class="btn-group" role="group" aria-label="Basic example">
-                                            <a href="" class="btn btn-sm btn-success"><i class="fas fa-pen"></i></a>
-                                            <a href="" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></a>
+                                            <a href="{% url 'Portfolio:certificate_update' certificate.pk %}"
+                                               class="btn btn-sm btn-success"><i class="fas fa-pen"></i></a>
+                                            <a href="{% url 'Portfolio:certificate_delete' certificate.pk %}"
+                                               class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></a>
                                         </div>
                                     {% endif %}
                                 </div>
                             </div>
                         {% endfor %}
-                    </div>
-                {% endif %}
+                    {% endif %}
+                </div>
             </div>
         </div>
     </div>
