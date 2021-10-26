@@ -88,13 +88,13 @@ class Education(models.Model):
 class Language(models.Model):
     profile = models.ForeignKey(to=Profile, on_delete=models.CASCADE, related_name='languages')
     title = models.CharField(verbose_name='Title', max_length=200, blank=True, editable=True, null=True)
-    levels = (('A1-Beginner', 'A1'),
-              ('A2-Elementary', 'A2'),
-              ('B1-Intermediate', 'B1'),
-              ('B2-Upper Intermediate', 'B2'),
-              ('C1-Advanced', 'C1'),
-              ('C2-Proficiency', 'C2'))
-    level = models.CharField(choices=levels,max_length=21)
+    levels = (('A1', 'A1-Beginner'),
+              ('A2', 'A2-Elementary'),
+              ('B1', 'B1-Intermediate'),
+              ('B2', 'B2-Upper Intermediate'),
+              ('C1', 'C1-Advanced'),
+              ('C2', 'C2-Proficiency'))
+    level = models.CharField(choices=levels, max_length=21)
 
     description = models.TextField(verbose_name='Description', blank=True, editable=True, null=True)
 
