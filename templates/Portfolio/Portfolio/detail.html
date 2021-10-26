@@ -104,16 +104,20 @@
                                 </div>
                                 <div class="form-group col-md-12">
                                     <h6>
-                            <span class="badge badge-info">
-                                {% if job.start_dte %}
-                                    {{ job.start_dte }}
-                                {% endif %}
-                                to
-                                {% if job.end_dte %}
-                                    {{ job.end_dte }}
-                                {% else %}
-                                    currently work
-                                {% endif %}</span>
+                                        {% if job.start_dte %}
+                                            <span class="badge badge-info">
+                                                {{ job.start_dte }}
+                                            </span>
+                                        {% endif %}
+                                        {% if job.end_dte %}
+                                            <span class="badge badge-info">
+                                            {{ job.end_dte }}
+                                            </span>
+                                        {% else %}
+                                            <span class="badge badge-info">
+                                            currently work
+                                            </span>
+                                        {% endif %}
                                     </h6>
                                 </div>
                             </div>
@@ -148,27 +152,67 @@
                                     </strong>
                                 </div>
                                 <div class="form-group col-md-12">
-                                    <h6><span class="badge badge-info">{% if education.grade %}
-                                        {{ education.grade }}{% endif %}</span>
-                                        <span class="badge badge-info">{% if education.degree %}
-                                            {{ education.get_degree_display }}{% endif %}</span>
+                                    <h6>
+                                        {% if education.grade %}
+                                            <span class="badge badge-info">
+                                        {{ education.grade }}
+                                        </span>
+                                        {% endif %}
+                                        {% if education.degree %}
+                                            <span class="badge badge-info">
+                                            {{ education.get_degree_display }}
+                                        </span>
+                                        {% endif %}
+                                        {% if education.from_dte %}
+                                            <span class="badge badge-info">
+                                            {{ education.from_dte }}
+                                            </span>
+                                        {% endif %}
+                                        {% if education.to_dte %}
+                                            <span class="badge badge-info">
+                                            {{ education.to_dte }}
+                                            </span>
+                                        {% else %}
+                                            <span class="badge badge-info">
+                                            I'm not graduate
+                                            </span>
+                                        {% endif %}
                                     </h6>
 
                                 </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            <div class="form-row">
+                {% if languages %}
+                    <div class="wrapper">
+                        <h4>
+                            <span class="badge badge-light">LANGUAGES</span>
+                        </h4>
+                        {% for language in languages %}
+                            <div class="form-row">
                                 <div class="form-group col-md-12">
-
-                                    <h6><span
-                                            class="badge badge-info">
-                                    {% if education.from_dte %}
-                                        {{ education.from_dte }}
-                                    {% endif %}
-                                        to
-                                        {% if education.to_dte %}
-                                            {{ education.to_dte }}
-                                        {% else %}
-                                            I'm not graduate
-                                        {% endif %}</span>
+                                    <h6>
+                                        <strong>
+                                            {% if language.title %}
+                                                {{ language.title }}
+                                            {% endif %}
+                                        </strong>
                                     </h6>
+                                </div>
+                                <div class="form-group col-md-12">
+                                    {% if language.description %}
+                                        {{ language.description }}
+                                    {% endif %}
+                                </div>
+                                <div class="form-group col-md-12">
+                                    <span class="badge badge-info">
+                                        {% if language.level %}
+                                            {{ language.level }}
+                                        {% endif %}
+                                    </span>
                                 </div>
                             </div>
                         {% endfor %}
@@ -234,17 +278,29 @@
                                     </strong>
                                 </div>
                                 <div class="form-group col-md-12">
-                                    <h6><span class="badge badge-info">{% if certificate.date %}
-                                        {{ certificate.date }}{% endif %}</span>
-                                    </h6>
-                                    {% if certificate.have_cert %}
-                                        <h6>
-                                    <span class="badge badge-success">
+                                    {% if certificate.image %}
+                                        <img src="{{ certificate.image.url }}" alt="certificate" width="90%">
+                                    {% endif %}
+                                </div>
+                                <div class="form-group col-md-12">
+                                    {% if certificate.url %}
+                                        <a href="{{ certificate.url }}" class="btn btn-info btn-sm float-right">more</a>
+                                    {% endif %}
+                                </div>
+                                <div class="form-group col-md-12">
+                                    <h6>
+                                        {% if certificate.date %}
+                                            <span class="badge badge-info">
+                                            {{ certificate.date }}
+                                            </span>
+                                        {% endif %}
+                                        {% if certificate.have_cert %}
+                                            <span class="badge badge-success">
                                         <i class="fas fa-certificate"></i>
                                         Certificate
                                     </span>
-                                        </h6>
-                                    {% endif %}
+                                        {% endif %}
+                                    </h6>
                                 </div>
                             </div>
                         {% endfor %}

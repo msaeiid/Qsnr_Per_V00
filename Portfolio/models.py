@@ -49,7 +49,8 @@ class Skill(models.Model):
     profile = models.ForeignKey(to=Profile, on_delete=models.CASCADE, related_name='skills')
     title = models.CharField(verbose_name='Title', max_length=200, blank=True, editable=True, null=True)
 
-    point = models.IntegerField(verbose_name='How much you know about it (1 to 100)',blank=True, editable=True, null=True,
+    point = models.IntegerField(verbose_name='How much you know about it (1 to 100)', blank=True, editable=True,
+                                null=True,
                                 validators=[MaxValueValidator(100), MinValueValidator(1)])
     description = models.TextField(verbose_name='Description', blank=True, editable=True, null=True)
 
@@ -87,8 +88,14 @@ class Education(models.Model):
 class Language(models.Model):
     profile = models.ForeignKey(to=Profile, on_delete=models.CASCADE, related_name='languages')
     title = models.CharField(verbose_name='Title', max_length=200, blank=True, editable=True, null=True)
-    point = models.IntegerField(verbose_name='How much you know about it',
-                                validators=[MaxValueValidator(100), MinValueValidator(1)])
+    levels = (('A1-Beginner', 'A1'),
+              ('A2-Elementary', 'A2'),
+              ('B1-Intermediate', 'B1'),
+              ('B2-Upper Intermediate', 'B2'),
+              ('C1-Advanced', 'C1'),
+              ('C2-Proficiency', 'C2'))
+    level = models.CharField(choices=levels,max_length=21)
+
     description = models.TextField(verbose_name='Description', blank=True, editable=True, null=True)
 
     def __str__(self):
